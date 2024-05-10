@@ -5,20 +5,17 @@ using namespace std;
 
 #include "StepFile.h"
 
-
-
-
 namespace StepFile
 {   
     class StepLine
     {
     public:
-        StepLine(string s)
+        StepLine(const string& s)
         {
             from_string(s);
         }
 
-        void from_string(string s)
+        void from_string(const string& s)
         {
             if (s[0] != '#')
                 return;
@@ -28,10 +25,10 @@ namespace StepFile
         }
 
         int _id;
-        string _type;
+        //string _type;
     };
 
-    bool save(const string& filename, const NurbsSurface& surf)
+    bool save(const string& filename, const Body& body)
     {
         ofstream f(filename);
         if (!f)
@@ -41,9 +38,9 @@ namespace StepFile
         return false;
     }
     ///////////////////////////////////////////////////////////////////////////
-	bool load(const string& filename, NurbsSurface& surf)
+	bool load(const string& filename, Body& body)
     {
-        surf.clear();
+        body.clear();
         ifstream f(filename);
         if (!f)
             return false;
@@ -55,7 +52,7 @@ namespace StepFile
         // read all lines
         while (!f.eof())
         {
-            string sType, sLine;
+            string sLine; //,sType;
             getline(f, sLine);
 
             if (sLine.size() == 0)

@@ -64,12 +64,12 @@ namespace BodyFactory
     class Cylinder : public Body
     {
     public:
-        explicit Cylinder(double height, double diameter);
+        explicit Cylinder(double height, double radius);
 
         virtual void compute_mesh() override;
 
     private:
-        double _height, _diameter;
+        double _height, _radius;
     };
     ///////////////////////////////////////////////////////////////////////////
     class SphereGeodesic : public Body

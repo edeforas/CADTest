@@ -8,7 +8,7 @@ class BodyIntersection: public Body
 {
 public:
     BodyIntersection();
-    virtual ~BodyIntersection();
+    virtual ~BodyIntersection() override;
 
     void set(Body& A,Body& B);
 

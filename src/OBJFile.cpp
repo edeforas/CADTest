@@ -8,15 +8,15 @@ using namespace std;
 
 namespace OBJFile
 {   
-    bool save(const string& filename, const Mesh& mesh)
+    bool save(const string& filename, const Mesh& to_mesh)
     {
 		double colorR=0., colorG=0., colorB=0.;
-		bool bHasColor = mesh.get_color() != -1;
+		bool bHasColor = to_mesh.get_color() != -1;
 		if (bHasColor)
 		{
-			colorR = (mesh.get_color() >> 16) / 255.;
-			colorG = ((mesh.get_color()& 0xFF00) >> 8) / 255.;
-			colorB = (mesh.get_color() & 0xFF) / 255.;
+			colorR = (to_mesh.get_color() >> 16) / 255.;
+			colorG = ((to_mesh.get_color()& 0xFF00) >> 8) / 255.;
+			colorB = (to_mesh.get_color() & 0xFF) / 255.;
 		}
 
         ofstream f(filename);
@@ -25,9 +25,9 @@ namespace OBJFile
 		
 		// write vertices
 		Point3 vertex;
-		for (int i = 0; i < mesh.nb_vertices(); i++)
+		for (int i = 0; i < to_mesh.nb_vertices(); i++)
 		{
-			mesh.get_vertex(i, vertex);
+			to_mesh.get_vertex(i, vertex);
 			if(bHasColor)
 				// save color as in: http://paulbourke.net/dataformats/obj/colour.html
 				f << "v " << vertex._x << " " << vertex._y << " " << vertex._z << " " << colorR << " " << colorG << " " << colorB << endl;
@@ -39,12 +39,12 @@ namespace OBJFile
 		// write triangle vertices
 		int iVertex1 = 0, iVertex2 = 0, iVertex3 = 0; 
 
-		for (int i = 0; i < mesh.nb_triangles(); i++)
+		for (int i = 0; i < to_mesh.nb_triangles(); i++)
 		{
-			if (mesh.is_triangle_unlinked(i))
+			if (to_mesh.is_triangle_unlinked(i))
 				continue;
 
-			mesh.get_triangle_vertices(i, iVertex1, iVertex2, iVertex3);
+			to_mesh.get_triangle_vertices(i, iVertex1, iVertex2, iVertex3);
 			f << "f " << iVertex1 + 1 << " " << iVertex2 + 1 << " " << iVertex3 + 1 << endl;
 		}
 
@@ -52,13 +52,13 @@ namespace OBJFile
     }
     ///////////////////////////////////////////////////////////////////////////
 	// todo add vertex aliasing on load
-	bool load(const string& filename, Mesh& mesh)
+	bool load(const string& filename, Mesh& to_mesh)
     {
         ifstream f(filename);
         if (!f)
             return false;
 		
-		mesh.clear();
+		to_mesh.clear();
 		while(!f.eof())
 		{
 			string sType,sLine;
@@ -75,7 +75,7 @@ namespace OBJFile
 			{
 				double x,y,z;
 				ss >> x >> y >> z;
-				mesh.add_vertex(Point3(x,y,z));
+				to_mesh.add_vertex(Point3(x,y,z));
 			}
 			
 			// read facet
@@ -84,7 +84,7 @@ namespace OBJFile
 				int i1, i2, i3;
 				ss >> i1 >> i2 >> i3;
 
-				mesh.add_triangle(i1-1,i2-1,i3-1);
+				to_mesh.add_triangle(i1-1,i2-1,i3-1);
 			}
 		}
 

@@ -47,7 +47,7 @@ class MeshKernelHalfEdge : public MeshKernel
 {
 public:
 	MeshKernelHalfEdge();
-	virtual ~MeshKernelHalfEdge();
+	virtual ~MeshKernelHalfEdge() override;
 	virtual void clear() override;
 
 	virtual int nb_vertices() const override; // return the vertice id

@@ -15,6 +15,9 @@ target_link_libraries(test_fileformat libCADTest)
 add_executable(test_level_of_details test_level_of_details.cpp  )
 target_link_libraries(test_level_of_details libCADTest)
 
+add_executable(test_simple_sphere test_simple_sphere.cpp  )
+target_link_libraries(test_simple_sphere libCADTest)
+
 add_executable(test_meshoperations test_meshoperations.cpp  )
 target_link_libraries(test_meshoperations libCADTest)
 
@@ -32,3 +35,26 @@ target_link_libraries(test_bmpfile libCADTest)
 
 add_executable(test_stepfile test_stepfile.cpp  )
 target_link_libraries(test_stepfile libCADTest)
+
+add_executable(test_nurbscurve test_nurbscurve.cpp  )
+target_link_libraries(test_nurbscurve libCADTest)
+
+add_executable(test_nurbssurface test_nurbssurface.cpp  )
+target_link_libraries(test_nurbssurface libCADTest)
+
+add_executable(test_nurbsextrude test_nurbsextrude.cpp  )
+target_link_libraries(test_nurbsextrude libCADTest)
+
+add_test(test_geometry test_geometry)
+add_test(test_bmpfile test_bmpfile)
+add_test(test_measurements test_measurements)
+add_test(test_bodyfactory test_bodyfactory)
+add_test(test_level_of_details test_level_of_details)
+add_test(test_simple_sphere test_simple_sphere)
+add_test(test_fractal_tetrahedron test_fractal_tetrahedron)
+
+add_test(test_nurbscurve test_nurbscurve)
+add_test(test_nurbssurface test_nurbssurface)
+add_test(test_nurbsextrude test_nurbsextrude)
+
+add_test(test_renderer test_renderer)

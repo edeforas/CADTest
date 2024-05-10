@@ -210,9 +210,9 @@ namespace BodyFactory
 		_transform.apply(_mesh);
 	}
 	///////////////////////////////////////////////////////////////////////////
-	Cylinder::Cylinder(double height, double diameter)
+	Cylinder::Cylinder(double height, double radius)
 	{
-		_height = height; _diameter = diameter;
+		_height = height; _radius = radius;
 	}
 	void Cylinder::compute_mesh()
 	{
@@ -222,12 +222,12 @@ namespace BodyFactory
 		double PI = 3.14159265358979323846264338; // TODO
 		double z = _height / 2.;
 
-		int iNbSegmentLongitude = _iNbSegments / 2;
+		int iNbSegmentLongitude = 2+4*_iNbSegments;
 		// create vertices
 		for (int i = 0; i < iNbSegmentLongitude; i++)
 		{
-			double x = std::cos((double)i / iNbSegmentLongitude * 2. * PI) * _diameter / 2.;
-			double y = std::sin((double)i / iNbSegmentLongitude * 2. * PI) * _diameter / 2.;
+			double x = std::cos((double)i / iNbSegmentLongitude * 2. * PI) * _radius;
+			double y = std::sin((double)i / iNbSegmentLongitude * 2. * PI) * _radius;
 
 			_mesh.add_vertex(x, y, z);
 			_mesh.add_vertex(x, y, -z);
@@ -268,15 +268,22 @@ namespace BodyFactory
 		if (!_mesh.empty())
 			return;
 
-		Icosahedron ico(_radius);
-		Mesh m;
+		Icosahedron ico(1.);
+
 		MeshTessellate mt;
 		mt.compute(ico.mesh(), _iNbSegments, _mesh);
+
+		for (int i = 0; i < _mesh.nb_vertices(); i++)
+		{
+			Point3 v;
+			_mesh.get_vertex(i, v);
+			_mesh.set_vertex(i,v.normalized()* _radius);
+		}
 
 		_transform.apply(_mesh);
 	}
 	///////////////////////////////////////////////////////////////////////////
-	SphereUV::SphereUV(double radius)
+	SphereUV::SphereUV(double radius):Body()
 	{
 		_radius = radius;
 	}
@@ -287,8 +294,8 @@ namespace BodyFactory
 
 		double PI = 3.14159265358979323846264338; // TODO
 
-		int iNbSegmentLongitude = _iNbSegments;
-		int iNbSegmentLatitude = _iNbSegments/2;
+		int iNbSegmentLongitude = 2+4*_iNbSegments; //at least an octahedron
+		int iNbSegmentLatitude = 2+4*_iNbSegments/2; //at least an octahedron
 
 		// create vertices
 		for (int longitude = 0; longitude < iNbSegmentLongitude; longitude++)
@@ -354,8 +361,8 @@ namespace BodyFactory
 
 		double PI = 3.14159265358979323846264338; // TODO
 
-		int iNbSegmentLongitude = _iNbSegments;
-		int iNbSegmentLatitude = _iNbSegments / 2;
+		int iNbSegmentLongitude = 2+4*_iNbSegments;
+		int iNbSegmentLatitude = 2+4+4*_iNbSegments / 2;
 
 		// create vertices
 		for (int longitude = 0; longitude < iNbSegmentLongitude; longitude++) 

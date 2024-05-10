@@ -3,11 +3,6 @@
 
 #include "Mesh.h"
 
-#include <vector>
-using namespace std;
-
-#include "Geometry.h"
-
 ///////////////////////////////////////////////////////////////////////////
 class MeshBoolean
 {

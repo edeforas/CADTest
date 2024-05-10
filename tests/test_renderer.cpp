@@ -2,6 +2,7 @@
 #include "Image.h"
 #include "ImageIoBmp.h"
 #include "BodyFactory.h"
+#include "NurbsCurve.h"
 
 #include <iostream>
 using namespace std;
@@ -15,11 +16,11 @@ int main()
 	
 	BodyFactory::Torus torus(15, 3);
 	torus.set_color(GREY);
-	torus.set_precision(32);
+	torus.set_mesh_precision(32);
 
-	BodyFactory::SphereUV sphere(10);
+	BodyFactory::SphereGeodesic sphere(5.);
 	sphere.set_color(DARK_GREEN);
-	sphere.set_precision(32);
+	sphere.set_mesh_precision(6);
 	sphere.transform().set_global_translation(Point3(10, 0., 0.));
 
 	Image img(iWidth, iHeight, 4);
@@ -30,19 +31,37 @@ int main()
 	eng.add_diffuse_light(GREEN, 1., Point3(0., 1., 0.));
 	eng.add_diffuse_light(BLUE, 1., Point3(0., 1., 1.));
 
+	NurbsCurve n;
+	int degree = 2;
+	vector<Point3> points,nurbPL;
+	int nbPoint = 5;
+
+	for (int i = 0; i < nbPoint; i++)
+	{
+		Point3 p(Point3((double)rand() / RAND_MAX-0.5, (double)rand() / RAND_MAX-0.5, (double)rand() / RAND_MAX-0.5));
+		points.push_back(p*30.);
+	}
+
+	n.create_from_points(points, degree);
+	n.to_polyline(nurbPL);
+
 	for (int i = 0; i < 360; i += 10)
 	{
+		Mesh m;
 		eng.clear();
 		eng.set_camera(0., 0., 0., dAhead, i, i/2., i/3., dZoom);
-		eng.draw_mesh(torus.mesh());
-		eng.draw_mesh(sphere.mesh());
+		
+		eng.draw_mesh(torus.mesh(),false);
+		eng.draw_mesh(sphere.mesh(),true);
+		eng.draw_polyline(nurbPL, WHITE);
+		eng.draw_polyline(points, GREEN);
 
-		string sFile = string("solid_") + to_string(i) + ".bmp";
+		string sFile = string("rendered_") + to_string(i) + ".bmp";
 
 		cout << "Writing: " << sFile << endl;
 		if (!ImageIoBmp::write(sFile, &img))
 		{
-			cout << "Unable to write rendered image" << sFile << ", good path and rights ? " << endl;
+			cout << "Unable to save rendered image" << sFile << endl;
 			return -1;
 		}
 	}

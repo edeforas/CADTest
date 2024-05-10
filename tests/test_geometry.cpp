@@ -118,7 +118,6 @@ int main()
 	test_triangle_triangle_intersection();
 	test_segment_intersection();
 
-	cout << "Tests finished succesfully." << endl;
-
+	cout << "Tests finished." << endl;
 	return 0;
 }
