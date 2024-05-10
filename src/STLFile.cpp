@@ -7,7 +7,7 @@ using namespace std;
 
 namespace STLFile
 {   
-    bool save(const string& filename, const Mesh& mesh)
+    bool save(const string& filename, const Mesh& to_mesh)
     {
         ofstream f(filename, ios::binary);
         if (!f)
@@ -20,11 +20,11 @@ namespace STLFile
         for (int i = 0; i < 20; i++)
             f.write((char*)(&zero), 4);
 
-        auto iNbTriangles = mesh.nb_triangles();
+        auto iNbTriangles = to_mesh.nb_triangles();
 
         int iNbValidTriangles = 0;
-        for (int i = 0; i < mesh.nb_triangles(); i++)
-            if (mesh.is_triangle_unlinked(i) == false)
+        for (int i = 0; i < to_mesh.nb_triangles(); i++)
+            if (to_mesh.is_triangle_unlinked(i) == false)
                 iNbValidTriangles++;
 
         Triangle3 t;
@@ -32,11 +32,11 @@ namespace STLFile
 
         for (int i = 0; i < iNbTriangles; i++)
         {
-            if (mesh.is_triangle_unlinked(i))
+            if (to_mesh.is_triangle_unlinked(i))
                 continue;
 
             Point3 p1, p2, p3;
-            mesh.get_triangle_vertices(i, p1,p2,p3);
+            to_mesh.get_triangle_vertices(i, p1,p2,p3);
 
             // write normals
             f.write((char*)(&fzero), 4);
@@ -61,9 +61,9 @@ namespace STLFile
         return true;
     }
     ///////////////////////////////////////////////////////////////////////////
-	bool load(const string& filename, Mesh& mesh)
+	bool load(const string& filename, Mesh& to_mesh)
     {
-        mesh.clear();
+        to_mesh.clear();
         ifstream f(filename, ios::binary);
         if (!f)
             return false;
@@ -102,10 +102,10 @@ namespace STLFile
             //ignore color
             f.read((char*)(&tmp), 2);
 
-			mesh.add_vertex(p1x, p1y, p1z);
-			mesh.add_vertex(p2x, p2y, p2z);
-			mesh.add_vertex(p3x, p3y, p3z);
-            mesh.add_triangle(mesh.nb_vertices()-3, mesh.nb_vertices() - 2, mesh.nb_vertices() - 1);
+			to_mesh.add_vertex(p1x, p1y, p1z);
+			to_mesh.add_vertex(p2x, p2y, p2z);
+			to_mesh.add_vertex(p3x, p3y, p3z);
+            to_mesh.add_triangle(to_mesh.nb_vertices()-3, to_mesh.nb_vertices() - 2, to_mesh.nb_vertices() - 1);
         }
 
         return true;

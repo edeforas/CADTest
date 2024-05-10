@@ -1,31 +1,82 @@
 #include "Transform.h"
 
+#include <cmath>
+
+///////////////////////////////////////////////////////////////////////////
 Transform::Transform()
 { }
-
-void Transform::reset()
-{
-	_translation = Point3(0., 0., 0.);
-}
-
-void Transform::apply(Mesh& m)
-{
-	for (int i = 0; i < m.nb_vertices(); i++)
-	{
-		// todo optimize
-		Point3 pv;
-		m.get_vertex(i, pv);
-		pv += _translation;
-		m.set_vertex(i, pv);
-	}
-}
-
-void Transform::set_global_translation(const Point3& translation)
+///////////////////////////////////////////////////////////////////////////
+Translation::Translation(const Point3& translation)
 {
 	_translation = translation;
 }
 
-void Transform::set_global_translation(double x, double y, double z)
+void Translation::apply(Point3& p) const
 {
-	_translation = Point3(x, y, z);
+	p += _translation;
 }
+///////////////////////////////////////////////////////////////////////////
+Rotation::Rotation(double yaw, double pitch, double roll)
+{
+	double dDegToRad = 2. * 3.14159265359 / 360.;
+
+	_yaw = yaw;
+	_pitch = pitch;
+	_roll = roll;
+
+	_yawCos = cos(_yaw * dDegToRad);
+	_yawSin = sin(_yaw * dDegToRad);
+	_pitchCos = cos(_pitch * dDegToRad);
+	_pitchSin = sin(_pitch * dDegToRad);
+	_rollCos = cos(_roll * dDegToRad);
+	_rollSin = sin(_roll * dDegToRad);
+}
+
+void Rotation::set_angles(double yaw, double pitch, double roll)
+{
+	double dDegToRad = 2. * 3.14159265359 / 360.;
+
+	_yaw = yaw;
+	_pitch = pitch;
+	_roll = roll;
+
+	_yawCos = cos(_yaw * dDegToRad);
+	_yawSin = sin(_yaw * dDegToRad);
+	_pitchCos = cos(_pitch * dDegToRad);
+	_pitchSin = sin(_pitch * dDegToRad);
+	_rollCos = cos(_roll * dDegToRad);
+	_rollSin = sin(_roll * dDegToRad);
+}
+
+void Rotation::apply(Point3& p) const
+{
+	//yaw rotation , todo optimize 
+	double tmp = p.x();
+	p.x() = p.x() * _yawCos + p.z() * _yawSin;
+	p.z() = p.z() * _yawCos - tmp * _yawSin;
+
+	//pitch rotation
+	tmp = p.y();
+	p.y() = p.z() * _pitchSin - p.y() * _pitchCos;
+	p.z() = p.z() * _pitchCos + tmp * _pitchSin;
+
+	//roll rotation
+	tmp = p.x();
+	p.x() = p.x() * _rollCos + p.y() * _rollSin;
+	p.y() = p.y() * _rollCos - tmp * _rollSin;
+}
+///////////////////////////////////////////////////////////////////////////
+Scale::Scale(double scaleX, double scaleY, double scaleZ)
+{
+	_scaleX = scaleX;
+	_scaleY = scaleY;
+	_scaleZ = scaleZ;
+}
+
+void Scale::apply(Point3& p) const
+{
+	p.x() *= _scaleX;
+	p.y() *= _scaleY;
+	p.z() *= _scaleZ;
+}
+///////////////////////////////////////////////////////////////////////////

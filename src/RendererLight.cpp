@@ -21,13 +21,12 @@ void RendererLightAmbiant::apply(double& dRed,double& dGreen, double& dBlue, con
 	dBlue*=_dAmbiantBlue;
 }
 ////////////////////////////////////////////////////////////////////////////////
-RendererLightDiffuse::RendererLightDiffuse(int iDiffuseColor, double dDiffuseFactor, const Point3& direction)
+RendererLightDiffuse::RendererLightDiffuse(int iDiffuseColor, double dDiffuseFactor, const Point3& direction):
+	_direction(direction)
 {
 	_dDiffuseRed = dDiffuseFactor * ((iDiffuseColor >> 16) & 0xff) / 256.;
 	_dDiffuseGreen = dDiffuseFactor * ((iDiffuseColor >> 8) & 0xff) / 256.;
 	_dDiffuseBlue = dDiffuseFactor * ((iDiffuseColor) & 0xff) / 256.;
-
-	_direction = direction;
 }
 
 void RendererLightDiffuse::apply(double& dRed, double& dGreen, double& dBlue, const Point3& normal)

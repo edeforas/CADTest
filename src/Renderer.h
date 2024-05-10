@@ -18,13 +18,14 @@ public:
 	void clear();
 	void set_background(int iBackgroundColor);
 	void set_camera(double ox, double oy, double oz, double ahead, double yaw, double pitch, double roll, double zoom);
-	void add_ambient_light(int iAmbiantColor = 0x808080, double dAmbiantFactor = 1.);
+	void add_ambient_light(int iAmbiantColor, double dAmbiantFactor = 1.);
 	void add_diffuse_light(int iDiffuseColor, double dDiffuseFactor, const Point3& direction);
 
 	void draw_mesh(const Mesh& m, bool bDrawEdges = false, int iColor = -1); //use mesh color if iColor is -1 
 	bool draw_triangle_1color(const Point3& A, const Point3& B, const Point3& C, int color, bool bTwofaces = false); //return true if face was visible
 	void draw_line(const Point3& p1, const Point3& p2, int color);
 	void draw_pixel(const Point3& pPixels, int color);
+	void draw_polyline(const vector<Point3>& pl, int color);
 
 private:
 	bool draw_trapeze(double ax, double aw, double bx, double bw, int ay, double cx, double cw, double dx, double dw, int cy, int color); //return true if face was visible
@@ -36,7 +37,7 @@ private:
 	vector<RendererLight*> _lights;
 
 	int* _pixelBuffer;
-	float* _wbuffer;
+	float* _wBuffer;
 	int _Xmax, _Ymax;
 	int _iBackgroundColor;
 };

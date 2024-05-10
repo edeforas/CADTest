@@ -91,6 +91,18 @@ public:
         return *(_data.data() + iP + _iP * _iW * iY + iX * _iP);
     }
 
+    unsigned char operator()(int iX, int iY, int iP = 0) const
+    {
+        assert(iX >= 0);
+        assert(iY >= 0);
+        assert(iP >= 0);
+        assert(iX < _iW);
+        assert(iY < _iH);
+        assert(iP < _iP);
+
+        return *(_data.data() + iP + _iP * _iW * iY + iX * _iP);
+    }
+
     void to_double(vector<double>& img)
     {
         img.resize(size());

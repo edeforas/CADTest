@@ -9,8 +9,8 @@ using namespace std;
 class ImageIoBmp
 {
 public:
-    static bool write(string sFilename,const Image* pImage);
-    static bool read(string sFilename, Image* pImage);
+    static bool write(const string& sFilename,const Image* pImage);
+    static bool read(const string& sFilename, Image* pImage);
 };
 
 #endif

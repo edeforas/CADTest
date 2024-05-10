@@ -4,6 +4,7 @@
 //very old code
 
 #include "Geometry.h"
+#include "Transform.h"
 
 class RendererCamera
 {
@@ -16,16 +17,14 @@ public:
 	void project(const Point3& pPixels, int& screenx, int& screeny, double& w); //w =1/z
 
 private:
-	//rotation angles
-	double _yawCos, _yawSin, _pitchCos, _pitchSin, _rollCos, _rollSin;
-	double _yaw, _pitch, _roll;
-
 	//camera position
 	double _x, _y, _z, _ahead;
 
 	// screen properties
 	double _zoomFactor;
 	int _screenCenterX, _screenCenterY;
+
+	Rotation _rot;
 };
 
 #endif

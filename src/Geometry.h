@@ -11,6 +11,8 @@ public:
 
     Point3& operator+=(const Point3& p);
 	Point3& operator-=(const Point3& p);
+	Point3& operator*=(double d);
+	Point3& operator/=(double d);
 	Point3 operator+(const Point3& p) const;
 	Point3 operator*(double d) const;
 	Point3 operator/(double d) const;
@@ -40,8 +42,8 @@ public:
 	Line3();
 	Line3(const Point3& p1, const Point3& p2);
 
-	Point3 p1() const;
-	Point3 p2() const;
+	const Point3& p1() const;
+	const Point3& p2() const;
 
 	void set_p1(const Point3& p);
 	void set_p2(const Point3& p);
@@ -57,8 +59,8 @@ public:
 	Segment3();
 	Segment3(const Point3& p1, const Point3& p2);
 
-	Point3 p1() const;
-	Point3 p2() const;
+	const Point3& p1() const;
+	const Point3& p2() const;
 
 	void set_p1(const Point3& p);
 	void set_p2(const Point3& p);
@@ -139,5 +141,6 @@ private:
 	double _x2, _y2, _z2;
 	bool _bInitialized;
 };
+
 ///////////////////////////////////////////////////////////////////////////
 #endif

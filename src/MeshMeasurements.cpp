@@ -22,7 +22,7 @@ bool MeshMeasurements::has_no_degenerated_triangles(const Mesh& m)
 		Triangle3 t;
 		m.get_triangle(i, t);
 		if (t.surface() == 0) // todo epsilon
-			return true;
+			return false;
 	}
 
 	return true;

@@ -16,3 +16,4 @@ CMakeCache*
 *.obj
 /src/CMakeFiles/*
 *RelWithDebInfo*
+/doc/*

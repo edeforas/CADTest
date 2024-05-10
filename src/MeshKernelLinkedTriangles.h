@@ -23,7 +23,7 @@ class MeshKernelLinkedTriangles: public MeshKernel
 {
 public:
     MeshKernelLinkedTriangles();
-    virtual ~MeshKernelLinkedTriangles();
+    virtual ~MeshKernelLinkedTriangles() override;
     virtual void clear() override;
 
     virtual int nb_vertices() const override; // return the vertice id

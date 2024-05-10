@@ -6,7 +6,10 @@
 #include "MeshKernelHalfEdge.h"
 #include "MeshKernelLinkedTriangles.h"
 
-#include "Util.h"
+#include "Transform.h"
+
+#define swap(a,b) { auto tmp=a; a=b; b=tmp; }  
+#define rotate(a,b,c) { auto tmp=a; a=b; b=c; c=a; }  
 
 ///////////////////////////////////////////////////////////////////////////
 Mesh::Mesh()
@@ -106,12 +109,10 @@ void Mesh::unlink_triangle(int iTriangle)
 
 Mesh& Mesh::operator=(const Mesh& m)
 {
-	//todo something quicker
-
+	_pKernel = new MeshKernelLinkedTriangles;
 	clear();
 	add_mesh(m);
 	set_color(m.get_color());
-
 	return *this;
 }
 
@@ -154,6 +155,15 @@ int Mesh::add_triangle(int iVertex1, int iVertex2, int iVertex3)
 	return _pKernel->add_triangle(iVertex1,iVertex2,iVertex3);
 }
 
+int Mesh::add_triangle(const Point3& p1,const  Point3& p2,const Point3& p3)
+{
+	int t1 = _pKernel->add_vertex(p1);
+	int t2 = _pKernel->add_vertex(p2);
+	int t3 = _pKernel->add_vertex(p3);
+
+	return add_triangle(t1, t2, t3);
+}
+
 void Mesh::add_quad(int iVertex1, int iVertex2, int iVertex3, int iVertex4)
 {
 	assert(iVertex1 >= 0);
@@ -168,6 +178,33 @@ void Mesh::add_quad(int iVertex1, int iVertex2, int iVertex3, int iVertex4)
 
 	_pKernel->add_triangle(iVertex1, iVertex2, iVertex3);
 	_pKernel->add_triangle(iVertex3, iVertex4, iVertex1);
+}
+
+void Mesh::add_quad(const Point3& p1, const  Point3& p2, const Point3& p3, const Point3& p4,bool bOptimSurface)
+{
+	int i1 = _pKernel->add_vertex(p1);
+	int i2 = _pKernel->add_vertex(p2);
+	int i3 = _pKernel->add_vertex(p3);
+	int i4 = _pKernel->add_vertex(p4);
+
+	if (!bOptimSurface)
+		add_quad(i1, i2, i3, i4);
+	else
+	{
+		//find the quad that as the smallest surface
+		Triangle3 t1(p1, p2, p3);
+		Triangle3 t2(p3, p4, p1);
+		double surfaceQuad1 = t1.surface() + t2.surface();
+
+		Triangle3 t3(p2, p3, p4);
+		Triangle3 t4(p4, p1, p2);
+		double surfaceQuad2 = t3.surface() + t4.surface();
+
+		if (surfaceQuad1 <= surfaceQuad2)
+			add_quad(i1, i2, i3, i4);
+		else
+			add_quad(i2, i3, i4, i1);
+	}
 }
 
 void Mesh::add_pentagon(int iVertex1, int iVertex2, int iVertex3, int iVertex4, int iVertex5)
@@ -274,9 +311,9 @@ int Mesh::add_vertex(const Point3& vertex)
 	return _pKernel->add_vertex(vertex);
 }
 
-void Mesh::add_vertex(double a, double b, double c)
+int Mesh::add_vertex(double a, double b, double c)
 {
-	_pKernel->add_vertex(Point3(a, b, c));
+	return _pKernel->add_vertex(Point3(a, b, c));
 }
 
 void Mesh::set_vertex(int iVertex, const Point3& vertex)
@@ -300,12 +337,24 @@ int Mesh::nb_vertices() const
 	return _pKernel->nb_vertices();
 }
 
+void Mesh::apply_transform(const Transform& t)
+{
+	for (int i = 0; i < nb_vertices(); i++)
+	{
+		// todo optimize
+		Point3 pv;
+		get_vertex(i, pv);
+		t.apply(pv);
+		set_vertex(i, pv);
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////
 void Mesh::split_triangle(int iTriangle, const Triangle3 & tSplitter)
 {
 	Triangle3 tA; get_triangle(iTriangle, tA);
 	Point3 pIntersection;
 
-	//quick intersection test, both mut cut each others
+	//quick intersection test, both must cut each others
 	Plane3 planeSplitter(tSplitter);
 	if (tA.cutted_by(planeSplitter) == false)
 		return ;
@@ -362,12 +411,9 @@ void Mesh::split_triangle(int iTriangle, const Triangle3 & tSplitter)
 
 		assert((b12 && b13 && b23) == false); //not possible to intersect all 3 sides
 
-
 	}
 
-
 	/*
-
 
 	if (vIntersections.size() > 0)
 	{
