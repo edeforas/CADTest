@@ -1,26 +1,20 @@
-#ifndef _Face_
-#define _Face_
+#ifndef Surface_
+#define Surface_
 
 #include "Mesh.h"
 
 ///////////////////////////////////////////////////////////////////////////
-class Face
+class Surface
 {
 public:
-    Face();
-    Face(const Face& f);
-    Face(const Mesh& m);
-
-    virtual ~Face();
-
-    Face& operator=(const Face& other);
+    Surface();
+    virtual ~Surface();
 
     void set_color(int iColor);
 
-    Mesh& mesh();
+    virtual void add_to_mesh(Mesh& m,int iNbSegments)=0;
 
 private:
-    Mesh _mesh;
     int _iColor;
 };
 ///////////////////////////////////////////////////////////////////////////

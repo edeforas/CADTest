@@ -27,7 +27,7 @@ class MeshKernelTIN : public MeshKernel
 {
 public:
 	MeshKernelTIN();
-	virtual ~MeshKernelTIN();
+	virtual ~MeshKernelTIN() override;
 	virtual void clear() override;
 
 	virtual int nb_vertices() const override; // return the vertice id

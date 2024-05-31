@@ -8,7 +8,7 @@ class BodyUnion: public Body
 {
 public:
     BodyUnion();
-    virtual ~BodyUnion();
+    virtual ~BodyUnion() override;
 
     void set(Body& A,Body& B);
 

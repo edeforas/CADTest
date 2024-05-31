@@ -1,5 +1,6 @@
-#include "Body.h"
-#include "StepFile.h"
+#include "BodyFactory.h"
+#include "STLFile.h"
+#include "Mesh.h"
 
 #include <iostream>
 using namespace std;
@@ -7,9 +8,8 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
-	Body body;
-	StepFile::load("test_sphere_hole.step", body);
-	StepFile::save("test_sphere_hole_out.step", body);
+	BodyFactory::SphereGeodesic sphere(50);
+	STLFile::save("simple_sphere.stl", sphere.mesh());
 
 	cout << "Test Finished.";
 	return 0;

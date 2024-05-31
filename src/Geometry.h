@@ -40,8 +40,8 @@ public:
 	Line3();
 	Line3(const Point3& p1, const Point3& p2);
 
-	Point3 p1() const;
-	Point3 p2() const;
+	const Point3& p1() const;
+	const Point3& p2() const;
 
 	void set_p1(const Point3& p);
 	void set_p2(const Point3& p);
@@ -57,8 +57,8 @@ public:
 	Segment3();
 	Segment3(const Point3& p1, const Point3& p2);
 
-	Point3 p1() const;
-	Point3 p2() const;
+	const Point3& p1() const;
+	const Point3& p2() const;
 
 	void set_p1(const Point3& p);
 	void set_p2(const Point3& p);

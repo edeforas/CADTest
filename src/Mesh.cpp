@@ -106,12 +106,10 @@ void Mesh::unlink_triangle(int iTriangle)
 
 Mesh& Mesh::operator=(const Mesh& m)
 {
-	//todo something quicker
-
+	_pKernel = new MeshKernelLinkedTriangles;
 	clear();
 	add_mesh(m);
 	set_color(m.get_color());
-
 	return *this;
 }
 
@@ -152,6 +150,15 @@ int Mesh::add_triangle(int iVertex1, int iVertex2, int iVertex3)
 	assert(iVertex3 < _pKernel->nb_vertices());
 
 	return _pKernel->add_triangle(iVertex1,iVertex2,iVertex3);
+}
+
+int Mesh::add_triangle(const Point3& p1,const  Point3& p2,const Point3& p3)
+{
+	int t1 = add_vertex(p1);
+	int t2 = add_vertex(p2);
+	int t3 = add_vertex(p3);
+
+	return add_triangle(t1, t2, t3);
 }
 
 void Mesh::add_quad(int iVertex1, int iVertex2, int iVertex3, int iVertex4)

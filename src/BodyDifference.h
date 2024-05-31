@@ -8,7 +8,7 @@ class BodyDifference: public Body
 {
 public:
     BodyDifference();
-    virtual ~BodyDifference();
+    virtual ~BodyDifference() override;
 
     void set(Body& A,Body& B);
 

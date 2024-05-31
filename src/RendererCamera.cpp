@@ -42,10 +42,7 @@ void RendererCamera::set_screen(int width, int height, double zoom)
 ////////////////////////////////////////////////////////////////////////////////
 Point3 RendererCamera::local_ref(const Point3& pc) const
 {
-	Point3 pLocal;
-	pLocal.x() = pc.x();
-	pLocal.y() = pc.y();
-	pLocal.z() = pc.z();
+	Point3 pLocal=pc;
 
 	//origin translation
 	pLocal.x() -= _x;

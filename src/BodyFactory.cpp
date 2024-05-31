@@ -268,15 +268,22 @@ namespace BodyFactory
 		if (!_mesh.empty())
 			return;
 
-		Icosahedron ico(_radius);
-		Mesh m;
+		Icosahedron ico(1.);
+
 		MeshTessellate mt;
 		mt.compute(ico.mesh(), _iNbSegments, _mesh);
+
+		for (int i = 0; i < _mesh.nb_vertices(); i++)
+		{
+			Point3 v;
+			_mesh.get_vertex(i, v);
+			_mesh.set_vertex(i,v.normalized()* _radius);
+		}
 
 		_transform.apply(_mesh);
 	}
 	///////////////////////////////////////////////////////////////////////////
-	SphereUV::SphereUV(double radius)
+	SphereUV::SphereUV(double radius):Body()
 	{
 		_radius = radius;
 	}
@@ -341,6 +348,7 @@ namespace BodyFactory
 		}
 
 		_transform.apply(_mesh);
+		add_face(Face(_mesh));
 	}
 	///////////////////////////////////////////////////////////////////////////
 	Torus::Torus(double dMajorRadius, double dMinorRadius)

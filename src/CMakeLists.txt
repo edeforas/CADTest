@@ -3,10 +3,14 @@ set(CADTEST_FILES
 	BodyFactory.cpp BodyFactory.h
 	BodyUnion.cpp BodyUnion.h
 	BodyIntersection.cpp BodyIntersection.h
-	BodyDifference.cpp BodyDifference.h
-	Geometry.cpp Geometry.h
-	
+	BodyDifference.cpp BodyDifference.h	
 	Face.cpp Face.h
+
+	#FaceMesh.cpp FaceMesh.h
+	#FaceNurbs.cpp FaceNurbs.h
+	#FaceBezierPatches.cpp FaceBezierPatches.h
+	#FaceBezierTriangles.cpp FaceBezierTriangles.h
+	Geometry.cpp Geometry.h
 	
 	Mesh.cpp Mesh.h
 	MeshKernel.cpp MeshKernel.h
@@ -21,11 +25,9 @@ set(CADTEST_FILES
 	STLFile.cpp STLFile.h
 	OBJFile.cpp OBJFile.h
 	
-	NurbsSurface.cpp NurbsSurface.h
 	NurbsCurve.cpp NurbsCurve.h
+	NurbsSurface.cpp NurbsSurface.h
 	StepFile.cpp StepFile.h
-	
-	BezierTriangle.cpp BezierTriangle.h
 	
 	Renderer.cpp Renderer.h
 	RendererCamera.cpp RendererCamera.h
@@ -34,7 +36,7 @@ set(CADTEST_FILES
 	ImageGenerator.cpp ImageGenerator.h
 	ImageIoBmp.cpp ImageIoBmp.h
 	Color.h
-	Util.h
+	Util.cpp Util.h
 )
 
 include_directories(.)

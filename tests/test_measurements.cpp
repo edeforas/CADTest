@@ -15,7 +15,7 @@ int main()
 	// test: is_closed()
 	{
 		BodyFactory::SphereUV sphere(1.);
-		Mesh& m = sphere.mesh();
+		Mesh m = sphere.mesh();
 		cout << "Orig Mesh is closed: " << MeshMeasurements::is_closed(m) << endl;
 
 		for (int i = 0; i < m.nb_triangles(); i++)
@@ -31,11 +31,11 @@ int main()
 	{
 		double radius=1.;
 		BodyFactory::SphereUV sphere(1.);
-		sphere.set_precision(100);
-		Mesh& m = sphere.mesh();
-		cout << "Mesh Volume: " << MeshMeasurements::volume(m) << endl;
+		sphere.set_mesh_precision(100);
+
+		cout << "Mesh Volume: " << MeshMeasurements::volume(sphere.mesh()) << endl;
 		cout << "Theorical Volume: " << 4. / 3. * 3.141592653 * (radius * radius * radius) << endl;
-		cout << "Mesh Surface: " << MeshMeasurements::surface(m) << endl;
+		cout << "Mesh Surface: " << MeshMeasurements::surface(sphere.mesh()) << endl;
 		cout << "Theorical Surface: " << 4. * 3.141592653 * (radius * radius) << endl;
 	}
 

@@ -22,8 +22,9 @@ void BodyUnion::set(Body& A, Body& B)
 
 void BodyUnion::compute_mesh()
 {
-	Mesh Aoutside, Boutside, AinB, BinA;
+	Mesh Aoutside, Boutside, AinB, BinA,meshA, meshB;
 	MeshBoolean mb;
+
 	mb.split_meshes(_A->mesh(), _B->mesh(), Aoutside, Boutside, AinB, BinA);
 
 	_mesh.clear();
