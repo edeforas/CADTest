@@ -5,7 +5,7 @@
 #include <cassert>
 
 //////////////////////////////////////////////////////////////////////////////
-bool ImageIoBmp::read(string sFilename, Image* pImage)
+bool ImageIoBmp::read(const string& sFilename, Image* pImage)
 {
 	std::fstream fbmp;
 	fbmp.open(sFilename.data(), std::ios::binary | std::ios::in);
@@ -54,7 +54,7 @@ bool ImageIoBmp::read(string sFilename, Image* pImage)
 		int iLineWidthPerfect = iWidth * iNbByte;
 
 		// read data buffer
-		unsigned char cTmp[3] = { 0 }, * pLineY, cTmpR;
+		unsigned char *pLineY, cTmpR;
 		for (int iY = 0; iY < iHeight; iY++)
 		{
 			pLineY = pImage->pixel(0, iHeight - iY - 1, 0);
@@ -120,7 +120,7 @@ bool ImageIoBmp::read(string sFilename, Image* pImage)
 	return false;
 }
 //////////////////////////////////////////////////////////////////////////////
-bool ImageIoBmp::write(string sFilename, const Image* pImage)
+bool ImageIoBmp::write(const string& sFilename, const Image* pImage)
 {
 	assert(pImage != 0);
 
@@ -199,7 +199,7 @@ bool ImageIoBmp::write(string sFilename, const Image* pImage)
 		}
 	}
 
-	unsigned char cTmp[3] = { 0 };
+	const unsigned char cTmp[3] = { 0 };
 	const unsigned char* pLineY;
 
 	if (iPlanes == 3)

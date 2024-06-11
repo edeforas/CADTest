@@ -10,9 +10,10 @@ class FaceBezierTriangles : public Face
 public:
     FaceBezierTriangles();
     FaceBezierTriangles(const FaceBezierTriangles& f);
-    virtual ~FaceBezierTriangles();
+    virtual ~FaceBezierTriangles() override;
     void clear();
 
+    virtual FaceBezierTriangles* clone() const override;
     virtual void add_to_mesh(Mesh& m, int iNbSegments) override;
 
 protected:

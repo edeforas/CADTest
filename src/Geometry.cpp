@@ -3,7 +3,9 @@
 #include <cmath>
 
 inline double squared(double a) //todo factorize ?
-{ return a*a; }
+{
+	return a * a;
+}
 
 ///////////////////////////////////////////////////////////////////////////
 Point3::Point3()
@@ -81,9 +83,9 @@ Point3 Point3::operator*(double d) const
 {
 	Point3 res;
 
-	res._x = d*_x;
-	res._y = d*_y;
-	res._z = d*_z;
+	res._x = d * _x;
+	res._y = d * _y;
+	res._z = d * _z;
 
 	return res;
 }
@@ -92,9 +94,9 @@ Point3 Point3::operator/(double d) const
 {
 	Point3 res;
 
-	res._x = _x/d;
-	res._y = _y/d;
-	res._z = _z/d;
+	res._x = _x / d;
+	res._y = _y / d;
+	res._z = _z / d;
 
 	return res;
 }
@@ -106,7 +108,7 @@ Point3 Point3::operator-(const Point3& p) const
 	res._x = _x - p._x;
 	res._y = _y - p._y;
 	res._z = _z - p._z;
-	
+
 	return res;
 }
 
@@ -117,13 +119,13 @@ double Point3::distance_square(const Point3& p) const
 
 double Point3::dot_product(const Point3& p) const
 {
-	return _x * p._x +_y * p._y + _z * p._z;
+	return _x * p._x + _y * p._y + _z * p._z;
 }
 
 Point3 Point3::cross_product(const Point3& p) const
 {
 	// from https://en.wikipedia.org/wiki/Cross_product
-	return Point3( _y*p._z-_z*p._y , _z*p._x-_x*p._z , _x*p._y-_y*p._x );
+	return Point3(_y * p._z - _z * p._y, _z * p._x - _x * p._z, _x * p._y - _y * p._x);
 }
 
 double Point3::norm() const
@@ -138,24 +140,24 @@ double Point3::norm_square() const
 
 Point3 Point3::normalized() const
 {
-	double d = 1./norm();
+	double d = 1. / norm();
 	return this->operator*(d);
 }
 ///////////////////////////////////////////////////////////////////////////
 Line3::Line3()
 { }
 
-Line3::Line3(const Point3& p1, const Point3& p2):
-	_p1(p1), 
+Line3::Line3(const Point3& p1, const Point3& p2) :
+	_p1(p1),
 	_p2(p2)
 { }
 
-Point3 Line3::p1() const
+const Point3& Line3::p1() const
 {
 	return _p1;
 }
 
-Point3 Line3::p2() const
+const Point3& Line3::p2() const
 {
 	return _p2;
 }
@@ -173,17 +175,17 @@ void Line3::set_p2(const Point3& p)
 Segment3::Segment3()
 { }
 
-Segment3::Segment3(const Point3& p1, const Point3& p2):
+Segment3::Segment3(const Point3& p1, const Point3& p2) :
 	_p1(p1),
 	_p2(p2)
 { }
 
-Point3 Segment3::p1() const
+const Point3& Segment3::p1() const
 {
 	return _p1;
 }
 
-Point3 Segment3::p2() const
+const Point3& Segment3::p2() const
 {
 	return _p2;
 }
@@ -209,7 +211,7 @@ double Segment3::norm_square() const
 }
 
 bool Segment3::intersect(const Segment3& s, Point3& pIntersection) const
-{	
+{
 	// from https://paulbourke.net/geometry/pointlineplane/lineline.c
 	// and https://stackoverflow.com/questions/2316490/the-algorithm-to-find-the-point-of-intersection-of-two-3d-line-segment
 
@@ -251,7 +253,7 @@ bool Segment3::intersect(const Segment3& s, Point3& pIntersection) const
 	if ((mua < 0.) || (mua > 1.))
 		return false;
 
-	pIntersection= P1 + p21 * mua; //is the nearest point on first segment, the intersection if coplanar
+	pIntersection = P1 + p21 * mua; //is the nearest point on first segment, the intersection if coplanar
 
 	// can compute the nearest point on the other segment
 	// double mub = (d1343 + d4321 * mua) / d4343;
@@ -266,8 +268,8 @@ bool Segment3::intersect(const Segment3& s, Point3& pIntersection) const
 Triangle3::Triangle3()
 { }
 
-Triangle3::Triangle3(const Point3& p1, const Point3& p2, const Point3& p3):
-_p1(p1),_p2(p2),_p3(p3)
+Triangle3::Triangle3(const Point3& p1, const Point3& p2, const Point3& p3) :
+	_p1(p1), _p2(p2), _p3(p3)
 { }
 
 const Point3& Triangle3::p1() const
@@ -287,22 +289,22 @@ const Point3& Triangle3::p3() const
 
 void Triangle3::set_p1(const Point3& p)
 {
-	_p1=p;
+	_p1 = p;
 }
 
 void Triangle3::set_p2(const Point3& p)
 {
-	_p2=p;
+	_p2 = p;
 }
 
 void Triangle3::set_p3(const Point3& p)
 {
-	_p3=p;
+	_p3 = p;
 }
 
 bool Triangle3::cutted_by(const Plane3& p) const
 {
-	int nbPositive=0, nbNegative=0;
+	int nbPositive = 0, nbNegative = 0;
 
 	double proj1 = p.distance_to(p1());
 	if (proj1 > 0.) nbPositive++;
@@ -316,7 +318,7 @@ bool Triangle3::cutted_by(const Plane3& p) const
 	if (proj3 > 0.) nbPositive++;
 	if (proj3 < 0.) nbNegative++;
 
-	return ((nbPositive>0) && (nbNegative>0));
+	return ((nbPositive > 0) && (nbNegative > 0));
 }
 
 bool Triangle3::contains(const Point3& p) const
@@ -343,7 +345,7 @@ bool Triangle3::contains(const Point3& p) const
 bool Triangle3::intersect_with(const Segment3& s, Point3& pIntersection) const
 {
 	Plane3 p(*this);
-	
+
 	if (p.intersect_with(s, pIntersection) == false)
 		return false;
 
@@ -353,7 +355,7 @@ bool Triangle3::intersect_with(const Segment3& s, Point3& pIntersection) const
 bool Triangle3::intersect_with(const Triangle3& t) const
 {
 	// first tests from https://web.stanford.edu/class/cs277/resources/papers/Moller1997b.pdf
-	
+
 	BoundingBox3 bA(*this);
 	BoundingBox3 bB(t);
 	Point3 pInter;
@@ -362,7 +364,7 @@ bool Triangle3::intersect_with(const Triangle3& t) const
 		return false;
 
 	Plane3 planeB(t);
-	if (cutted_by(planeB)==false)
+	if (cutted_by(planeB) == false)
 		return false;
 
 	Plane3 planeA(*this);
@@ -370,9 +372,9 @@ bool Triangle3::intersect_with(const Triangle3& t) const
 		return false;
 
 	//compute if any segment cut any triangles, slow but easy
-	if (intersect_with(Segment3(t.p1(), t.p2()),pInter))
+	if (intersect_with(Segment3(t.p1(), t.p2()), pInter))
 		return true;
-	
+
 	if (intersect_with(Segment3(t.p1(), t.p3()), pInter))
 		return true;
 
@@ -414,7 +416,7 @@ Plane3::Plane3()
 
 Plane3::Plane3(const Point3& p1, const Point3& p2, const Point3& p3)
 {
-	compute_using(p1,p2,p3);
+	compute_using(p1, p2, p3);
 }
 
 Plane3::Plane3(const Triangle3& t)
@@ -454,7 +456,7 @@ bool Plane3::intersect_with(const Segment3& s, Point3& pIntersection) const
 	Point3 p2 = s.p2();
 
 	double k = _a * p1._x + _b * p1._y + _c * p1._z + _d;
-	double u = _a * (p2._x- p1._x) + _b * (p2._y- p1._y) + _c * (p2._z - p1._z);
+	double u = _a * (p2._x - p1._x) + _b * (p2._y - p1._y) + _c * (p2._z - p1._z);
 
 	if (u == 0.)
 		return false; // no intersection, parallel
@@ -473,7 +475,7 @@ bool Plane3::intersect_with(const Segment3& s, Point3& pIntersection) const
 bool Plane3::intersect_with(const Plane3& p, Line3& pIntersection) const
 {
 	double espilon = 1.e-8;
-	
+
 	// compute the line direction
 	Point3 direction = normal().cross_product(p.normal());
 	if (direction.norm_square() < espilon * espilon)
@@ -482,10 +484,10 @@ bool Plane3::intersect_with(const Plane3& p, Line3& pIntersection) const
 	//compute one intersection point
 
 	//Plane3 p4(Point3(), this->normal() * this->_d, p.normal() * p._d);
-	
-	
+
+
 	//todo
-	
+
 	return true;
 }
 
@@ -493,19 +495,19 @@ void Plane3::project_point(const Point3& p, Point3& projected) const
 {
 	// from: https://stackoverflow.com/questions/9605556/how-to-project-a-point-onto-a-plane-in-3d
 
-	projected = p -(normal()*(normal().dot_product(p) + _d));
+	projected = p - (normal() * (normal().dot_product(p) + _d));
 }
 
 Point3 Plane3::normal() const // normalized
 {
-	return Point3(_a,_b,_c);
+	return Point3(_a, _b, _c);
 }
 ///////////////////////////////////////////////////////////////////////////
 BoundingBox3::BoundingBox3()
 {
-	_bInitialized=false;
-	_x1=0.; _y1=0.; _z1=0.;
-	_x2=0.; _y2=0.; _z2=0.;
+	_bInitialized = false;
+	_x1 = 0.; _y1 = 0.; _z1 = 0.;
+	_x2 = 0.; _y2 = 0.; _z2 = 0.;
 }
 
 BoundingBox3::BoundingBox3(const Triangle3& t)
@@ -522,11 +524,11 @@ void BoundingBox3::add(const Point3& p1)
 	double y = p1._y;
 	double z = p1._z;
 
-	if(_bInitialized==false)
+	if (_bInitialized == false)
 	{
-		_x1= x; _y1 = y; _z1 = z;
-		_x2= x; _y2 = y; _z2 = z;
-		_bInitialized=true;
+		_x1 = x; _y1 = y; _z1 = z;
+		_x2 = x; _y2 = y; _z2 = z;
+		_bInitialized = true;
 		return;
 	}
 

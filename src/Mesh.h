@@ -25,6 +25,7 @@ public:
     void get_vertex(int iVertex, Point3& vertex) const;
 
     int add_triangle(int iVertex1, int iVertex2, int iVertex3); // return the triangle ID
+    int add_triangle(const Point3& p1, const  Point3& p2, const Point3& p3); //helper
     void get_triangle(int iTriangle, Triangle3& f) const;
     void get_triangle_vertices(int iTriangle, int& iVertex1, int& iVertex2, int& iVertex3) const;
     void get_triangle_vertices(int iTriangle, Point3& p1, Point3& p2, Point3& p3) const;

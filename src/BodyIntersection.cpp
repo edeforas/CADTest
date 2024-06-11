@@ -24,6 +24,7 @@ void BodyIntersection::compute_mesh()
 {
 	Mesh Aonly, Bonly, AinB, BinA;
 	MeshBoolean mb;
+
 	mb.split_meshes(_A->mesh(), _B->mesh(), Aonly, Bonly, AinB, BinA);
 
 	for (int i = 0; i < AinB.nb_triangles(); i++)

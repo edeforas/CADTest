@@ -10,11 +10,12 @@ class FaceMesh : public Face
 public:
     FaceMesh();
     FaceMesh(const FaceMesh & f);
-    virtual ~FaceMesh();
-
+    virtual ~FaceMesh() override;
     void clear();
 
-    Mesh& mesh();
+    virtual FaceMesh* clone() const override;
+
+    Mesh& to_mesh();
     virtual void add_to_mesh(Mesh& m, int iNbSegments) override;
 
 protected:

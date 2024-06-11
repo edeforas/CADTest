@@ -4,6 +4,7 @@ using namespace std;
 
 #include "Renderer.h"
 #include "Mesh.h"
+#include "NurbsCurve.h"
 
 #define MAXINT (1<<28)
 
@@ -176,7 +177,7 @@ bool Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Poin
 	{
 		//exchange D and B
 		int tmpx = bx; bx = dx; dx = tmpx;
-		int tmpy = by; by = dy; dy = tmpy;
+		int tmpy = by; by = dy; //dy = tmpy;
 		double tmpw = bw; bw = dw; dw = tmpw;
 	}
 
@@ -398,6 +399,22 @@ void Renderer::draw_pixel(const Point3& pPixels, int col)
 	{
 		*zp = (float)zpx;
 		_pixelBuffer[(int)ix + (int)iy * _Xmax] = col;
+	}
+}
+////////////////////////////////////////////////////////////////////////////////
+void Renderer::draw_nurbscurve(const NurbsCurve& n,int color)
+{
+	if (n.points().empty())
+		return;
+
+	double deltaT = 1. / (n.points().size() * 10.);
+	Point3 p1, p2;
+	for (double t = 0; t <= 1.; t += deltaT)
+	{ //todo draw last segment
+		n.evaluate(t, p2);
+		 if(t!=0.)
+			 draw_line(p1, p2, color);
+		 p1 = p2;
 	}
 }
 ////////////////////////////////////////////////////////////////////////////////

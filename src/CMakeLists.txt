@@ -6,10 +6,10 @@ set(CADTEST_FILES
 	BodyDifference.cpp BodyDifference.h	
 	Face.cpp Face.h
 
-	FaceMesh.cpp FaceMesh.h
-	FaceNurbs.cpp FaceNurbs.h
-	FaceBezierPatches.cpp FaceBezierPatches.h
-	FaceBezierTriangles.cpp FaceBezierTriangles.h
+	#FaceMesh.cpp FaceMesh.h
+	#FaceNurbs.cpp FaceNurbs.h
+	#FaceBezierPatches.cpp FaceBezierPatches.h
+	#FaceBezierTriangles.cpp FaceBezierTriangles.h
 	Geometry.cpp Geometry.h
 	
 	Mesh.cpp Mesh.h
@@ -26,6 +26,7 @@ set(CADTEST_FILES
 	OBJFile.cpp OBJFile.h
 	
 	NurbsCurve.cpp NurbsCurve.h
+	NurbsSurface.cpp NurbsSurface.h
 	StepFile.cpp StepFile.h
 	
 	Renderer.cpp Renderer.h

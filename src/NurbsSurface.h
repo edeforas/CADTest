@@ -1,5 +1,5 @@
-#ifndef _NurbsCurve_
-#define _NurbsCurve_
+#ifndef NurbsSurface_
+#define NurbsSurface_
 
 #include <vector>
 using namespace std;
@@ -7,32 +7,33 @@ using namespace std;
 #include "Geometry.h"
 
 ///////////////////////////////////////////////////////////////////////////
-class NurbsCurve
+class NurbsSurface
 {
 public:
-	NurbsCurve();
-	virtual ~NurbsCurve();
+	NurbsSurface();
+	virtual ~NurbsSurface();
 
 	void clear();
 
 	void set_degree(int degree);
-	void set_knots(const vector <double>& knots);
+	void set_knots_u(const vector <double>& knots);
+	void set_knots_v(const vector <double>& knots);
 	void set_weights(const vector <double>& weights);
 	void set_points(const vector <Point3>& points);
 
-	const vector<Point3>& points() const;
-	void evaluate(double t, Point3& p) const;
+	void evaluate(double u,double v, Point3& p);
 
 private:
-	int find_knot_span(double t) const;
+	int find_knot_span_u(double u);
+	int find_knot_span_v(double v);
 
 	int _degree;
-	vector <double> _knots;
+	vector <double> _knotsU, _knotsV;
 	vector <double> _weights;
 	vector <Point3> _points;
 
-	mutable vector<Point3> _tempPoints;
-	mutable vector<double> _tempWeights;
+	vector<Point3> _tempPoints;
+	vector<double> _tempWeights;
 };
 ///////////////////////////////////////////////////////////////////////////
 

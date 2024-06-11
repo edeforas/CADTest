@@ -4,10 +4,9 @@
 FaceBezierPatches::FaceBezierPatches()
 { }
 
-FaceBezierPatches::FaceBezierPatches(const FaceBezierPatches & f)
-{
-	_vP = f._vP;
-}
+FaceBezierPatches::FaceBezierPatches(const FaceBezierPatches & f):
+	_vP(f._vP)
+{ }
 
 FaceBezierPatches::~FaceBezierPatches()
 { }
@@ -27,3 +26,9 @@ void FaceBezierPatches::set_points(const vector<Point3>& vP)
 {
 	_vP = vP;
 }
+///////////////////////////////////////////////////////////////////////////
+FaceBezierPatches* FaceBezierPatches::clone() const
+{
+	return new FaceBezierPatches(*this);
+}
+///////////////////////////////////////////////////////////////////////////

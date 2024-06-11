@@ -10,12 +10,12 @@ namespace StepFile
     class StepLine
     {
     public:
-        StepLine(string s)
+        StepLine(const string& s)
         {
             from_string(s);
         }
 
-        void from_string(string s)
+        void from_string(const string& s)
         {
             if (s[0] != '#')
                 return;
@@ -25,7 +25,7 @@ namespace StepFile
         }
 
         int _id;
-        string _type;
+        //string _type;
     };
 
     bool save(const string& filename, const Body& body)
@@ -52,7 +52,7 @@ namespace StepFile
         // read all lines
         while (!f.eof())
         {
-            string sType, sLine;
+            string sLine; //,sType;
             getline(f, sLine);
 
             if (sLine.size() == 0)

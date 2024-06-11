@@ -15,6 +15,9 @@ target_link_libraries(test_fileformat libCADTest)
 add_executable(test_level_of_details test_level_of_details.cpp  )
 target_link_libraries(test_level_of_details libCADTest)
 
+add_executable(test_simple_sphere test_simple_sphere.cpp  )
+target_link_libraries(test_simple_sphere libCADTest)
+
 add_executable(test_meshoperations test_meshoperations.cpp  )
 target_link_libraries(test_meshoperations libCADTest)
 
@@ -32,3 +35,6 @@ target_link_libraries(test_bmpfile libCADTest)
 
 add_executable(test_stepfile test_stepfile.cpp  )
 target_link_libraries(test_stepfile libCADTest)
+
+add_executable(test_nurbscurve test_nurbscurve.cpp  )
+target_link_libraries(test_nurbscurve libCADTest)

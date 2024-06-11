@@ -8,7 +8,7 @@
 #include <vector>
 using namespace std;
 
-// todo: cleaner
+// todo: clean up
 #define RGB(a,b,c) ((a<<16)+(b<<8)+c)
 
 ///////////////////////////////////////////////////////////////////////////
@@ -22,19 +22,21 @@ public:
     Transform& transform();
     virtual void set_mesh_precision(int iNbSegments);
     void set_color(int iColor);
-    virtual Mesh& mesh();
     
-    void add_face(Face* f); 
-    vector<Face*>& faces();
+    virtual void compute_mesh();
+
+    void add_face(const Face& f); 
+    vector<Face>& faces();
+
+    const Mesh& mesh();
 
 protected:
-    virtual void compute_mesh();
     Mesh _mesh;
     int _iNbSegments;
     Transform _transform;
     int _iColor; // -1 for no custom color
 	
-	vector<Face*> _faces;
+	vector<Face> _faces;
 };
 ///////////////////////////////////////////////////////////////////////////
 

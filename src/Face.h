@@ -2,23 +2,25 @@
 #define _Face_
 
 #include "Mesh.h"
-#include "Surface.h"
-
-#include <vector>
-using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////
 class Face
 {
 public:
     Face();
+    Face(const Face& f);
+    Face(const Mesh& m);
+
     virtual ~Face();
+
+    Face& operator=(const Face& other);
 
     void set_color(int iColor);
 
-    virtual void add_to_mesh(Mesh& m,int iNbSegments)=0;
+    Mesh& mesh();
 
-protected:
+private:
+    Mesh _mesh;
     int _iColor;
 };
 ///////////////////////////////////////////////////////////////////////////

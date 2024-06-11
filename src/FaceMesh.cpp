@@ -4,10 +4,9 @@
 FaceMesh::FaceMesh()
 { }
 
-FaceMesh::FaceMesh(const FaceMesh & f)
-{
-	_mesh = f._mesh;
-}
+FaceMesh::FaceMesh(const FaceMesh & f):
+	_mesh(f._mesh)
+{ }
 
 FaceMesh::~FaceMesh()
 { }
@@ -23,7 +22,13 @@ void FaceMesh::add_to_mesh(Mesh& m, int iNbSegments)
 	m.add_mesh(_mesh);
 }
 ///////////////////////////////////////////////////////////////////////////
-Mesh& FaceMesh::mesh()
+Mesh& FaceMesh::to_mesh()
 {
 	return _mesh;
 }
+///////////////////////////////////////////////////////////////////////////
+FaceMesh* FaceMesh::clone() const
+{
+	return new FaceMesh(*this);
+}
+///////////////////////////////////////////////////////////////////////////
