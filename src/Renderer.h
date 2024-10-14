@@ -5,6 +5,7 @@
 #include "RendererLight.h"
 #include "Geometry.h"
 class Mesh;
+
 #include <vector>
 using namespace std;
 
@@ -17,7 +18,7 @@ public:
 	void clear();
 	void set_background(int iBackgroundColor);
 	void set_camera(double ox, double oy, double oz, double ahead, double yaw, double pitch, double roll, double zoom);
-	void add_ambient_light(int iAmbiantColor = 0x808080, double dAmbiantFactor = 1.);
+	void add_ambient_light(int iAmbiantColor , double dAmbiantFactor = 1.);
 	void add_diffuse_light(int iDiffuseColor, double dDiffuseFactor, const Point3& direction);
 
 	void draw_mesh(const Mesh& m, bool bDrawEdges = false, int iColor = -1); //use mesh color if iColor is -1 
@@ -36,7 +37,7 @@ private:
 	vector<RendererLight*> _lights;
 
 	int* _pixelBuffer;
-	float* _wbuffer;
+	float* _wBuffer;
 	int _Xmax, _Ymax;
 	int _iBackgroundColor;
 };

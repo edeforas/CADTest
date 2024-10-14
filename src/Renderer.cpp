@@ -24,7 +24,7 @@ Renderer::Renderer(int* pBuffer,int xm, int ym)
 	_Ymax = ym;
 	_pixelBuffer = pBuffer;
 
-	_wbuffer = new float[_Xmax * _Ymax];
+	_wBuffer = new float[_Xmax * _Ymax];
 
 	_iBackgroundColor = 0;
 	clear();
@@ -32,7 +32,7 @@ Renderer::Renderer(int* pBuffer,int xm, int ym)
 ////////////////////////////////////////////////////////////////////////////////
 Renderer::~Renderer()
 {
-	delete[] _wbuffer;
+	delete[] _wBuffer;
 
 	for (size_t i = 0; i < _lights.size(); i++)
 		delete _lights[i];
@@ -291,7 +291,7 @@ void Renderer::draw_horizontal_line(int ax, double aw, int bx, double bw, int y,
 	}
 
 	int *pLine = _pixelBuffer + y * _Xmax;
-	float *pWBuffer = _wbuffer + y * _Xmax;
+	float *pWBuffer = _wBuffer + y * _Xmax;
 
 	for (int i = ax; i<=bx; i++)
 	{
@@ -319,7 +319,7 @@ void Renderer::clear()
 	for (int j = 0; j < _Ymax; j++)
 	{
 		int* pixels = j * _Xmax + _pixelBuffer;
-		float* w = j * _Xmax + _wbuffer;
+		float* w = j * _Xmax + _wBuffer;
 		for (int i = 0; i < _Xmax; i++)
 		{
 			pixels[i] =_iBackgroundColor;
@@ -339,7 +339,7 @@ void Renderer::draw_line(const Point3& p1, const Point3& p2, int color)
 	double fx, fy, dx, dy;
 	int i, im,decal;
 	double zp1, zp2, fz, dz;
-	double wEpsilon = 1.e-2; // todo exact formula
+	double wEpsilon = 1.e-5; // todo exact formula
 
 	_camera.project(p1, x1, y1, zp1);
 	_camera.project(p2, x2, y2, zp2);
@@ -367,9 +367,9 @@ void Renderer::draw_line(const Point3& p1, const Point3& p2, int color)
 		{
 			decal = int(fx) + int(fy) * _Xmax;
 
-			if (_wbuffer[decal] < fz+wEpsilon)
+			if (_wBuffer[decal] < fz+wEpsilon)
 			{
-				_wbuffer[decal] = (float)fz;
+				_wBuffer[decal] = (float)fz;
 				_pixelBuffer[decal] = color;
 			}
 		}
@@ -391,7 +391,7 @@ void Renderer::draw_pixel(const Point3& pPixels, int col)
 		return;
 
 	//teste if visible in wbuffer
-	zp = _wbuffer + (int)ix + (int)iy * _Xmax;
+	zp = _wBuffer + (int)ix + (int)iy * _Xmax;
 
 	//compare with wbuffer and write if nearer
 	if ((*zp) < zpx)
