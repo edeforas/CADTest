@@ -23,6 +23,8 @@ public:
 	const vector<Point3>& points() const;
 	void evaluate(double t, Point3& p) const;
 
+	void to_polyline(vector<Point3>& polyline) const;
+
 private:
 	int find_knot_span(double t) const;
 

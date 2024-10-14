@@ -35,7 +35,7 @@ int main()
 	int degree = 2;
 	vector<double> knots;
 	vector<double> weights;
-	vector<Point3> points;
+	vector<Point3> points,nurbPL;
 	int nbPoint = 20;
 
 	knots.push_back(0);
@@ -55,6 +55,7 @@ int main()
 	n.set_knots(knots);
 	n.set_weights(weights);
 	n.set_points(points);
+	n.to_polyline(nurbPL);
 
 	for (int i = 0; i < 360; i += 10)
 	{
@@ -64,7 +65,7 @@ int main()
 		
 		eng.draw_mesh(torus.mesh());
 		eng.draw_mesh(sphere.mesh());
-		eng.draw_nurbscurve(n, WHITE);
+		eng.draw_polyline(nurbPL, WHITE);
 		string sFile = string("rendered_") + to_string(i) + ".bmp";
 
 		cout << "Writing: " << sFile << endl;

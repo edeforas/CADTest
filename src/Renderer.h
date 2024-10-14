@@ -5,7 +5,6 @@
 #include "RendererLight.h"
 #include "Geometry.h"
 class Mesh;
-class NurbsCurve;
 #include <vector>
 using namespace std;
 
@@ -25,7 +24,7 @@ public:
 	bool draw_triangle_1color(const Point3& A, const Point3& B, const Point3& C, int color, bool bTwofaces = false); //return true if face was visible
 	void draw_line(const Point3& p1, const Point3& p2, int color);
 	void draw_pixel(const Point3& pPixels, int color);
-	void draw_nurbscurve(const NurbsCurve& n, int color);
+	void draw_polyline(const vector<Point3>& pl, int color);
 
 private:
 	bool draw_trapeze(double ax, double aw, double bx, double bw, int ay, double cx, double cw, double dx, double dw, int cy, int color); //return true if face was visible

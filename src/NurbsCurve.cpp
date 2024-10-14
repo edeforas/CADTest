@@ -109,3 +109,17 @@ void NurbsCurve::evaluate(double t, Point3& p) const
 }
 
 ///////////////////////////////////////////////////////////////////////////
+void NurbsCurve::to_polyline(vector<Point3>& polyline) const
+{
+	polyline.clear();
+	if (_points.empty())
+		return;
+
+	double deltaT = 1. / (_points.size() * 10.);
+	Point3 p;
+	for (double t = 0; t <= 1.; t += deltaT) // todo last point?
+	{
+		evaluate(t, p);
+		polyline.push_back(p);
+	}
+}

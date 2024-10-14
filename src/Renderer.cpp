@@ -4,7 +4,6 @@ using namespace std;
 
 #include "Renderer.h"
 #include "Mesh.h"
-#include "NurbsCurve.h"
 
 #define MAXINT (1<<28)
 
@@ -402,19 +401,12 @@ void Renderer::draw_pixel(const Point3& pPixels, int col)
 	}
 }
 ////////////////////////////////////////////////////////////////////////////////
-void Renderer::draw_nurbscurve(const NurbsCurve& n,int color)
+void Renderer::draw_polyline(const vector<Point3>& pl, int color)
 {
-	if (n.points().empty())
+	if (pl.size()<2)
 		return;
 
-	double deltaT = 1. / (n.points().size() * 10.);
-	Point3 p1, p2;
-	for (double t = 0; t <= 1.; t += deltaT)
-	{ //todo draw last segment
-		n.evaluate(t, p2);
-		 if(t!=0.)
-			 draw_line(p1, p2, color);
-		 p1 = p2;
-	}
+	for (int i = 1; i < pl.size(); i++)
+		draw_line(pl[i-1], pl[i], color);
 }
 ////////////////////////////////////////////////////////////////////////////////
