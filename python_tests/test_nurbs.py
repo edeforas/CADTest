@@ -105,6 +105,15 @@ w=np.array([1., 1./math.sqrt(2.), 1.,1./math.sqrt(2.), 1.,1./math.sqrt(2.), 1.,1
 k=np.array([0.,0.,0.,0.25,0.25,0.5,0.5,0.75,0.75,1.,1.,1.])
 plot_nurbs(d,p,w,k,title="circle")
 
+#approximation using cubic NURBS, not rational
+# from "Good Approximation of Circles by Curvature-Continuous Bézier curves"
+# 0.55 number optimized to 0.5519151 for a lower max error
+d=3
+p=np.array([[1,0],[1,0.5519151],[0.5519151,1],[0,1]])
+w=np.array([1,1,1,1])
+k=np.array([0,0,0,0,1,1,1,1])
+plot_nurbs(d,p,w,k,title="cubic approximation of quarter circle")
+
 # #test square
 d=1
 p=np.array([[1,-1],[1,1],[-1,1],[-1,-1],[1,-1]])
