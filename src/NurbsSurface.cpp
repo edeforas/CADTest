@@ -4,7 +4,7 @@
 
 ///////////////////////////////////////////////////////////////////////////
 NurbsSurface::NurbsSurface() :
-	_degree(0)
+	_degreeU(0), _degreeV(0)
 { }
 
 NurbsSurface::~NurbsSurface()
@@ -12,18 +12,21 @@ NurbsSurface::~NurbsSurface()
 
 void NurbsSurface::clear()
 {
-	_degree = 0;
+	_degreeU = 0;
+	_degreeV = 0;
 	_knotsU.clear();
 	_knotsV.clear();
 	_weights.clear();
 	_points.clear();
 }
 
-void NurbsSurface::set_degree(int degree) //same degre for u and v
+void NurbsSurface::set_degree(int degreeU,int degreeV) //same degre for u and v
 {
-	_degree = degree;
-	_tempPoints.resize((degree + 1)* (degree + 1));
-	_tempWeights.resize((degree + 1) * (degree + 1));
+	_degreeU = degreeU;
+	_degreeV = degreeV;
+
+	//_tempPoints.resize((degree + 1)* (degree + 1));
+	//_tempWeights.resize((degree + 1) * (degree + 1));
 }
 
 void NurbsSurface::set_knots_u(const vector <double>& knots)
@@ -115,7 +118,7 @@ void NurbsSurface::evaluate(double u, double v, Point3& p)
 	assert(knotIndexU < _knotsU.size());
 	assert(knotIndexV >= 0);
 	assert(knotIndexV < _knotsV.size());
-	int iPointStride = _degree + 1;
+	//int iPointStride = _degreeU + 1;
 	/*
 	for (int j = 0; j < _degree + 1; j++)
 	{

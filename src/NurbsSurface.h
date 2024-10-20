@@ -15,7 +15,7 @@ public:
 
 	void clear();
 
-	void set_degree(int degree);
+	void set_degree(int degreeU,int idegreeV);
 	void set_knots_u(const vector <double>& knots);
 	void set_knots_v(const vector <double>& knots);
 	void set_weights(const vector <double>& weights);
@@ -27,7 +27,7 @@ private:
 	int find_knot_span_u(double u);
 	int find_knot_span_v(double v);
 
-	int _degree;
+	int _degreeU, _degreeV;
 	vector <double> _knotsU, _knotsV;
 	vector <double> _weights;
 	vector <Point3> _points;
