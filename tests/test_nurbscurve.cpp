@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <cmath>
 using namespace std;
 
 void test_near(double a, double ref, double epsilon,const string& sMessage="")
