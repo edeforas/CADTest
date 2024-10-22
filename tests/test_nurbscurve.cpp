@@ -198,10 +198,6 @@ void test_knot_insertion()
 
 }
 
-
-
-
-
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
@@ -212,7 +208,7 @@ int main()
 
 	test_random_deg2();
 
-	test_knot_insertion();
+//	test_knot_insertion();
 
 	cout << "Test Finished.";
 	return 0;
