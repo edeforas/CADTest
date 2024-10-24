@@ -65,7 +65,7 @@ const vector<Point3>& NurbsCurve::points() const
 	return _points;
 }
 
-int NurbsCurve::find_knot_span(double u) const
+int NurbsCurve::find_knot_span(const vector <double>& knots,double t) const
 {
 	//dichotomy
 	int iMin = 0;
@@ -75,15 +75,17 @@ int NurbsCurve::find_knot_span(double u) const
 	{
 		int iMeanIndex = (iMin + iMax)/2;
 
-		if (u >= _knots[iMeanIndex])
+		if (t >= _knots[iMeanIndex])
 			iMin = iMeanIndex;
 		else
 			iMax = iMeanIndex;
 	}
 
-	assert(u >= _knots[iMin]);
-	assert(u < _knots[iMin+1]);
-	assert(_knots[iMin] < _knots[iMin + 1]);
+	assert(iMin >= 0);
+	assert(iMin < knots.size());
+	assert(t >= knots[iMin]);
+	assert(t < knots[iMin + 1]);
+	assert(knots[iMin] < knots[iMin + 1]);
 
 	return iMin;
 }
@@ -93,7 +95,7 @@ void NurbsCurve::insert_knot(double u)
 {
 	//as in https://public.vrac.iastate.edu/~oliver/courses/me625/week9.pdf
 
-	int indexU = find_knot_span(u);
+	int indexU = find_knot_span(_knots,u);
 
 	vector<double> k=_knots;
 	vector<Point3> p;
@@ -127,9 +129,7 @@ void NurbsCurve::evaluate(double u, Point3& p) const
 	//todo optimize all:
 	assert(_points.size() == _weights.size());
 
-	int knotIndex = find_knot_span(u);
-	assert(knotIndex >= 0);
-	assert(knotIndex < _knots.size());
+	int knotIndex = find_knot_span(_knots,u);
 
 	for (int j = 0; j < _degree+1; j++)
 	{

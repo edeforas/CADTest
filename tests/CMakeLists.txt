@@ -39,6 +39,10 @@ target_link_libraries(test_stepfile libCADTest)
 add_executable(test_nurbscurve test_nurbscurve.cpp  )
 target_link_libraries(test_nurbscurve libCADTest)
 
+add_executable(test_nurbssurface test_nurbssurface.cpp  )
+target_link_libraries(test_nurbssurface libCADTest)
+
 add_test(test_nurbscurve test_nurbscurve)
+add_test(test_nurbssurface test_nurbssurface)
 add_test(test_geometry test_geometry)
 add_test(test_bmpfile test_bmpfile)

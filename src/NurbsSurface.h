@@ -5,6 +5,7 @@
 using namespace std;
 
 #include "Geometry.h"
+class Mesh;
 
 ///////////////////////////////////////////////////////////////////////////
 class NurbsSurface
@@ -21,19 +22,19 @@ public:
 	void set_weights(const vector <double>& weights);
 	void set_points(const vector <Point3>& points);
 
-	void evaluate(double u,double v, Point3& p);
+	void evaluate(double u,double v, Point3& p) const;
 
+	void to_mesh(Mesh& m) const;
 private:
-	int find_knot_span_u(double u);
-	int find_knot_span_v(double v);
+	int find_knot_span(const vector <double>& knots,double u) const;
 
 	int _degreeU, _degreeV;
 	vector <double> _knotsU, _knotsV;
 	vector <double> _weights;
 	vector <Point3> _points;
 
-	vector<Point3> _tempPoints;
-	vector<double> _tempWeights;
+	mutable vector<Point3> _tempPoints;
+	mutable vector<double> _tempWeights;
 };
 ///////////////////////////////////////////////////////////////////////////
 

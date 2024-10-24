@@ -1,4 +1,5 @@
 #include "NurbsSurface.h"
+#include "Mesh.h"
 
 #include <cassert>
 #include <algorithm>
@@ -87,39 +88,40 @@ void NurbsSurface::set_points(const vector <Point3>& points)
 	_points = points;
 }
 
-int NurbsSurface::find_knot_span_u(double u)
+int NurbsSurface::find_knot_span(const vector <double>& knots,double t) const
 {
-	//not optimized for now , later: dichomoty
-	for (int i = 0; i < _knotsU.size() - 1; i++)
-	{
-		if ((u >= _knotsU[i]) && (u <= _knotsU[i + 1]) && (_knotsU[i] < _knotsU[i + 1]))
-			break;
-	}
-	return -1; //bad
-}
+	//dichotomy
+	int iMin = 0;
+	int iMax = knots.size();
 
-int NurbsSurface::find_knot_span_v(double v)
-{
-	//not optimized for now , later: dichomoty
-	for (int i = 0; i < _knotsV.size() - 1; i++)
+	while (iMin + 1 < iMax)
 	{
-		if ((v >= _knotsV[i]) && (v <= _knotsV[i + 1]) && (_knotsV[i] < _knotsV[i + 1]))
-			break;
+		int iMeanIndex = (iMin + iMax) / 2;
+
+		if (t >= knots[iMeanIndex])
+			iMin = iMeanIndex;
+		else
+			iMax = iMeanIndex;
 	}
-	return -1; //bad
+
+	assert(iMin >= 0);
+	assert(iMin < knots.size());
+	assert(t >= knots[iMin]);
+	assert(t < knots[iMin + 1]);
+	assert(knots[iMin] < knots[iMin + 1]);
+
+	return iMin;
 }
 
 //todo optimize all:
-void NurbsSurface::evaluate(double u, double v, Point3& p)
+void NurbsSurface::evaluate(double u, double v, Point3& p) const
 {
 	assert(_points.size() == _weights.size());
 
-	int knotIndexU = find_knot_span_u(u);
-	int knotIndexV = find_knot_span_v(v);
-	assert(knotIndexU >= 0);
-	assert(knotIndexU < _knotsU.size());
-	assert(knotIndexV >= 0);
-	assert(knotIndexV < _knotsV.size());
+	int knotIndexU = find_knot_span(_knotsU,u);
+	int knotIndexV = find_knot_span(_knotsV,v);
+
+
 	//int iPointStride = _degreeU + 1;
 	/*
 	for (int j = 0; j < _degree + 1; j++)
@@ -146,6 +148,23 @@ void NurbsSurface::evaluate(double u, double v, Point3& p)
 
 	p = _tempPoints[_degree] / _tempWeights[_degree];
 */
+}
+
+void NurbsSurface::to_mesh(Mesh& m) const
+{
+	m.clear();
+	if (_points.empty())
+		return;
+
+	double deltaU = 1. / (_points.size() * 10.); //todo set 10 dynamic
+	double deltaV = 1. / (_points.size() * 10.); //todo set 10 dynamic
+	Point3 p;
+	for (double u = 0; u <= 1.; u += deltaU) // todo last point?
+		for (double v = 0; v <= 1.; v += deltaV) // todo last point?
+		{
+			evaluate(u,v, p);
+		//polyline.push_back(p);
+		}
 }
 
 ///////////////////////////////////////////////////////////////////////////

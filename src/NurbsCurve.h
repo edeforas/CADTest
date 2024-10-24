@@ -28,7 +28,7 @@ public:
 	void to_polyline(vector<Point3>& polyline) const;
 
 private:
-	int find_knot_span(double u) const;
+	int find_knot_span(const vector <double>& knots,double t) const;
 
 	int _degree;
 	vector <double> _knots;
