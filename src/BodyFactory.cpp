@@ -280,6 +280,10 @@ namespace BodyFactory
 			_mesh.set_vertex(i,v.normalized()* _radius);
 		}
 
+		double dEdgesize = _radius / 0.951; // as in https://en.wikipedia.org/wiki/Regular_icosahedron
+ 		
+		_mesh.merge_vertices(dEdgesize/ _iNbSegments/20.); //todo better formula
+
 		_transform.apply(_mesh);
 	}
 	///////////////////////////////////////////////////////////////////////////

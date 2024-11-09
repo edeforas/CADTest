@@ -23,6 +23,7 @@ public:
     void add_vertex(double a, double b, double c);
     void set_vertex(int iVertex, const Point3& vertex);
     void get_vertex(int iVertex, Point3& vertex) const;
+    void merge_vertices(double dDistanceTol);
 
     int add_triangle(int iVertex1, int iVertex2, int iVertex3); // return the triangle ID
     int add_triangle(const Point3& p1, const  Point3& p2, const Point3& p3); //helper

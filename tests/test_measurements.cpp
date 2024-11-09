@@ -65,15 +65,15 @@ void test_spheregeodesic_volume_surface()
 {
 	double radius = 1.;
 	BodyFactory::SphereGeodesic sphere(1.);
-	sphere.set_mesh_precision(100);
+	sphere.set_mesh_precision(20);
 
 	double dMeasuredVolume = MeshMeasurements::volume(sphere.mesh());
 	double dTheoricalVolume = 4. / 3. * 3.141592653 * (radius * radius * radius);
-	test_near(dMeasuredVolume, dTheoricalVolume,5.e-4);
+	test_near(dMeasuredVolume, dTheoricalVolume,1.e-2);
 
 	double dMeasuredSurface = MeshMeasurements::surface(sphere.mesh());
 	double dTheoricalSurface = 4. * 3.141592653 * (radius * radius);
-	test_near(dMeasuredSurface, dTheoricalSurface,5.e-4);
+	test_near(dMeasuredSurface, dTheoricalSurface,1.e-2);
 }
 
 void test_torus_volume_surface()

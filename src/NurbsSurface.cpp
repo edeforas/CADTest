@@ -90,6 +90,21 @@ void NurbsSurface::set_points(const vector <Point3>& points)
 	_points = points;
 }
 
+int NurbsSurface::nb_points_u() const
+{
+	return _knotsU.size() - _degreeU - 1; //todo check
+}
+
+int NurbsSurface::nb_points_v() const
+{
+	return _knotsV.size() - _degreeV - 1; //todo check
+}
+
+const vector<Point3>& NurbsSurface::points() const
+{
+	return _points;
+}
+
 int NurbsSurface::find_knot_span(const vector <double>& knots,double t)
 {
 	if (knots.size() < 2)
@@ -122,11 +137,11 @@ int NurbsSurface::find_knot_span(const vector <double>& knots,double t)
 //todo optimize all:
 void NurbsSurface::evaluate(double u, double v, Point3& p) const
 {
-	assert(_points.size() == _weights.size());
+	assert( _points.size() == _weights.size());
 
 	int knotIndexU = find_knot_span(_knotsU,u);
 	int knotIndexV = find_knot_span(_knotsV,v);
-	int iNbCtrlPointsU = _knotsU.size()-_degreeU-1; //todo check
+	int iNbCtrlPointsU = nb_points_u(); //todo check
 
 	//tensor product
 	for (int vi = 0; vi < _degreeV + 1; vi++)
@@ -140,7 +155,7 @@ void NurbsSurface::evaluate(double u, double v, Point3& p) const
 
 			double w = _weights[idxU + iNbCtrlPointsU * vi];
 			_tempWeightsU[ui] = w;
-			_tempPointsU[ui] = _points[idxU + iNbCtrlPointsU * vi] * w;
+			_tempPointsU[ui] = _points[idxU + iNbCtrlPointsU * vi]*w;
 
 			for (int ru = 1; ru < _degreeU + 1; ru++)
 				for (int ju = _degreeU; ju > ru - 1; ju--)
@@ -164,30 +179,32 @@ void NurbsSurface::evaluate(double u, double v, Point3& p) const
 			_tempWeightsV[jv] = _tempWeightsV[jv - 1] * (1. - alpha) + _tempWeightsV[jv] * alpha;
 		}
 	
-	p = _tempPointsV[_degreeV] / _tempWeightsV[_degreeV];
+	p = _tempPointsV[_degreeV]/ _tempWeightsV[_degreeV];
 }
 
-void NurbsSurface::to_mesh(Mesh& m) const
+void NurbsSurface::to_mesh(Mesh& m,int iNbSegments) const
 {
 	m.clear();
 	if (_points.empty())
 		return;
 
-	double deltaU = 1. / (_points.size() * 10.); //todo set 10 dynamic
-	double deltaV = 1. / (_points.size() * 10.); //todo set 10 dynamic
 	Point3 p;
-	for (double u = 0; u <= 1.; u += deltaU) // todo last point?
-		for (double v = 0; v <= 1.; v += deltaV) // todo last point?
+	for (int v = 0; v < iNbSegments; v++)
+		for (int u = 0; u < iNbSegments; u++)
 		{
 			//slow
+			double du1 = (double)u / iNbSegments;
+			double dv1 = (double)v / iNbSegments;
+			double du2 = (double)(u+1) / iNbSegments;
+			double dv2 = (double)(v+1) / iNbSegments;
+
 			Point3 p1, p2, p3, p4;
-			evaluate(u, v, p1);
-			evaluate(u+deltaU, v, p2);
-			evaluate(u+deltaU, v+deltaV, p3);
-			evaluate(u, v+deltaV, p4);
+			evaluate(du1, dv1, p1);
+			evaluate(du2, dv1, p2);
+			evaluate(du2, dv2, p3);
+			evaluate(du1, dv2, p4);
 
 			m.add_quad(p1, p2, p3, p4);
 		}
 }
-
 ///////////////////////////////////////////////////////////////////////////

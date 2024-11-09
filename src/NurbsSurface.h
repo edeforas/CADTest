@@ -21,14 +21,18 @@ public:
 	void set_knots_v(const vector <double>& knots);
 	void set_weights(const vector <double>& weights);
 	void set_points(const vector <Point3>& points);
+	const vector<Point3>& points() const;
+	int nb_points_u() const;
+	int nb_points_v() const;
 
 	void evaluate(double u,double v, Point3& p) const;
 
-	void to_mesh(Mesh& m) const;
+	void to_mesh(Mesh& m,int iNbSegments= 10) const;
 private:
 	static int find_knot_span(const vector <double>& knots,double u);
 
 	int _degreeU, _degreeV;
+
 	vector <double> _knotsU, _knotsV;
 	vector <double> _weights;
 	vector <Point3> _points;

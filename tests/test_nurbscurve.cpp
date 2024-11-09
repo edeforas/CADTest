@@ -44,7 +44,7 @@ void test_simple_segment()
 	NurbsCurve n;
 	int degree = 1;
 	vector<double> knots = { 0,0,1,1 };
-	vector<double> weights = { 1.,1. };
+	vector<double> weights(2,1.);
 	vector<Point3> points = { Point3(0.,0.,0.),Point3(1.,1.,0.) };
 
 	n.set_degree(degree);
@@ -125,7 +125,7 @@ void test_cubic_circle_approximation()
 	NurbsCurve n;
 	int degree = 3;
 	vector<double> knots = { 0,0,0,0,1,1,1,1 };
-	vector<double> weights = { 1.,1.,1.,1. };
+	vector<double> weights(4,1.);
 	vector<Point3> points = { Point3(1.,0.,0.),Point3(1.,0.5519151,0.), Point3(0.5519151,1.,0.), Point3(0.,1.,0.) };
 
 	n.set_degree(degree);

@@ -68,6 +68,25 @@ Point3& Point3::operator-=(const Point3& p)
 	return *this;
 }
 
+Point3& Point3::operator*=(double d)
+{
+	_x *= d;
+	_y *= d;
+	_z *= d;
+
+	return *this;
+}
+
+Point3& Point3::operator/=(double d)
+{
+	_x /= d;
+	_y /= d;
+	_z /= d;
+
+	return *this;
+}
+
+
 Point3 Point3::operator+(const Point3& p) const
 {
 	Point3 res;

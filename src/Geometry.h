@@ -11,6 +11,8 @@ public:
 
     Point3& operator+=(const Point3& p);
 	Point3& operator-=(const Point3& p);
+	Point3& operator*=(double d);
+	Point3& operator/=(double d);
 	Point3 operator+(const Point3& p) const;
 	Point3 operator*(double d) const;
 	Point3 operator/(double d) const;

@@ -1,4 +1,5 @@
 #include "NurbsSurface.h"
+#include "NurbsUtil.h"
 #include "OBJFile.h"
 
 #include <iostream>
@@ -7,7 +8,16 @@
 #include <cstdlib>
 using namespace std;
 
-void test_near(double a, double ref, double epsilon,const string& sMessage="")
+void test_bool(bool b, const string& sMessage = "")
+{
+	if (!b)
+	{
+		cerr << "Test Error: " << sMessage.c_str() << endl;
+		exit(-1);
+	}
+}
+
+void test_near(double a, double ref, double epsilon=1.e-10,const string& sMessage="")
 {
 	if ((a > ref + epsilon) || (a < ref - epsilon))
 	{
@@ -18,7 +28,7 @@ void test_near(double a, double ref, double epsilon,const string& sMessage="")
 
 void test_square_surface()
 {
-	cout << endl << "Test simple square" << endl;
+	cout << endl << "test_square_surface" << endl;
 
 	NurbsSurface n;
 	int degree = 1;
@@ -72,7 +82,9 @@ void test_ruled_surface_deg1()
 			n.evaluate(u, v, p);
 			test_near(p.x(), u, 1e-10);
 			test_near(p.y(), v, 1e-10);
-			//test_near(p.z(), 0., 1e-10);
+
+			test_bool(p.z() <= 1.);
+			test_bool(p.z() >= -1.);
 
 			//cout << "u=" << u << " x=" << p.x() << " y=" << p.y() << " z=" << p.z() << endl;
 		}
@@ -155,9 +167,11 @@ void test_surface_deg2()
 	NurbsSurface n;
 	int degree = 2;
 	vector<double> knots;
-	vector<double> weights;
+	vector<double> weights(9, 1.);
 	vector<Point3> points;
 
+	weights[4] = 10; //insist on the center
+
 	knots.push_back(0);
 	knots.push_back(0);
 	knots.push_back(0);
@@ -165,43 +179,38 @@ void test_surface_deg2()
 	knots.push_back(1);
 	knots.push_back(1);
 
-	points.push_back(Point3(0, 0, 0));
-	points.push_back(Point3(1, 0, 1));
-	points.push_back(Point3(2, 0, 0));
+	points.push_back(Point3(0, 0, -1));
+	points.push_back(Point3(0, 1, 1));
+	points.push_back(Point3(0, 2, 0));
 
-	points.push_back(Point3(0, 1, 2));
-	points.push_back(Point3(1, 1, 3));
-	points.push_back(Point3(2, 1, 0));
+	points.push_back(Point3(1, 0, 2));
+	points.push_back(Point3(1, 1, 0));
+	points.push_back(Point3(1, 2, 2));
 
-	points.push_back(Point3(0, 1, 0));
-	points.push_back(Point3(1, 1, 1));
-	points.push_back(Point3(2, 1, -1));
-
-	weights.push_back(1.);
-	weights.push_back(1.);
-	weights.push_back(1.);
-
-	weights.push_back(1.);
-	weights.push_back(2.);
-	weights.push_back(1.);
-
-	weights.push_back(1.);
-	weights.push_back(0.5);
-	weights.push_back(1.);
+	points.push_back(Point3(2, 0, 2));
+	points.push_back(Point3(2, 1, 1));
+	points.push_back(Point3(2, 2, -1));
 
 	n.set_degree(degree, degree);
 	n.set_knots_u(knots);
-	n.set_knots_v(knots);
 	n.set_weights(weights);
+	n.set_knots_v(knots);
 	n.set_points(points);
 
 	Mesh m;
-	n.to_mesh(m);
-	OBJFile::save("test_surface_deg2.obj", m);
-}
+	n.to_mesh(m,20);
 
+	OBJWriter ow;
+	ow.open("test_surface_deg2.obj");
+	ow.write(m);
+
+	// add points quad meshes
+	NurbsUtil::to_pointsmesh(n, m);
+	m.set_color(0xff);
+	ow.write(m);
+}
 ///////////////////////////////////////////////////////////////////////////
-void test_cylinder()
+void test_nurbsurface_cylinder()
 {
 	cout << endl << "Test cylinder using nurbscurve and extrude" << endl;
 
@@ -235,8 +244,16 @@ void test_cylinder()
 	n.set_points(points);
 
 	Mesh m;
-	n.to_mesh(m);
-	OBJFile::save("test_cylinder.obj", m);
+	n.to_mesh(m,20);
+
+	OBJWriter ow;
+	ow.open("test_nurbsurface_cylinder.obj");
+	ow.write(m);
+
+	// add points quad meshes
+	NurbsUtil::to_pointsmesh(n, m);
+	m.set_color(0xff);
+	ow.write(m);
 }
 ///////////////////////////////////////////////////////////////////////////
 int main()
@@ -246,7 +263,7 @@ int main()
 	test_ruled_surface_deg2();
 	test_surface_deg1();
 	test_surface_deg2();
-	test_cylinder();
+	test_nurbsurface_cylinder();
 
 	cout << "Test Finished.";
 	return 0;

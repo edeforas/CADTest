@@ -1,50 +1,51 @@
 #include "BodyFactory.h"
 #include "Mesh.h"
-#include "STLFile.h"
+#include "OBJFile.h"
 
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
-	// build and save objects
-	Mesh mTotal;
 	
+	OBJWriter ow;
+	ow.open("test_body_factory.obj");
+
 	BodyFactory::Tetrahedron tetrahedron(25.);
 	tetrahedron.transform().set_global_translation(Point3(0, 0., 0.));
-	mTotal.add_mesh(tetrahedron.mesh());
+	ow.write(tetrahedron.mesh());
 
 	BodyFactory::Box box(40., 50., 60.);
 	box.transform().set_global_translation(Point3(100., 0., 0.));
-	mTotal.add_mesh(box.mesh());
+	ow.write(box.mesh());
 
-	BodyFactory::Cylinder cylinder(60., 50.);
+	BodyFactory::Cylinder cylinder(60., 30.);
 	cylinder.transform().set_global_translation(Point3(200., 0., 0.));
-	mTotal.add_mesh(cylinder.mesh());
+	ow.write(cylinder.mesh());
 
 	BodyFactory::Octahedron octahedron(40.);
 	octahedron.transform().set_global_translation(Point3(0., 100., 0.));
-	mTotal.add_mesh(octahedron.mesh());
+	ow.write(octahedron.mesh());
 
 	BodyFactory::Dodecahedron dodecahedron(20.);
 	dodecahedron.transform().set_global_translation(Point3(100., 100., 0.));
-	mTotal.add_mesh(dodecahedron.mesh());
+	ow.write(dodecahedron.mesh());
 
 	BodyFactory::Icosahedron icosahedron(30.);
 	icosahedron.transform().set_global_translation(Point3(200, 100, 0.));
-	mTotal.add_mesh(icosahedron.mesh());
+	ow.write(icosahedron.mesh());
 
 	BodyFactory::SphereUV sphereUV(30.);
 	sphereUV.transform().set_global_translation(Point3(0., 200., 0));
-	mTotal.add_mesh(sphereUV.mesh());
+	ow.write(sphereUV.mesh());
 
 	BodyFactory::SphereGeodesic sphereGeo(30.);
 	sphereGeo.transform().set_global_translation(Point3(100., 200., 0));
-	mTotal.add_mesh(sphereGeo.mesh());
+	ow.write(sphereGeo.mesh());
 
 	BodyFactory::Torus torus(25.,10.);
 	torus.transform().set_global_translation(Point3(200., 200., 0.));
-	mTotal.add_mesh(torus.mesh());
+	ow.write(torus.mesh());
 
-	STLFile::save("body_factory.stl", mTotal);
+	ow.close();
 	return 0;
 }
 ///////////////////////////////////////////////////////////////////////////
