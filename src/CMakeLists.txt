@@ -28,6 +28,7 @@ set(CADTEST_FILES
 	NurbsCurve.cpp NurbsCurve.h
 	NurbsSurface.cpp NurbsSurface.h
 	NurbsExtrude.cpp NurbsExtrude.h
+	NurbsUtil.cpp NurbsUtil.h
 	StepFile.cpp StepFile.h
 	
 	Renderer.cpp Renderer.h

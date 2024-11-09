@@ -1,10 +1,5 @@
-#include "NurbsExtrude.h"
-
 #include "NurbsCurve.h"
-#include "NurbsSurface.h"
 #include "NurbsUtil.h"
-
-#include "OBJFile.h"
 
 #include <iostream>
 #include <cassert>
@@ -20,30 +15,33 @@ void test_near(double a, double ref, double epsilon=1.e-10,const string& sMessag
 	}
 }
 
-void test_extrude_cylinder()
+///////////////////////////////////////////////////////////////////////////
+
+void test_create_circle()
 {
-	cout << endl << "Test extrude cylinder using nurbscurve and extrude" << endl;
+	cout << endl << "Test NurbsUtil::create_circle" << endl;
 
-	//create profile curve
-	NurbsCurve nc;
-	NurbsUtil::create_circle(1., nc);
+	NurbsCurve n;
 
-	Point3 direction(0, 0, 2.);
-	NurbsSurface ns;
+	for (double dRadius = 0.1; dRadius < 100.; dRadius *= 2.)
+	{
+		NurbsUtil::create_circle(dRadius, n);
 
-	// extrude
-	NurbsExtrude ne;
-	ne.extrude(nc, direction, ns);
-
-	Mesh m;
-	ns.to_mesh(m);
-	OBJFile::save("test_extrude_cylinder.obj", m);
+		for (double u = 0.; u <= 1.; u += 0.01)
+		{
+			Point3 p;
+			n.evaluate(u, p);
+			double norm = p.norm();
+			//cout << "u=" << u << " x=" << p.x() << " y=" << p.y() << " z=" << p.z() << " norm=" << norm << endl;
+			test_near(norm, dRadius, 1.e-10);
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
-	test_extrude_cylinder();
+	test_create_circle();
 
 	cout << "Test Finished.";
 	return 0;

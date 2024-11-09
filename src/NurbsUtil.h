@@ -1,0 +1,16 @@
+#ifndef NurbsUtil_
+#define NurbsUtil_
+
+#include "Geometry.h"
+
+class NurbsCurve; 
+class NurbsSurface;
+
+///////////////////////////////////////////////////////////////////////////
+namespace NurbsUtil
+{
+	void create_circle(double dRadius, NurbsCurve& nc);
+}
+///////////////////////////////////////////////////////////////////////////
+
+#endif
