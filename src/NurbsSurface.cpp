@@ -188,15 +188,18 @@ void NurbsSurface::to_mesh(Mesh& m,int iNbSegments) const
 	if (_points.empty())
 		return;
 
+	int iNbSegmentsU = iNbSegments * nb_points_u();
+	int iNbSegmentsV = iNbSegments * nb_points_v();
+
 	Point3 p;
-	for (int v = 0; v < iNbSegments; v++)
-		for (int u = 0; u < iNbSegments; u++)
+	for (int v = 0; v < iNbSegmentsV; v++)
+		for (int u = 0; u < iNbSegmentsU; u++)
 		{
-			//slow
-			double du1 = (double)u / iNbSegments;
-			double dv1 = (double)v / iNbSegments;
-			double du2 = (double)(u+1) / iNbSegments;
-			double dv2 = (double)(v+1) / iNbSegments;
+			//TODO slow
+			double du1 = (double)u / iNbSegmentsU;
+			double dv1 = (double)v / iNbSegmentsV;
+			double du2 = (double)(u+1) / iNbSegmentsU;
+			double dv2 = (double)(v+1) / iNbSegmentsV;
 
 			Point3 p1, p2, p3, p4;
 			evaluate(du1, dv1, p1);

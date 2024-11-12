@@ -244,7 +244,7 @@ void test_nurbsurface_cylinder()
 	n.set_points(points);
 
 	Mesh m;
-	n.to_mesh(m,20);
+	n.to_mesh(m);
 
 	OBJWriter ow;
 	ow.open("test_nurbsurface_cylinder.obj");

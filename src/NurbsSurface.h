@@ -27,7 +27,7 @@ public:
 
 	void evaluate(double u,double v, Point3& p) const;
 
-	void to_mesh(Mesh& m,int iNbSegments= 10) const;
+	void to_mesh(Mesh& m,int iNbSegments= 3) const;
 private:
 	static int find_knot_span(const vector <double>& knots,double u);
 
