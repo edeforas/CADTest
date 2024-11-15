@@ -20,6 +20,8 @@ public:
 	void set_knots_u(const vector <double>& knots);
 	void set_knots_v(const vector <double>& knots);
 	void set_weights(const vector <double>& weights);
+	void set_equals_weights(); //non rational
+
 	void set_points(const vector <Point3>& points);
 	const vector<Point3>& points() const;
 	int nb_points_u() const;

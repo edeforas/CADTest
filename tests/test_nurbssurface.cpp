@@ -123,27 +123,24 @@ void test_surface_deg1()
 {
 	cout << endl << "Test surface deg1" << endl;
 
+	int nbPointsU = 7;
+	int nbPointsV = 7;
+
 	NurbsSurface n;
 	int degree = 1;
 	vector<double> knotsU, knotsV;
-	vector<double> weights;
 	vector<Point3> points;
-	int nbPointsU = 3;
-	int nbPointsV = 2;
-
-	//create points
-	for (int v = 0; v <= nbPointsV; v++)
-		for (int u = 0; u <= nbPointsU; u++)
-		{
-			points.push_back(Point3(u, v, 2.*rand() / (float)RAND_MAX));
-			weights.push_back(1.);
-		}
+	
+	for (int v = 0; v < nbPointsV; v++)
+		for(int u=0;u< nbPointsU;u++)
+			points.push_back(Point3(u,v,(float)rand()/RAND_MAX));
 
 	//create knots
 	knotsU.push_back(0);
 	for (int i = 0; i < nbPointsU; i++)
 		knotsU.push_back(i);
 	knotsU.push_back(nbPointsU-1);
+	
 	knotsV.push_back(0);
 	for (int i = 0; i < nbPointsV; i++)
 		knotsV.push_back(i);
@@ -152,11 +149,11 @@ void test_surface_deg1()
 	n.set_degree(degree, degree);
 	n.set_knots_u(knotsU);
 	n.set_knots_v(knotsV);
-	n.set_weights(weights);
 	n.set_points(points);
+	n.set_equals_weights();
 
 	Mesh m;
-	n.to_mesh(m);
+	n.to_mesh(m,10);
 	OBJFile::save("test_surface_deg1.obj", m);
 }
 
@@ -164,50 +161,42 @@ void test_surface_deg2()
 {
 	cout << endl << "Test surface deg2" << endl;
 
+	int nbPointsU = 7;
+	int nbPointsV = 7;
+
 	NurbsSurface n;
 	int degree = 2;
-	vector<double> knots;
-	vector<double> weights(9, 1.);
+	vector<double> knotsU, knotsV;
 	vector<Point3> points;
 
-	weights[4] = 10; //insist on the center
+	for (int v = 0; v < nbPointsV; v++)
+		for (int u = 0; u < nbPointsU; u++)
+			points.push_back(Point3(u, v, (float)rand() / RAND_MAX));
 
-	knots.push_back(0);
-	knots.push_back(0);
-	knots.push_back(0);
-	knots.push_back(1);
-	knots.push_back(1);
-	knots.push_back(1);
+	//create knots
+	knotsU.push_back(0);
+	knotsU.push_back(0);
+	for (int i = 0; i < nbPointsU; i++)
+		knotsU.push_back(i);
+	knotsU.push_back(nbPointsU - 1);
+	knotsU.push_back(nbPointsU - 1);
 
-	points.push_back(Point3(0, 0, -1));
-	points.push_back(Point3(0, 1, 1));
-	points.push_back(Point3(0, 2, 0));
-
-	points.push_back(Point3(1, 0, 2));
-	points.push_back(Point3(1, 1, 0));
-	points.push_back(Point3(1, 2, 2));
-
-	points.push_back(Point3(2, 0, 2));
-	points.push_back(Point3(2, 1, 1));
-	points.push_back(Point3(2, 2, -1));
+	knotsV.push_back(0);
+	knotsV.push_back(0);
+	for (int i = 0; i < nbPointsV; i++)
+		knotsV.push_back(i);
+	knotsV.push_back(nbPointsV - 1);
+	knotsV.push_back(nbPointsV - 1);
 
 	n.set_degree(degree, degree);
-	n.set_knots_u(knots);
-	n.set_weights(weights);
-	n.set_knots_v(knots);
+	n.set_knots_u(knotsU);
+	n.set_knots_v(knotsV);
 	n.set_points(points);
+	n.set_equals_weights();
 
 	Mesh m;
-	n.to_mesh(m,20);
-
-	OBJWriter ow;
-	ow.open("test_surface_deg2.obj");
-	ow.write(m);
-
-	// add points quad meshes
-	NurbsUtil::to_pointsmesh(n, m);
-	m.set_color(0xff);
-	ow.write(m);
+	n.to_mesh(m, 10);
+	OBJFile::save("test_surface_deg2.obj", m);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbsurface_cylinder()
