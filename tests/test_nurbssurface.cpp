@@ -40,7 +40,7 @@ void test_square_surface()
 	n.set_knots_u(knots);
 	n.set_knots_v(knots);
 	n.set_weights(weights);
-	n.set_points(points);
+	n.set_points(points,2,2);
 
 	for (double u = 0.; u <= 1.; u += 0.1)
 		for (double v = 0.; v <= 1.; v += 0.1)
@@ -73,7 +73,7 @@ void test_ruled_surface_deg1()
 	n.set_knots_u(knots);
 	n.set_knots_v(knots);
 	n.set_weights(weights);
-	n.set_points(points);
+	n.set_points(points,2,2);
 
 	for (double u = 0.; u <= 1.; u += 0.1)
 		for (double v = 0.; v <= 1.; v += 0.1)
@@ -112,7 +112,7 @@ void test_ruled_surface_deg2()
 	n.set_knots_u(knotsU);
 	n.set_knots_v(knotsV);
 	n.set_weights(weights);
-	n.set_points(points);
+	n.set_points(points,3,2);
 
 	Mesh m;
 	n.to_mesh(m);
@@ -149,7 +149,7 @@ void test_surface_deg1()
 	n.set_degree(degree, degree);
 	n.set_knots_u(knotsU);
 	n.set_knots_v(knotsV);
-	n.set_points(points);
+	n.set_points(points, nbPointsU, nbPointsV);
 	n.set_equals_weights();
 
 	Mesh m;
@@ -195,7 +195,7 @@ void test_surface_deg2()
 	n.set_degree(degree, degree);
 	n.set_knots_u(knotsU);
 	n.set_knots_v(knotsV);
-	n.set_points(points);
+	n.set_points(points, nbPointsU, nbPointsV);
 	n.set_equals_weights();
 
 	Mesh m;
@@ -234,7 +234,7 @@ void test_nurbsurface_cylinder()
 	n.set_knots_u(knotsU);
 	n.set_knots_v(knotsV);
 	n.set_weights(weights);
-	n.set_points(points);
+	n.set_points(points,9,2);
 
 	Mesh m;
 	n.to_mesh(m);

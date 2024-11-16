@@ -42,6 +42,6 @@ void NurbsExtrude::extrude(const NurbsCurve& nc, const Point3& direction, NurbsS
 	ns.set_knots_v(knotsV);
 
 	ns.set_weights(weights);
-	ns.set_points(points);
+	ns.set_points(points, iOldSize,2);
 }
 ///////////////////////////////////////////////////////////////////////////

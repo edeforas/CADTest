@@ -43,6 +43,7 @@ private:
 	vector <double> _knots;
 	vector <double> _weights;
 	vector <Point3> _points;
+	int _iNbPoints;
 
 	mutable vector<Point3> _tempPoints;
 	mutable vector<double> _tempWeights;

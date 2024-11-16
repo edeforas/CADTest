@@ -6,7 +6,7 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////
 NurbsCurve::NurbsCurve() :
-	_degree(0)
+	_degree(0), _iNbPoints(0)
 { }
 
 NurbsCurve::~NurbsCurve()
@@ -18,6 +18,7 @@ void NurbsCurve::clear()
 	_knots.clear();
 	_weights.clear();
 	_points.clear();
+	_iNbPoints=0;
 }
 
 void NurbsCurve::set_degree(int degree)
@@ -59,15 +60,14 @@ void NurbsCurve::set_uniform()
 {
 	_knots.clear();
 
-	int iNbPoints = _points.size();
 	for (int i = 0; i <= _degree; i++)
 		_knots.push_back(0.);
 
-	for (int i = 1; i < iNbPoints - _degree; i++)
+	for (int i = 1; i < _iNbPoints - _degree; i++)
 		_knots.push_back(i);
 
 	for (int i = 0; i <= _degree; i++)
-		_knots.push_back(iNbPoints - _degree);
+		_knots.push_back(_iNbPoints - _degree);
 }
 
 const vector<double>& NurbsCurve::knots() const
@@ -87,13 +87,13 @@ const vector<double>& NurbsCurve::weights() const
 
 void NurbsCurve::set_equals_weights() //non rational
 {
-	_weights.resize(_points.size(), 1.);
+	_weights.resize(_iNbPoints, 1.);
 }
-
 
 void NurbsCurve::set_points(const vector <Point3>& points)
 {
 	_points = points;
+	_iNbPoints = _points.size();
 }
 
 const vector<Point3>& NurbsCurve::points() const
@@ -204,9 +204,8 @@ void NurbsCurve::insert_knot(double u)
 void NurbsCurve::evaluate(double u, Point3& p) const
 {
 	//todo optimize all:
-	assert(_points.size() == _weights.size());
-
-	assert(_points.size() == _knots.size() - _degree - 1);
+	assert(_iNbPoints == _weights.size());
+	assert(_iNbPoints == _knots.size() - _degree - 1);
 
 	int knotIndex = find_knot_span(_knots,u);
 
@@ -214,7 +213,7 @@ void NurbsCurve::evaluate(double u, Point3& p) const
 	{
 		int idx = j + knotIndex - _degree;
 		assert(idx >=0);
-		assert(idx < _points.size());
+		assert(idx < _iNbPoints);
 
 		double w = _weights[idx];
 		_tempWeights[j] = w;

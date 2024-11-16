@@ -7,7 +7,7 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////
 NurbsSurface::NurbsSurface() :
-	_degreeU(0), _degreeV(0)
+	_degreeU(0), _degreeV(0), _iNbPointsU(0), _iNbPointsV(0)
 { }
 
 NurbsSurface::~NurbsSurface()
@@ -21,6 +21,8 @@ void NurbsSurface::clear()
 	_knotsV.clear();
 	_weights.clear();
 	_points.clear();
+	_iNbPointsU = 0;
+	_iNbPointsV = 0;
 }
 
 void NurbsSurface::set_degree(int degreeU,int degreeV)
@@ -57,6 +59,21 @@ void NurbsSurface::set_knots_u(const vector <double>& knots)
 	}
 }
 
+void NurbsSurface::set_uniform_u()
+{
+	_knotsU.clear();
+
+	for (int i = 0; i <= _degreeU; i++)
+		_knotsU.push_back(0.);
+
+	for (int i = 1; i < _iNbPointsU - _degreeU; i++)
+		_knotsU.push_back(i);
+
+	for (int i = 0; i <= _degreeU; i++)
+		_knotsU.push_back(_iNbPointsU - _degreeU);
+}
+
+
 void NurbsSurface::set_knots_v(const vector <double>& knots)
 {
 	_knotsV = knots;
@@ -80,6 +97,21 @@ void NurbsSurface::set_knots_v(const vector <double>& knots)
 	}
 }
 
+void NurbsSurface::set_uniform_v()
+{
+	_knotsV.clear();
+
+	for (int i = 0; i <= _degreeV; i++)
+		_knotsV.push_back(0.);
+
+	for (int i = 1; i < _iNbPointsV - _degreeV; i++)
+		_knotsV.push_back(i);
+
+	for (int i = 0; i <= _degreeV; i++)
+		_knotsV.push_back(_iNbPointsV - _degreeV);
+}
+
+
 void NurbsSurface::set_weights(const vector <double>& weights)
 {
 	_weights = weights;
@@ -90,19 +122,21 @@ void NurbsSurface::set_equals_weights() //non rational
 	_weights.resize(_points.size(), 1.);
 }
 
-void NurbsSurface::set_points(const vector <Point3>& points)
+void NurbsSurface::set_points(const vector <Point3>& points,int iNbPointsU,int iNbPointsV)
 {
 	_points = points;
+	_iNbPointsU = iNbPointsU;
+	_iNbPointsV = iNbPointsV;
 }
 
 int NurbsSurface::nb_points_u() const
 {
-	return _knotsU.size() - _degreeU-1;
+	return _iNbPointsU;
 }
 
 int NurbsSurface::nb_points_v() const
 {
-	return _knotsV.size() - _degreeV-1;
+	return _iNbPointsV;
 }
 
 const vector<Point3>& NurbsSurface::points() const

@@ -19,10 +19,13 @@ public:
 	void set_degree(int degreeU,int idegreeV);
 	void set_knots_u(const vector <double>& knots);
 	void set_knots_v(const vector <double>& knots);
+	void set_uniform_u();
+	void set_uniform_v();
+
 	void set_weights(const vector <double>& weights);
 	void set_equals_weights(); //non rational
 
-	void set_points(const vector <Point3>& points);
+	void set_points(const vector <Point3>& points, int iNbPointsU, int iNbPointsV);
 	const vector<Point3>& points() const;
 	int nb_points_u() const;
 	int nb_points_v() const;
@@ -34,6 +37,7 @@ private:
 	static int find_knot_span(const vector <double>& knots,double u);
 
 	int _degreeU, _degreeV;
+	int _iNbPointsU, _iNbPointsV;
 
 	vector <double> _knotsU, _knotsV;
 	vector <double> _weights;
