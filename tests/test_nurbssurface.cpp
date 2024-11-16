@@ -176,15 +176,19 @@ void test_surface_deg2()
 	//create knots
 	knotsU.push_back(0);
 	knotsU.push_back(0);
-	for (int i = 0; i < nbPointsU; i++)
+	knotsU.push_back(0);
+	for (int i = 1; i < nbPointsU-2; i++)
 		knotsU.push_back(i);
+	knotsU.push_back(nbPointsU - 1);
 	knotsU.push_back(nbPointsU - 1);
 	knotsU.push_back(nbPointsU - 1);
 
 	knotsV.push_back(0);
 	knotsV.push_back(0);
-	for (int i = 0; i < nbPointsV; i++)
+	knotsV.push_back(0);
+	for (int i = 1; i < nbPointsV-2; i++)
 		knotsV.push_back(i);
+	knotsV.push_back(nbPointsV - 1);
 	knotsV.push_back(nbPointsV - 1);
 	knotsV.push_back(nbPointsV - 1);
 

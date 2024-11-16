@@ -97,12 +97,12 @@ void NurbsSurface::set_points(const vector <Point3>& points)
 
 int NurbsSurface::nb_points_u() const
 {
-	return _knotsU.size() - _degreeU - 1; //todo check
+	return _knotsU.size() - _degreeU-1;
 }
 
 int NurbsSurface::nb_points_v() const
 {
-	return _knotsV.size() - _degreeV - 1; //todo check
+	return _knotsV.size() - _degreeV-1;
 }
 
 const vector<Point3>& NurbsSurface::points() const
@@ -149,9 +149,11 @@ void NurbsSurface::evaluate(double u, double v, Point3& p) const
 	int iNbCtrlPointsU = nb_points_u();
 	int iNbCtrlPointsV = nb_points_v();
 
+	assert(iNbCtrlPointsU == _knotsU.size() - _degreeU - 1);
+	assert(iNbCtrlPointsV == _knotsV.size() - _degreeV - 1);
 	assert(iNbCtrlPointsU*iNbCtrlPointsV == _points.size());
 	
-		//tensor product
+	//tensor product
 	for (int vi = 0; vi < _degreeV + 1; vi++)
 	{
 		int idxV = vi + knotIndexV - _degreeV;

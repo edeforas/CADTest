@@ -55,6 +55,21 @@ void NurbsCurve::set_knots(const vector <double>& knots)
 	}
 }
 
+void NurbsCurve::set_uniform()
+{
+	_knots.clear();
+
+	int iNbPoints = _points.size();
+	for (int i = 0; i <= _degree; i++)
+		_knots.push_back(0.);
+
+	for (int i = 1; i < iNbPoints - _degree; i++)
+		_knots.push_back(i);
+
+	for (int i = 0; i <= _degree; i++)
+		_knots.push_back(iNbPoints - _degree);
+}
+
 const vector<double>& NurbsCurve::knots() const
 {
 	return _knots;
@@ -69,6 +84,12 @@ const vector<double>& NurbsCurve::weights() const
 {
 	return _weights;
 }
+
+void NurbsCurve::set_equals_weights() //non rational
+{
+	_weights.resize(_points.size(), 1.);
+}
+
 
 void NurbsCurve::set_points(const vector <Point3>& points)
 {
@@ -185,6 +206,8 @@ void NurbsCurve::evaluate(double u, Point3& p) const
 	//todo optimize all:
 	assert(_points.size() == _weights.size());
 
+	assert(_points.size() == _knots.size() - _degree - 1);
+
 	int knotIndex = find_knot_span(_knots,u);
 
 	for (int j = 0; j < _degree+1; j++)
@@ -227,23 +250,10 @@ void NurbsCurve::to_polyline(vector<Point3>& polyline) const
 ///////////////////////////////////////////////////////////////////////////
 void NurbsCurve::create_from_points(vector<Point3>& points, int degree) //no rational, uniform
 {
-	int nbPoints = points.size();
-	vector<double> knots;
-
-	_weights.assign(nbPoints, 1.);
-
-	knots.clear();
-	for (int i = 0; i <= degree; i++)
-		knots.push_back(0.);
-
-	for (int i = 1; i < nbPoints - degree; i++)
-		knots.push_back(i);
-
-	for (int i = 0; i <= degree; i++)
-		knots.push_back(nbPoints - degree);
-
-	set_knots(knots);
 	set_degree(degree);
 	set_points(points);
+
+	set_uniform();
+	set_equals_weights();
 }
 ///////////////////////////////////////////////////////////////////////////

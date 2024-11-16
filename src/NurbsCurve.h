@@ -21,9 +21,11 @@ public:
 
 	void set_knots(const vector <double>& knots);
 	const vector<double>& knots() const;
+	void set_uniform();
 
 	void set_weights(const vector <double>& weights);
 	const vector<double>& weights() const;
+	void set_equals_weights(); //non rational
 
 	void set_points(const vector <Point3>& points);
 
