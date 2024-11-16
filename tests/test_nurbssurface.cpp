@@ -32,15 +32,13 @@ void test_square_surface()
 
 	NurbsSurface n;
 	int degree = 1;
-	vector<double> knots = { 0,0,1,1 };
-	vector<double> weights = { 1.,1.,1.,1. };
 	vector<Point3> points = { Point3(0.,0.,0.),Point3(1.,0.,0.),Point3(0.,1.,0.),Point3(1.,1.,0.) };
 
 	n.set_degree(degree, degree);
-	n.set_knots_u(knots);
-	n.set_knots_v(knots);
-	n.set_weights(weights);
 	n.set_points(points,2,2);
+	n.set_uniform_u();
+	n.set_uniform_v();
+	n.set_equals_weights();
 
 	for (double u = 0.; u <= 1.; u += 0.1)
 		for (double v = 0.; v <= 1.; v += 0.1)
@@ -65,15 +63,13 @@ void test_ruled_surface_deg1()
 
 	NurbsSurface n;
 	int degree = 1;
-	vector<double> knots = { 0,0,1,1 };
-	vector<double> weights = { 1.,1.,1.,1. };
 	vector<Point3> points = { Point3(0.,0.,1.),Point3(1.,0.,-1.),Point3(0.,1.,-1.),Point3(1.,1.,1.) };
 
 	n.set_degree(degree, degree);
-	n.set_knots_u(knots);
-	n.set_knots_v(knots);
-	n.set_weights(weights);
 	n.set_points(points,2,2);
+	n.set_uniform_u();
+	n.set_uniform_v();
+	n.set_equals_weights();
 
 	for (double u = 0.; u <= 1.; u += 0.1)
 		for (double v = 0.; v <= 1.; v += 0.1)
@@ -100,19 +96,16 @@ void test_ruled_surface_deg2()
 
 	NurbsSurface n;
 	int degreeU = 2;
-	vector<double> knotsU = { 0,0,0,1,1,1 };
-	vector<double> knotsV = { 0,0,1,1 };
-	vector<double> weights = { 1.,1.,1.,1.,1.,1. };
 	vector<Point3> points = { 
 		Point3(0.,0.,0.),Point3(1.,1.,0.),Point3(2.,0.,0.),
 		Point3(0.,1.,-1.),Point3(1.,0.,-1.),Point3(2.,1.,-1.)
 	};
 
 	n.set_degree(degreeU, 1);
-	n.set_knots_u(knotsU);
-	n.set_knots_v(knotsV);
-	n.set_weights(weights);
 	n.set_points(points,3,2);
+	n.set_uniform_u();
+	n.set_uniform_v();
+	n.set_equals_weights();
 
 	Mesh m;
 	n.to_mesh(m);
@@ -128,32 +121,21 @@ void test_surface_deg1()
 
 	NurbsSurface n;
 	int degree = 1;
-	vector<double> knotsU, knotsV;
 	vector<Point3> points;
 	
 	for (int v = 0; v < nbPointsV; v++)
-		for(int u=0;u< nbPointsU;u++)
+		for(int u= 0; u < nbPointsU; u++)
 			points.push_back(Point3(u,v,(float)rand()/RAND_MAX));
 
-	//create knots
-	knotsU.push_back(0);
-	for (int i = 0; i < nbPointsU; i++)
-		knotsU.push_back(i);
-	knotsU.push_back(nbPointsU-1);
-	
-	knotsV.push_back(0);
-	for (int i = 0; i < nbPointsV; i++)
-		knotsV.push_back(i);
-	knotsV.push_back(nbPointsV - 1);
-
 	n.set_degree(degree, degree);
-	n.set_knots_u(knotsU);
-	n.set_knots_v(knotsV);
 	n.set_points(points, nbPointsU, nbPointsV);
+
+	n.set_uniform_u();
+	n.set_uniform_v();
 	n.set_equals_weights();
 
 	Mesh m;
-	n.to_mesh(m,10);
+	n.to_mesh(m,20);
 	OBJFile::save("test_surface_deg1.obj", m);
 }
 
@@ -166,40 +148,21 @@ void test_surface_deg2()
 
 	NurbsSurface n;
 	int degree = 2;
-	vector<double> knotsU, knotsV;
 	vector<Point3> points;
 
 	for (int v = 0; v < nbPointsV; v++)
 		for (int u = 0; u < nbPointsU; u++)
 			points.push_back(Point3(u, v, (float)rand() / RAND_MAX));
 
-	//create knots
-	knotsU.push_back(0);
-	knotsU.push_back(0);
-	knotsU.push_back(0);
-	for (int i = 1; i < nbPointsU-2; i++)
-		knotsU.push_back(i);
-	knotsU.push_back(nbPointsU - 1);
-	knotsU.push_back(nbPointsU - 1);
-	knotsU.push_back(nbPointsU - 1);
-
-	knotsV.push_back(0);
-	knotsV.push_back(0);
-	knotsV.push_back(0);
-	for (int i = 1; i < nbPointsV-2; i++)
-		knotsV.push_back(i);
-	knotsV.push_back(nbPointsV - 1);
-	knotsV.push_back(nbPointsV - 1);
-	knotsV.push_back(nbPointsV - 1);
-
 	n.set_degree(degree, degree);
-	n.set_knots_u(knotsU);
-	n.set_knots_v(knotsV);
 	n.set_points(points, nbPointsU, nbPointsV);
+
+	n.set_uniform_u();
+	n.set_uniform_v();
 	n.set_equals_weights();
 
 	Mesh m;
-	n.to_mesh(m, 10);
+	n.to_mesh(m,20);
 	OBJFile::save("test_surface_deg2.obj", m);
 }
 ///////////////////////////////////////////////////////////////////////////

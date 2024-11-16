@@ -61,16 +61,20 @@ void NurbsSurface::set_knots_u(const vector <double>& knots)
 
 void NurbsSurface::set_uniform_u()
 {
-	_knotsU.clear();
+	vector <double> knots;
+
+	knots.clear();
 
 	for (int i = 0; i <= _degreeU; i++)
-		_knotsU.push_back(0.);
+		knots.push_back(0.);
 
 	for (int i = 1; i < _iNbPointsU - _degreeU; i++)
-		_knotsU.push_back(i);
+		knots.push_back(i);
 
 	for (int i = 0; i <= _degreeU; i++)
-		_knotsU.push_back(_iNbPointsU - _degreeU);
+		knots.push_back(_iNbPointsU - _degreeU);
+
+	set_knots_u(knots);
 }
 
 
@@ -99,16 +103,18 @@ void NurbsSurface::set_knots_v(const vector <double>& knots)
 
 void NurbsSurface::set_uniform_v()
 {
-	_knotsV.clear();
+	vector <double> knots;
 
 	for (int i = 0; i <= _degreeV; i++)
-		_knotsV.push_back(0.);
+		knots.push_back(0.);
 
 	for (int i = 1; i < _iNbPointsV - _degreeV; i++)
-		_knotsV.push_back(i);
+		knots.push_back(i);
 
 	for (int i = 0; i <= _degreeV; i++)
-		_knotsV.push_back(_iNbPointsV - _degreeV);
+		knots.push_back(_iNbPointsV - _degreeV);
+
+	set_knots_v(knots);
 }
 
 
@@ -234,8 +240,8 @@ void NurbsSurface::to_mesh(Mesh& m,int iNbSegments) const
 	if (_points.empty())
 		return;
 
-	int iNbSegmentsU = iNbSegments * nb_points_u();
-	int iNbSegmentsV = iNbSegments * nb_points_v();
+	int iNbSegmentsU = iNbSegments * _iNbPointsU;
+	int iNbSegmentsV = iNbSegments * _iNbPointsV;
 
 	Point3 p;
 	for (int v = 0; v < iNbSegmentsV; v++)
