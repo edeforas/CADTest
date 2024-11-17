@@ -6,7 +6,8 @@
 #include "MeshKernelHalfEdge.h"
 #include "MeshKernelLinkedTriangles.h"
 
-#include "Util.h"
+#define swap(a,b) { auto tmp=a; a=b; b=tmp; }  
+#define rotate(a,b,c) { auto tmp=a; a=b; b=c; c=a; }  
 
 ///////////////////////////////////////////////////////////////////////////
 Mesh::Mesh()

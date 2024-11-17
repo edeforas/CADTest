@@ -33,6 +33,9 @@ target_link_libraries(test_renderer libCADTest)
 add_executable(test_bmpfile test_bmpfile.cpp  )
 target_link_libraries(test_bmpfile libCADTest)
 
+add_executable(test_mandelbrot_mesh test_mandelbrot_mesh.cpp  )
+target_link_libraries(test_mandelbrot_mesh libCADTest)
+
 add_executable(test_stepfile test_stepfile.cpp  )
 target_link_libraries(test_stepfile libCADTest)
 
@@ -50,6 +53,8 @@ target_link_libraries(test_nurbsextrude libCADTest)
 
 add_test(test_geometry test_geometry)
 add_test(test_bmpfile test_bmpfile)
+add_test(test_mandelbrot_mesh test_mandelbrot_mesh)
+
 add_test(test_measurements test_measurements)
 add_test(test_bodyfactory test_bodyfactory)
 add_test(test_level_of_details test_level_of_details)

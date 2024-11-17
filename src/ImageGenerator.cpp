@@ -13,10 +13,10 @@ namespace ImageGenerator
 		
 	}
 	///////////////////////////////////////////////////////////////////////////
-	void Mandelbrot(Image& img, int iWidth, int iHeight) //slow pixel by pixel algorithm
+	void Mandelbrot(Image& img, int iWidth, int iHeight, int iNbIter) //slow pixel by pixel algorithm
 	{
-		float xmin = -2., xmax = 2.;
-		float ymin = -2., ymax = 2.;
+		float xmin = -2., xmax = 1.;
+		float ymin = -1.5, ymax = 1.5;
 
 		img.resize(iWidth, iHeight, 4); // 32bpp
 
@@ -24,9 +24,9 @@ namespace ImageGenerator
 			for (int h = 0; h < img.height(); h++)
 			{
 				float cx = xmin + (img.width() - w) / (float)img.width() * (xmax - xmin);
-				float cy = xmin + (img.height() - h) / (float)img.height() * (ymax - ymin);
+				float cy = ymin + (img.height() - h) / (float)img.height() * (ymax - ymin);
 
-				int iterMax = 255;
+				int iterMax = iNbIter;
 
 				float fx = cx;
 				float fy = cy;
@@ -44,7 +44,7 @@ namespace ImageGenerator
 						iterMax--;
 				}
 
-				int color = (255- iterMax) * (1*256*256 + 1*256 + 1); // todo nice color
+				int color = (iNbIter-iterMax) * (1*256*256 + 1*256 + 1); // todo nice color
 				*((int*)img.pixel(w, h)) = color;
 			}
 	}

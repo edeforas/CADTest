@@ -1,13 +1,11 @@
 #include "NurbsUtil.h"
 
-#include <cassert>
-#include <algorithm>
-using namespace std;
-
 #include "NurbsCurve.h"
 #include "NurbsSurface.h"
 #include "Mesh.h"
 
+#include <cassert>
+#include <algorithm>
 #include <cmath>
 using namespace std;
 

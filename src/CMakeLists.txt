@@ -18,7 +18,8 @@ set(CADTEST_FILES
 	MeshKernelHalfEdge.cpp MeshKernelHalfEdge.h
 	MeshKernelLinkedTriangles.cpp MeshKernelLinkedTriangles.h
 	MeshMeasurements.cpp MeshMeasurements.h
-
+	MeshUtil.cpp MeshUtil.h
+	
 	MeshTessellate.cpp MeshTessellate.h
 	MeshBoolean.cpp MeshBoolean.h
 	Transform.cpp Transform.h
@@ -37,8 +38,10 @@ set(CADTEST_FILES
 	Image.h
 	ImageGenerator.cpp ImageGenerator.h
 	ImageIoBmp.cpp ImageIoBmp.h
+	ImageUtil.cpp ImageUtil.h
 	Color.h
-	Util.cpp Util.h
+	
+	BezierUtil.cpp BezierUtil.h
 )
 
 include_directories(.)
