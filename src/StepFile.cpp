@@ -34,7 +34,6 @@ namespace StepFile
         if (!f)
             return false;
 
-  
         return false;
     }
     ///////////////////////////////////////////////////////////////////////////

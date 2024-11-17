@@ -166,6 +166,48 @@ void test_surface_deg2()
 	OBJFile::save("test_surface_deg2.obj", m);
 }
 ///////////////////////////////////////////////////////////////////////////
+void test_surface_degxy()
+{
+	cout << endl << "Test surface degxy" << endl;
+
+	int nbPointsU = 7;
+	int nbPointsV = 7;
+	OBJWriter ow;
+	ow.open("test_surface_degxy.obj");
+
+	vector<Point3> points,pt;
+	for (int v = 0; v < nbPointsV; v++)
+		for (int u = 0; u < nbPointsU; u++)
+			points.push_back(Point3(u, v, 2.*(float)rand() / RAND_MAX));
+
+	for(int uDeg=1; uDeg<=3;uDeg++)
+		for (int vDeg = 1; vDeg <= 3; vDeg++)
+		{
+			NurbsSurface n;
+
+			n.set_degree(uDeg, vDeg);
+
+			//translate point
+			pt = points;
+			for (auto& p : pt)
+			{
+				p.x() += uDeg * nbPointsU*1.1;
+				p.y() += vDeg * nbPointsV*1.1;
+			}
+
+			n.set_points(pt, nbPointsU, nbPointsV);
+			n.set_uniform_u();
+			n.set_uniform_v();
+			n.set_equals_weights();
+
+			Mesh m;
+			n.to_mesh(m, 10);
+			m.set_color((uDeg * 50 + 100) * 256 * 256 + (vDeg * 50 + 100) * 256); //red is degu , green is degv
+			ow.write(m);
+		}
+	ow.close();
+}
+///////////////////////////////////////////////////////////////////////////
 void test_nurbsurface_cylinder()
 {
 	cout << endl << "Test cylinder using nurbscurve and extrude" << endl;
@@ -219,6 +261,7 @@ int main()
 	test_ruled_surface_deg2();
 	test_surface_deg1();
 	test_surface_deg2();
+	test_surface_degxy();
 	test_nurbsurface_cylinder();
 
 	cout << "Test Finished.";

@@ -247,7 +247,7 @@ void NurbsCurve::to_polyline(vector<Point3>& polyline) const
 	}
 }
 ///////////////////////////////////////////////////////////////////////////
-void NurbsCurve::create_from_points(vector<Point3>& points, int degree) //no rational, uniform
+void NurbsCurve::create_from_points(const vector<Point3>& points, int degree) //no rational, uniform
 {
 	set_degree(degree);
 	set_points(points);

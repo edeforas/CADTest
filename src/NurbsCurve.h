@@ -12,7 +12,7 @@ class NurbsCurve
 public:
 	NurbsCurve();
 	virtual ~NurbsCurve();
-	void create_from_points(vector<Point3>& points, int degree); //no rational, uniform
+	void create_from_points(const vector<Point3>& points, int degree); //no rational, uniform
 
 	void clear();
 

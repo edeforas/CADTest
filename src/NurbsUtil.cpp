@@ -32,7 +32,7 @@ void NurbsUtil::create_circle(double dRadius, NurbsCurve& nc)
 	nc.set_points(points);
 }
 ///////////////////////////////////////////////////////////////////////////
-void NurbsUtil::to_pointsmesh(const NurbsSurface& n,Mesh& m) //show the ctrl points lattice
+void NurbsUtil::to_pointsmesh(const NurbsSurface& n,Mesh& m) //show the ctrl points mesh lattice
 {
 	const vector<Point3>& points = n.points();
 	int iNbPointsU = n.nb_points_u();

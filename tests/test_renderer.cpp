@@ -45,7 +45,7 @@ int main()
 	n.create_from_points(points, degree);
 	n.to_polyline(nurbPL);
 
-	for (int i = 0; i < 360; i += 10)
+	for (int i = 0; i < 360; i += 40)
 	{
 		Mesh m;
 		eng.clear();
