@@ -15,7 +15,7 @@ namespace ImageGenerator
 	///////////////////////////////////////////////////////////////////////////
 	void Mandelbrot(Image& img, int iWidth, int iHeight, int iNbIter) //slow pixel by pixel algorithm
 	{
-		float xmin = -2., xmax = 1.;
+		float xmin = -2.1, xmax = 0.9;
 		float ymin = -1.5, ymax = 1.5;
 
 		img.resize(iWidth, iHeight, 4); // 32bpp

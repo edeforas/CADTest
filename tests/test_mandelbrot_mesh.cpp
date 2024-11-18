@@ -14,7 +14,7 @@ int main()
 	//create a mesh using mandelbort set
 
 	Image imgMandelbrot;
-	ImageGenerator::Mandelbrot(imgMandelbrot, 128, 128,64);
+	ImageGenerator::Mandelbrot(imgMandelbrot, 256, 256,128);
 	ImageIoBmp::write("test_mandelbrot_mesh.bmp", &imgMandelbrot);
 	
 	Mesh m;

@@ -178,14 +178,31 @@ void Mesh::add_quad(int iVertex1, int iVertex2, int iVertex3, int iVertex4)
 	_pKernel->add_triangle(iVertex3, iVertex4, iVertex1);
 }
 
-void Mesh::add_quad(const Point3& p1, const  Point3& p2, const Point3& p3, const Point3& p4)
+void Mesh::add_quad(const Point3& p1, const  Point3& p2, const Point3& p3, const Point3& p4,bool bOptimSurface)
 {
 	int i1 = _pKernel->add_vertex(p1);
 	int i2 = _pKernel->add_vertex(p2);
 	int i3 = _pKernel->add_vertex(p3);
 	int i4 = _pKernel->add_vertex(p4);
 
-	return add_quad(i1, i2, i3, i4);
+	if (!bOptimSurface)
+		add_quad(i1, i2, i3, i4);
+	else
+	{
+		//find the quad that as the smallest surface
+		Triangle3 t1(p1, p2, p3);
+		Triangle3 t2(p3, p4, p1);
+		double surfaceQuad1 = t1.surface() + t2.surface();
+
+		Triangle3 t3(p2, p3, p4);
+		Triangle3 t4(p4, p1, p2);
+		double surfaceQuad2 = t3.surface() + t4.surface();
+
+		if (surfaceQuad1 <= surfaceQuad2)
+			add_quad(i1, i2, i3, i4);
+		else
+			add_quad(i2, i3, i4, i1);
+	}
 }
 
 void Mesh::add_pentagon(int iVertex1, int iVertex2, int iVertex3, int iVertex4, int iVertex5)

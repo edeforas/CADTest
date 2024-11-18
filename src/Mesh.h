@@ -43,7 +43,7 @@ public:
     void flip_triangle(int iTriangle); //flip triangle so normal is reversed
 
     void add_quad(int iVertex1, int iVertex2, int iVertex3, int iVertex4);
-    void add_quad(const Point3& p1, const  Point3& p2, const Point3& p3, const Point3& p4); //helper
+    void add_quad(const Point3& p1, const  Point3& p2, const Point3& p3, const Point3& p4,bool bOptimSurface = true); //helper
 
     void add_pentagon(int iVertex1, int iVertex2, int iVertex3, int iVertex4, int iVertex5);      
 
