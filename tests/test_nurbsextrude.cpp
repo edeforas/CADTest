@@ -28,7 +28,7 @@ void test_extrude_cylinder()
 	NurbsCurve nc;
 	NurbsUtil::create_circle(1., nc);
 
-	Point3 direction(0, 0, 1);
+	Point3 direction(0, 0, 3);
 	NurbsSurface ns;
 
 	// extrude
@@ -36,7 +36,7 @@ void test_extrude_cylinder()
 	ne.extrude(nc, direction, ns);
 
 	Mesh m;
-	ns.to_mesh(m);
+	ns.to_mesh(m,10);
 	OBJFile::save("test_extrude_cylinder.obj", m);
 }
 
@@ -49,7 +49,7 @@ void test_extrude_random_deg2()
 	NurbsCurve nc;
 	int degree = 2;
 	vector<Point3> points;
-	int nbPoints = 6;
+	int nbPoints = 5;
 
 	for (int i = 0; i < nbPoints; i++)
 		points.push_back(Point3((double)rand() / RAND_MAX, (double)rand() / RAND_MAX, (double)rand() / RAND_MAX));
@@ -64,8 +64,8 @@ void test_extrude_random_deg2()
 	ne.extrude(nc, direction, ns);
 
 	Mesh m;
-	ns.to_mesh(m);
-	OBJFile::save("test_extrude_random_deg2.obj", m); //todo debug: bad U shape
+	ns.to_mesh(m,10);
+	OBJFile::save("test_extrude_random_deg2.obj", m);
 }
 ///////////////////////////////////////////////////////////////////////////
 int main()

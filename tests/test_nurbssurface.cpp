@@ -86,7 +86,7 @@ void test_ruled_surface_deg1()
 		}
 
 	Mesh m;
-	n.to_mesh(m);
+	n.to_mesh(m,10);
 	OBJFile::save("test_ruled_surface_deg1.obj", m);
 }
 
@@ -108,7 +108,7 @@ void test_ruled_surface_deg2()
 	n.set_equals_weights();
 
 	Mesh m;
-	n.to_mesh(m);
+	n.to_mesh(m,10);
 	OBJFile::save("test_ruled_surface_deg2.obj", m);
 }
 
@@ -212,7 +212,7 @@ void test_nurbsurface_cylinder()
 {
 	cout << endl << "Test cylinder using nurbscurve and extrude" << endl;
 
-	//create profile and extrude
+	//create circle profile and extrude
 	int degreeU = 2;
 	vector<double> knotsU = { 0., 0., 0., 0.25, 0.25, 0.5, 0.5, 0.75, 0.75, 1., 1., 1. };
 	vector<double> weights = {
@@ -243,15 +243,7 @@ void test_nurbsurface_cylinder()
 
 	Mesh m;
 	n.to_mesh(m);
-
-	OBJWriter ow;
-	ow.open("test_nurbsurface_cylinder.obj");
-	ow.write(m);
-
-	// add points quad meshes
-	NurbsUtil::to_pointsmesh(n, m);
-	m.set_color(0xff);
-	ow.write(m);
+	OBJFile::save("test_nurbsurface_cylinder.obj", m);
 }
 ///////////////////////////////////////////////////////////////////////////
 int main()
