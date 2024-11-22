@@ -199,6 +199,7 @@ void NurbsSurface::evaluate(double u, double v, Point3& p) const
 		int idxV = vi + knotIndexV - _degreeV;
 		assert(idxV >= 0);
 		assert(idxV < iNbCtrlPointsV);
+
 		// evaluate on u direction
 		for (int ui = 0; ui < _degreeU + 1; ui++)
 		{
@@ -208,16 +209,17 @@ void NurbsSurface::evaluate(double u, double v, Point3& p) const
 
 			double w = _weights[idxU + iNbCtrlPointsU * idxV];
 			_tempWeightsU[ui] = w;
-			_tempPointsU[ui] = _points[idxU + iNbCtrlPointsU * idxV]*w;
-
-			for (int ru = 1; ru < _degreeU + 1; ru++)
-				for (int ju = _degreeU; ju > ru - 1; ju--)
-				{
-					double alpha = (u - _knotsU[ju + knotIndexU - _degreeU]) / (_knotsU[ju + 1 + knotIndexU - ru] - _knotsU[ju + knotIndexU - _degreeU]);
-					_tempPointsU[ju] = _tempPointsU[ju - 1] * (1. - alpha) + _tempPointsU[ju] * alpha;
-					_tempWeightsU[ju] = _tempWeightsU[ju - 1] * (1. - alpha) + _tempWeightsU[ju] * alpha;
-				}
+			_tempPointsU[ui] = _points[idxU + iNbCtrlPointsU * idxV] * w;
 		}
+
+		for (int ru = 1; ru < _degreeU + 1; ru++)
+			for (int ju = _degreeU; ju > ru - 1; ju--)
+			{
+				double alpha = (u - _knotsU[ju + knotIndexU - _degreeU]) / (_knotsU[ju + 1 + knotIndexU - ru] - _knotsU[ju + knotIndexU - _degreeU]);
+				_tempPointsU[ju] = _tempPointsU[ju - 1] * (1. - alpha) + _tempPointsU[ju] * alpha;
+				_tempWeightsU[ju] = _tempWeightsU[ju - 1] * (1. - alpha) + _tempWeightsU[ju] * alpha;
+			}
+		
 		_tempPointsV[vi] = _tempPointsU[_degreeU];
 		_tempWeightsV[vi] = _tempWeightsU[_degreeU];
 	}

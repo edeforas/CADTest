@@ -58,16 +58,18 @@ void NurbsCurve::set_knots(const vector <double>& knots)
 
 void NurbsCurve::set_uniform()
 {
-	_knots.clear();
+	vector <double> knots;
 
 	for (int i = 0; i <= _degree; i++)
-		_knots.push_back(0.);
+		knots.push_back(0.);
 
 	for (int i = 1; i < _iNbPoints - _degree; i++)
-		_knots.push_back(i);
+		knots.push_back(i);
 
 	for (int i = 0; i <= _degree; i++)
-		_knots.push_back(_iNbPoints - _degree);
+		knots.push_back(_iNbPoints - _degree);
+
+	set_knots(knots);
 }
 
 const vector<double>& NurbsCurve::knots() const
