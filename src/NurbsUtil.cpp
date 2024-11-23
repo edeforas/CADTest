@@ -51,3 +51,33 @@ void NurbsUtil::to_pointsmesh(const NurbsSurface& n,Mesh& m) //show the ctrl poi
 		}
 }
 ///////////////////////////////////////////////////////////////////////////
+void NurbsUtil::to_mesh(const NurbsSurface& n, Mesh& m, int iNbSegments)
+{
+	m.clear();
+
+	int iNbSegmentsU = iNbSegments * n.nb_points_u();
+	int iNbSegmentsV = iNbSegments * n.nb_points_v();
+
+	if (iNbSegmentsU * iNbSegmentsU == 0)
+		return;
+
+	Point3 p;
+	for (int v = 0; v < iNbSegmentsV; v++)
+		for (int u = 0; u < iNbSegmentsU; u++)
+		{
+			//TODO slow
+			double du1 = (double)u / iNbSegmentsU;
+			double dv1 = (double)v / iNbSegmentsV;
+			double du2 = (double)(u + 1) / iNbSegmentsU;
+			double dv2 = (double)(v + 1) / iNbSegmentsV;
+
+			Point3 p1, p2, p3, p4;
+			n.evaluate(du1, dv1, p1);
+			n.evaluate(du2, dv1, p2);
+			n.evaluate(du2, dv2, p3);
+			n.evaluate(du1, dv2, p4);
+
+			m.add_quad(p1, p2, p3, p4);
+		}
+}
+///////////////////////////////////////////////////////////////////////////

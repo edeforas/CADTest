@@ -235,33 +235,3 @@ void NurbsSurface::evaluate(double u, double v, Point3& p) const
 	
 	p = _tempPointsV[_degreeV]/ _tempWeightsV[_degreeV];
 }
-
-void NurbsSurface::to_mesh(Mesh& m,int iNbSegments) const
-{
-	m.clear();
-	if (_points.empty())
-		return;
-
-	int iNbSegmentsU = iNbSegments * _iNbPointsU;
-	int iNbSegmentsV = iNbSegments * _iNbPointsV;
-
-	Point3 p;
-	for (int v = 0; v < iNbSegmentsV; v++)
-		for (int u = 0; u < iNbSegmentsU; u++)
-		{
-			//TODO slow
-			double du1 = (double)u / iNbSegmentsU;
-			double dv1 = (double)v / iNbSegmentsV;
-			double du2 = (double)(u+1) / iNbSegmentsU;
-			double dv2 = (double)(v+1) / iNbSegmentsV;
-
-			Point3 p1, p2, p3, p4;
-			evaluate(du1, dv1, p1);
-			evaluate(du2, dv1, p2);
-			evaluate(du2, dv2, p3);
-			evaluate(du1, dv2, p4);
-
-			m.add_quad(p1, p2, p3, p4);
-		}
-}
-///////////////////////////////////////////////////////////////////////////

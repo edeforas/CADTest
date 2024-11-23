@@ -19,10 +19,10 @@ void test_near(double a, double ref, double epsilon=1.e-10,const string& sMessag
 		exit(-1);
 	}
 }
-
-void test_extrude_cylinder()
+///////////////////////////////////////////////////////////////////////////
+void test_nurbsextrude_cylinder()
 {
-	cout << endl << "test_extrude_cylinder" << endl;
+	cout << endl << "test_nurbsextrude_cylinder" << endl;
 
 	//create profile curve
 	NurbsCurve nc;
@@ -36,15 +36,13 @@ void test_extrude_cylinder()
 	ne.extrude(nc, direction, ns);
 
 	Mesh m;
-	ns.to_mesh(m,10);
-	OBJFile::save("test_extrude_cylinder.obj", m);
+	NurbsUtil::to_mesh(ns,m,10);
+	OBJFile::save("test_nurbsextrude_cylinder.obj", m);
 }
-
 ///////////////////////////////////////////////////////////////////////////
-
-void test_extrude_random_deg2()
+void test_nurbsextrude_random_deg2()
 {
-	cout << endl << "test_extrude_random_deg2" << endl;
+	cout << endl << "test_nurbsextrude_random_deg2" << endl;
 
 	NurbsCurve nc;
 	int degree = 2;
@@ -64,14 +62,14 @@ void test_extrude_random_deg2()
 	ne.extrude(nc, direction, ns);
 
 	Mesh m;
-	ns.to_mesh(m,10);
-	OBJFile::save("test_extrude_random_deg2.obj", m);
+	NurbsUtil::to_mesh(ns, m, 10);
+	OBJFile::save("test_nurbsextrude_random_deg2.obj", m);
 }
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
-	test_extrude_cylinder();
-	test_extrude_random_deg2();
+	test_nurbsextrude_cylinder();
+	test_nurbsextrude_random_deg2();
 
 	cout << "Test Finished.";
 	return 0;

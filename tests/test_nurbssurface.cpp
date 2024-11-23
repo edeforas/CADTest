@@ -26,9 +26,9 @@ void test_near(double a, double ref, double epsilon=1.e-10,const string& sMessag
 	}
 }
 
-void test_square_surface()
+void test_nurbssurface_square()
 {
-	cout << endl << "test_square_surface" << endl;
+	cout << endl << "test_nurbssurface_square" << endl;
 
 	NurbsSurface n;
 	int degree = 1;
@@ -53,13 +53,13 @@ void test_square_surface()
 	}
 
 	Mesh m;
-	n.to_mesh(m);
-	OBJFile::save("test_square_surface.obj", m);
+	NurbsUtil::to_mesh(n, m);
+	OBJFile::save("test_nurbssurface_square.obj", m);
 }
 
-void test_ruled_surface_deg1()
+void test_nurbssurface_ruled_deg1()
 {
-	cout << endl << "Test ruled surface deg1" << endl;
+	cout << endl << "test_nurbssurface_ruled_deg1" << endl;
 
 	NurbsSurface n;
 	int degree = 1;
@@ -86,13 +86,13 @@ void test_ruled_surface_deg1()
 		}
 
 	Mesh m;
-	n.to_mesh(m,10);
-	OBJFile::save("test_ruled_surface_deg1.obj", m);
+	NurbsUtil::to_mesh(n, m, 10);;
+	OBJFile::save("test_nurbssurface_ruled_deg1.obj", m);
 }
 
-void test_ruled_surface_deg2()
+void test_nurbssurface_ruled_deg2()
 {
-	cout << endl << "Test ruled surface deg2" << endl;
+	cout << endl << "test_nurbssurface_ruled_deg2" << endl;
 
 	NurbsSurface n;
 	int degreeU = 2;
@@ -108,13 +108,13 @@ void test_ruled_surface_deg2()
 	n.set_equals_weights();
 
 	Mesh m;
-	n.to_mesh(m,10);
-	OBJFile::save("test_ruled_surface_deg2.obj", m);
+	NurbsUtil::to_mesh(n, m, 10);
+	OBJFile::save("test_nurbssurface_ruled_deg2.obj", m);
 }
 
-void test_surface_deg1()
+void test_nurbssurface_deg1()
 {
-	cout << endl << "Test surface deg1" << endl;
+	cout << endl << "test_nurbssurface_deg1" << endl;
 
 	int nbPointsU = 7;
 	int nbPointsV = 7;
@@ -135,13 +135,13 @@ void test_surface_deg1()
 	n.set_equals_weights();
 
 	Mesh m;
-	n.to_mesh(m,20);
-	OBJFile::save("test_surface_deg1.obj", m);
+	NurbsUtil::to_mesh(n, m, 20);
+	OBJFile::save("test_nurbssurface_deg1.obj", m);
 }
 
-void test_surface_deg2()
+void test_nurbssurface_deg2()
 {
-	cout << endl << "Test surface deg2" << endl;
+	cout << endl << "test_nurbssurface_deg2" << endl;
 
 	int nbPointsU = 7;
 	int nbPointsV = 7;
@@ -162,18 +162,18 @@ void test_surface_deg2()
 	n.set_equals_weights();
 
 	Mesh m;
-	n.to_mesh(m,20);
-	OBJFile::save("test_surface_deg2.obj", m);
+	NurbsUtil::to_mesh(n, m, 20);
+	OBJFile::save("test_nurbssurface_deg2.obj", m);
 }
 ///////////////////////////////////////////////////////////////////////////
-void test_surface_degxy()
+void test_nurbssurface_degxy()
 {
-	cout << endl << "Test surface degxy" << endl;
+	cout << endl << "test_nurbssurface_degxy" << endl;
 
 	int nbPointsU = 7;
 	int nbPointsV = 7;
 	OBJWriter ow;
-	ow.open("test_surface_degxy.obj");
+	ow.open("test_nurbssurface_degxy.obj");
 
 	vector<Point3> points,pt;
 	for (int v = 0; v < nbPointsV; v++)
@@ -201,16 +201,16 @@ void test_surface_degxy()
 			n.set_equals_weights();
 
 			Mesh m;
-			n.to_mesh(m, 10);
+			NurbsUtil::to_mesh(n, m, 10);
 			m.set_color((uDeg * 50 + 100) * 256 * 256 + (vDeg * 50 + 100) * 256); //red is degu , green is degv
 			ow.write(m);
 		}
 	ow.close();
 }
 ///////////////////////////////////////////////////////////////////////////
-void test_nurbsurface_cylinder()
+void test_nurbssurface_cylinder()
 {
-	cout << endl << "Test cylinder using nurbscurve and extrude" << endl;
+	cout << endl << "test_nurbssurface_cylinder using nurbscurve and extrude" << endl;
 
 	//create circle profile and extrude
 	int degreeU = 2;
@@ -242,19 +242,52 @@ void test_nurbsurface_cylinder()
 	n.set_points(points,9,2);
 
 	Mesh m;
-	n.to_mesh(m);
-	OBJFile::save("test_nurbsurface_cylinder.obj", m);
+	NurbsUtil::to_mesh(n, m);
+	OBJFile::save("test_nurbssurface_cylinder.obj", m);
 }
+
+///////////////////////////////////////////////////////////////////////////
+void test_nurbssurface_flatdisk()
+{
+	cout << endl << "test_nurbssurface_flatdisk using 4 quarter circles as borders" << endl;
+
+	//create circle profile using 4 quarter circles as borders
+	int degreeU = 2;
+
+	vector<double> knots = { 0., 0., 0., 1., 1., 1. };
+	vector<double> weights = { 1.,1. / sqrt(2.),1.,   1. / sqrt(2.),1.,1. / sqrt(2.),   1.,1. / sqrt(2.),1. };
+
+	vector<Point3> points = {
+		Point3(1.,0.,0.),Point3(1.,1.,0.),Point3(0.,1.,0.),
+		Point3(1.,-1,0.),Point3(0.,0.,0),Point3(-1.,1.,0.),
+		Point3(0.,-1.,0.),Point3(-1.,-1.,0.),Point3(-1.,0.,0.),
+	};
+
+	// extrude
+
+	NurbsSurface n;
+	n.set_degree(2, 2);
+	n.set_knots_u(knots);
+	n.set_knots_v(knots);
+	n.set_weights(weights);
+	n.set_points(points, 3, 3);
+
+	Mesh m;
+	NurbsUtil::to_mesh(n, m, 10);
+	OBJFile::save("test_nurbssurface_flatdisk.obj", m);
+}
+
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
-	test_square_surface();
-	test_ruled_surface_deg1();
-	test_ruled_surface_deg2();
-	test_surface_deg1();
-	test_surface_deg2();
-	test_surface_degxy();
-	test_nurbsurface_cylinder();
+	test_nurbssurface_square();
+	test_nurbssurface_ruled_deg1();
+	test_nurbssurface_ruled_deg2();
+	test_nurbssurface_deg1();
+	test_nurbssurface_deg2();
+	test_nurbssurface_degxy();
+	test_nurbssurface_cylinder();
+	test_nurbssurface_flatdisk();
 
 	cout << "Test Finished.";
 	return 0;
