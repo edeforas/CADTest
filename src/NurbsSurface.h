@@ -26,6 +26,7 @@ public:
 
 	void set_points(const vector <Point3>& points, int iNbPointsU, int iNbPointsV);
 	const vector<Point3>& points() const;
+	vector<Point3>& points();
 	int nb_points_u() const;
 	int nb_points_v() const;
 

@@ -150,6 +150,11 @@ const vector<Point3>& NurbsSurface::points() const
 	return _points;
 }
 
+vector<Point3>& NurbsSurface::points()
+{
+	return _points;
+}
+
 int NurbsSurface::find_knot_span(const vector <double>& knots,double t)
 {
 	if (knots.size() < 2)

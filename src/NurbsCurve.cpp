@@ -103,6 +103,11 @@ const vector<Point3>& NurbsCurve::points() const
 	return _points;
 }
 
+vector<Point3>& NurbsCurve::points()
+{
+	return _points;
+}
+
 int NurbsCurve::find_knot_span(const vector <double>& knots,double t)
 {
 	if (knots.size()<2)

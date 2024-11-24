@@ -32,6 +32,7 @@ public:
 	void insert_knot(double u);
 
 	const vector<Point3>& points() const;
+	vector<Point3>& points();
 	void evaluate(double u, Point3& p) const;
 
 	void to_polyline(vector<Point3>& polyline) const;
