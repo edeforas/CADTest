@@ -36,6 +36,16 @@ void NurbsSurface::set_degree(int degreeU,int degreeV)
 	_tempWeightsV.resize(degreeV + 1);
 }
 
+int NurbsSurface::degree_u() const
+{
+	return _degreeU;
+}
+
+int NurbsSurface::degree_v() const
+{
+	return _degreeV;
+}
+
 void NurbsSurface::set_knots_u(const vector <double>& knots)
 {
 	_knotsU = knots;

@@ -12,7 +12,6 @@ class NurbsCurve
 public:
 	NurbsCurve();
 	virtual ~NurbsCurve();
-	void create_from_points(const vector<Point3>& points, int degree); //no rational, uniform
 
 	void clear();
 
@@ -28,6 +27,7 @@ public:
 	void set_equals_weights(); //non rational
 
 	void set_points(const vector <Point3>& points);
+	int nb_points() const;
 
 	void insert_knot(double u);
 

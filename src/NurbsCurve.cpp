@@ -98,6 +98,11 @@ void NurbsCurve::set_points(const vector <Point3>& points)
 	_iNbPoints = _points.size();
 }
 
+int NurbsCurve::nb_points() const
+{
+	return _points.size();
+}
+
 const vector<Point3>& NurbsCurve::points() const
 {
 	return _points;
@@ -252,14 +257,5 @@ void NurbsCurve::to_polyline(vector<Point3>& polyline) const
 		evaluate(t, p);
 		polyline.push_back(p);
 	}
-}
-///////////////////////////////////////////////////////////////////////////
-void NurbsCurve::create_from_points(const vector<Point3>& points, int degree) //no rational, uniform
-{
-	set_degree(degree);
-	set_points(points);
-
-	set_uniform();
-	set_equals_weights();
 }
 ///////////////////////////////////////////////////////////////////////////

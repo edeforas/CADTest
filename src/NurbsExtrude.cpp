@@ -14,7 +14,7 @@ NurbsExtrude::NurbsExtrude()
 NurbsExtrude::~NurbsExtrude()
 {}
 ///////////////////////////////////////////////////////////////////////////
-void NurbsExtrude::extrude(const NurbsCurve& nc, const Point3& direction, NurbsSurface& ns) const
+bool NurbsExtrude::extrude(const NurbsCurve& nc, const Point3& direction, NurbsSurface& ns) const
 {
 	ns.clear();
 
@@ -43,5 +43,7 @@ void NurbsExtrude::extrude(const NurbsCurve& nc, const Point3& direction, NurbsS
 
 	ns.set_weights(weights);
 	ns.set_points(points, iOldSize,2);
+
+	return true;
 }
 ///////////////////////////////////////////////////////////////////////////

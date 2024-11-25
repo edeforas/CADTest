@@ -30,6 +30,7 @@ set(CADTEST_FILES
 	NurbsSurface.cpp NurbsSurface.h
 	NurbsExtrude.cpp NurbsExtrude.h
 	NurbsRuled.cpp NurbsRuled.h
+	NurbsRevolve.cpp NurbsRevolve.h
 	NurbsUtil.cpp NurbsUtil.h
 	StepFile.cpp StepFile.h
 	

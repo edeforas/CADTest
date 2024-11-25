@@ -1,4 +1,5 @@
 #include "NurbsCurve.h"
+#include "NurbsUtil.h"
 
 #include <iostream>
 #include <cassert>
@@ -184,7 +185,7 @@ void test_random_deg2()
 	for (int i = 0; i < nbPoints; i++)
 		points.push_back( Point3((double)rand() / RAND_MAX, (double)rand() / RAND_MAX, (double)rand() / RAND_MAX) );
 
-	n.create_from_points(points, degree);
+	NurbsUtil::create_curve_from_points(points, degree,n);
 
 	for (double u = 0.; u <= 1.; u += 0.01)
 	{

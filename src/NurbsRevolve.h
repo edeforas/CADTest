@@ -1,5 +1,5 @@
-#ifndef NurbsExtrude_
-#define NurbsExtrude_
+#ifndef NurbsRevolve_
+#define NurbsRevolve_
 
 #include "Geometry.h"
 
@@ -7,12 +7,12 @@ class NurbsCurve;
 class NurbsSurface;
 
 ///////////////////////////////////////////////////////////////////////////
-class NurbsExtrude
+class NurbsRevolve
 {
 public:
-	NurbsExtrude();
-	virtual ~NurbsExtrude();
-	bool extrude(const NurbsCurve& nc, const Point3& direction, NurbsSurface& ns) const;
+	NurbsRevolve();
+	virtual ~NurbsRevolve();
+	bool revolve(const NurbsCurve& nc, NurbsSurface& ns) const;
 
 };
 ///////////////////////////////////////////////////////////////////////////

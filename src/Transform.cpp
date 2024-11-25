@@ -20,6 +20,14 @@ void Transform::apply(Mesh& m)
 	}
 }
 
+void Transform::apply(vector<Point3>& v)
+{
+	for (int i = 0; i < v.size(); i++)
+	{
+		v[i] += _translation;
+	}
+}
+
 void Transform::set_global_translation(const Point3& translation)
 {
 	_translation = translation;

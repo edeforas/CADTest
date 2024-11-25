@@ -81,3 +81,27 @@ void NurbsUtil::to_mesh(const NurbsSurface& n, Mesh& m, int iNbSegments)
 		}
 }
 ///////////////////////////////////////////////////////////////////////////
+bool NurbsUtil::elevate_degree(NurbsCurve& n)
+{
+	//from paper DIRECT DEGREE ELEVATION OF NURBS CURVES Kestutis Jankauskas, Dalius Rubliauskas
+	if (n.degree() == 1)
+	{	
+		//elevate knots
+
+
+	}
+
+	//todo
+	return false;
+}
+///////////////////////////////////////////////////////////////////////////
+void NurbsUtil::create_curve_from_points(const vector<Point3>& points, int degree,NurbsCurve& nc) //no rational, uniform
+{
+	nc.clear();
+	nc.set_degree(degree);
+	nc.set_points(points);
+
+	nc.set_uniform();
+	nc.set_equals_weights();
+}
+///////////////////////////////////////////////////////////////////////////

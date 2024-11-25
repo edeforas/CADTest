@@ -16,6 +16,9 @@ public:
 	void clear();
 
 	void set_degree(int degreeU,int idegreeV);
+	int degree_u() const;
+	int degree_v() const;
+
 	void set_knots_u(const vector <double>& knots);
 	void set_knots_v(const vector <double>& knots);
 	void set_uniform_u();

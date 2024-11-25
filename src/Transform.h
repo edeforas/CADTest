@@ -1,7 +1,11 @@
 #ifndef _Transform_
 #define _Transform_
 
+#include "Geometry.h"
 #include "Mesh.h"
+
+#include <vector>
+using namespace std;
 
 class Transform
 {
@@ -13,6 +17,7 @@ public:
 	void reset();
 
 	void apply(Mesh& m);
+	void apply(vector<Point3>& v);
 
 private:
 	Point3 _translation;
