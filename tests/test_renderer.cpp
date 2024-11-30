@@ -3,7 +3,7 @@
 #include "ImageIoBmp.h"
 #include "BodyFactory.h"
 #include "NurbsCurve.h"
-#include "NurbsUtil.h"
+#include "NurbsFactory.h"
 
 #include <iostream>
 using namespace std;
@@ -43,7 +43,7 @@ int main()
 		points.push_back(p*30.);
 	}
 
-	NurbsUtil::create_curve_from_points(points, degree,n);
+	NurbsFactory::create_curve_from_points(points, degree,n);
 	n.to_polyline(nurbPL);
 
 	for (int i = 0; i < 360; i += 40)

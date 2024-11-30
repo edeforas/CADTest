@@ -45,6 +45,9 @@ target_link_libraries(test_nurbscurve libCADTest)
 add_executable(test_nurbsutil test_nurbsutil.cpp  )
 target_link_libraries(test_nurbsutil libCADTest)
 
+add_executable(test_nurbsfactory test_nurbsfactory.cpp  )
+target_link_libraries(test_nurbsfactory libCADTest)
+
 add_executable(test_nurbssurface test_nurbssurface.cpp  )
 target_link_libraries(test_nurbssurface libCADTest)
 
@@ -69,6 +72,7 @@ add_test(test_fractal_tetrahedron test_fractal_tetrahedron)
 
 add_test(test_nurbscurve test_nurbscurve)
 add_test(test_nurbsutil test_nurbsutil)
+add_test(test_nurbfactory test_nurbsfactory)
 add_test(test_nurbssurface test_nurbssurface)
 add_test(test_nurbsextrude test_nurbsextrude)
 add_test(test_nurbsruled test_nurbsruled)

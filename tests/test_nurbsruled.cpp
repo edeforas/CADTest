@@ -3,6 +3,7 @@
 #include "NurbsCurve.h"
 #include "NurbsSurface.h"
 #include "NurbsUtil.h"
+#include "NurbsFactory.h"
 
 #include "OBJFile.h"
 
@@ -26,8 +27,8 @@ void test_nurbsruled_cylinder()
 
 	//create profile curve
 	NurbsCurve nc1,nc2;
-	NurbsUtil::create_circle(1., nc1);
-	NurbsUtil::create_circle(1., nc2);
+	NurbsFactory::create_circle(1., nc1);
+	NurbsFactory::create_circle(1., nc2);
 
 	// translate nc2
 	vector<Point3>& points = nc2.points();

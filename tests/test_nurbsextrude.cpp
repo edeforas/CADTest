@@ -3,6 +3,7 @@
 #include "NurbsCurve.h"
 #include "NurbsSurface.h"
 #include "NurbsUtil.h"
+#include "NurbsFactory.h"
 
 #include "OBJFile.h"
 
@@ -26,7 +27,7 @@ void test_nurbsextrude_cylinder()
 
 	//create profile curve
 	NurbsCurve nc;
-	NurbsUtil::create_circle(1., nc);
+	NurbsFactory::create_circle(1., nc);
 
 	Point3 direction(0, 0, 3);
 	NurbsSurface ns;
@@ -52,7 +53,7 @@ void test_nurbsextrude_random_deg2()
 	for (int i = 0; i < nbPoints; i++)
 		points.push_back(Point3((double)rand() / RAND_MAX, (double)rand() / RAND_MAX, (double)rand() / RAND_MAX));
 
-	NurbsUtil::create_curve_from_points(points, degree,nc);
+	NurbsFactory::create_curve_from_points(points, degree,nc);
 
 	Point3 direction(0, 0, 1.);
 	NurbsSurface ns;

@@ -2,6 +2,7 @@
 
 #include "NurbsCurve.h"
 #include "NurbsSurface.h"
+#include "NurbsFactory.h"
 #include "NurbsUtil.h"
 
 #include "OBJFile.h"
@@ -20,9 +21,9 @@ void test_near(double a, double ref, double epsilon=1.e-10,const string& sMessag
 	}
 }
 ///////////////////////////////////////////////////////////////////////////
-void test_NurbsRevolve_vase()
+void test_nurbsrevolve_vase()
 {
-	cout << endl << "test_NurbsRevolve_vase" << endl;
+	cout << endl << "test_nurbsrevolve_vase" << endl;
 
 	//create profile curve
 	NurbsCurve nc;
@@ -34,7 +35,7 @@ void test_NurbsRevolve_vase()
 		Point3(2.,2.,3.),Point3(3.,0.,4.),Point3(0.,2.,5.)
 	};
 
-	NurbsUtil::create_curve_from_points(points, 3, nc);
+	NurbsFactory::create_curve_from_points(points, 3, nc);
 
 	// revolve
 	NurbsRevolve nr;
@@ -50,9 +51,9 @@ void test_NurbsRevolve_vase()
 	ow.write(m);
 }
 ///////////////////////////////////////////////////////////////////////////
-void test_NurbsRevolve_sphere()
+void test_nurbsrevolve_sphere()
 {
-	cout << endl << "test_NurbsRevolve_sphere" << endl;
+	cout << endl << "test_nurbsrevolve_sphere" << endl;
 
 	//create profile curve: half circle
 	NurbsCurve nc;
@@ -87,11 +88,41 @@ void test_NurbsRevolve_sphere()
 	ow.open("test_nurbsrevolve_sphere.obj");
 	ow.write(m);
 }
+
+
+
+void test_nurbsrevolve_create_sphere()
+{
+	// use nurbs factory that call revolve
+	cout << endl << "test_nurbsrevolve_create_sphere" << endl;
+
+	//call factory, this call internally revolve
+	NurbsSurface ns;
+	NurbsFactory::create_sphere(1., ns);
+
+	Mesh m;
+	NurbsUtil::to_mesh(ns, m, 10);
+	m.merge_vertices();
+
+	// test all points are on distance 1. to center
+	for (int i = 0; i < m.nb_vertices(); i++)
+	{
+		Point3 p;
+		m.get_vertex(i, p);
+		test_near(p.norm(), 1.);
+	}
+
+	OBJWriter ow;
+	ow.open("test_nurbsrevolve_create_sphere.obj");
+	ow.write(m);
+}
+
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
-	test_NurbsRevolve_vase();
-	test_NurbsRevolve_sphere();
+	test_nurbsrevolve_vase();
+	test_nurbsrevolve_sphere();
+	test_nurbsrevolve_create_sphere();
 
 	cout << "Test Finished.";
 	return 0;

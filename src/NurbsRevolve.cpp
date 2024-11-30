@@ -86,7 +86,6 @@ bool NurbsRevolve::revolve(const NurbsCurve& nc, NurbsSurface& ns) const
 	ns.set_knots_u({ 0., 0., 0., 0.25, 0.25, 0.5, 0.5, 0.75, 0.75, 1., 1., 1. }); // (refCircle.knots());
 	ns.set_knots_v(nc.knots());
 	ns.set_weights(wc);
-	//ns.set_equals_weights();
 
 	return true;
 }
