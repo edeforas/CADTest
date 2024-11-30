@@ -65,5 +65,49 @@ void NurbsFactory::create_sphere(double dRadius,NurbsSurface& ns)
 	NurbsRevolve nr;
 	nr.revolve(nc, ns);
 }
+///////////////////////////////////////////////////////////////////////////
+void NurbsFactory::create_cylinder(double dRadius, double dHeight, NurbsSurface& ns)
+{
+	ns.clear();
 
+	//create profile curve
+	NurbsCurve nc;
+	vector<Point3> points = {
+		Point3(0., 0.,-dHeight / 2.),
+		Point3(0.,dRadius,-dHeight / 2.),
+		Point3(0.,dRadius,dHeight / 2.),
+		Point3(0., 0.,dHeight / 2.),
+	};
 
+	nc.set_degree(1);
+	nc.set_points(points);
+	nc.set_uniform();
+	nc.set_equals_weights();
+
+	// revolve
+	NurbsRevolve nr;
+	nr.revolve(nc, ns);
+}
+///////////////////////////////////////////////////////////////////////////
+void NurbsFactory::create_torus(double dMajorRadius,double dMinorRadius, NurbsSurface& ns)
+{
+	ns.clear();
+
+	//create profile curve: circle and transform it
+	NurbsCurve nc;
+	NurbsFactory::create_circle(dMinorRadius, nc);
+	for (int i = 0; i < nc.nb_points(); i++)
+	{
+		Point3& p = nc.points()[i];
+
+		p.x() += dMajorRadius;
+
+		double dz = p.z();
+		p.z() = p.y();
+		p.y() = -dz;
+	}
+
+	// revolve
+	NurbsRevolve nr;
+	nr.revolve(nc, ns);
+}

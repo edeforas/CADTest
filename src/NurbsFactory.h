@@ -15,6 +15,8 @@ namespace NurbsFactory
 	void create_curve_from_points(const vector<Point3>& points, int degree, NurbsCurve& nc); //no rational, uniform
 	void create_circle(double dRadius, NurbsCurve& nc);
 	void create_sphere(double dRadius, NurbsSurface& ns);
+	void create_cylinder(double dRadius,double dHeight, NurbsSurface& ns);
+	void create_torus(double dMajorRadius, double dMinorRadius, NurbsSurface& ns);
 }
 ///////////////////////////////////////////////////////////////////////////
 

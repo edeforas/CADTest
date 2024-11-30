@@ -15,7 +15,6 @@ void test_near(double a, double ref, double epsilon=1.e-10,const string& sMessag
 		exit(-1);
 	}
 }
-
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbs_factory_create_circle()
 {
@@ -37,7 +36,6 @@ void test_nurbs_factory_create_circle()
 		}
 	}
 }
-
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbs_factory_create_sphere()
 {
@@ -56,9 +54,30 @@ void test_nurbs_factory_create_sphere()
 				double norm = p.norm();
 				//cout << "u=" << u << " x=" << p.x() << " y=" << p.y() << " z=" << p.z() << " norm=" << norm << endl;
 				test_near(norm, dRadius, 1.e-10);
-
 			}
+	}
+}
+///////////////////////////////////////////////////////////////////////////
+void test_nurbs_factory_create_cylinder()
+{
+	cout << endl << "test_nurbs_factory_create_cylinder" << endl;
 
+	double dHeight = 10.;
+	for (double dRadius = 0.1; dRadius < 100.; dRadius *= 2.)
+	{
+		NurbsSurface ns;
+		NurbsFactory::create_cylinder(dRadius,dHeight, ns);
+
+		for (double u = 0.; u <= 1.; u += 0.01)
+			for (double v = 0.; v <= 1.; v += 0.01)
+			{
+				Point3 p;
+				ns.evaluate(u, v, p);
+				p.z() = 0.;
+				double norm = p.norm();
+				//cout << "u=" << u << " x=" << p.x() << " y=" << p.y() << " z=" << p.z() << " norm=" << norm << endl;
+				test_near(norm, dRadius, 1.e-10);
+			}
 	}
 }
 ///////////////////////////////////////////////////////////////////////////
@@ -66,6 +85,7 @@ int main()
 {
 	test_nurbs_factory_create_circle();
 	test_nurbs_factory_create_sphere();
+	test_nurbs_factory_create_cylinder();
 
 	cout << "Test Finished.";
 	return 0;

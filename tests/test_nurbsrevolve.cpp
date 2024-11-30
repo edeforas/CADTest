@@ -88,9 +88,7 @@ void test_nurbsrevolve_sphere()
 	ow.open("test_nurbsrevolve_sphere.obj");
 	ow.write(m);
 }
-
-
-
+///////////////////////////////////////////////////////////////////////////
 void test_nurbsrevolve_create_sphere()
 {
 	// use nurbs factory that call revolve
@@ -116,13 +114,50 @@ void test_nurbsrevolve_create_sphere()
 	ow.open("test_nurbsrevolve_create_sphere.obj");
 	ow.write(m);
 }
+///////////////////////////////////////////////////////////////////////////
+void test_nurbsrevolve_create_cylinder()
+{
+	// use nurbs factory that call revolve
+	cout << endl << "test_nurbsrevolve_create_cylinder" << endl;
 
+	//call factory, this call internally revolve
+	NurbsSurface ns;
+	NurbsFactory::create_cylinder(1.,3., ns);
+
+	Mesh m;
+	NurbsUtil::to_mesh(ns, m, 10);
+	m.merge_vertices();
+
+	OBJWriter ow;
+	ow.open("test_nurbsrevolve_create_cylinder.obj");
+	ow.write(m);
+}
+///////////////////////////////////////////////////////////////////////////
+void test_nurbsrevolve_create_torus()
+{
+	// use nurbs factory that call revolve
+	cout << endl << "test_nurbsrevolve_create_torus" << endl;
+
+	//call factory, this call internally revolve
+	NurbsSurface ns;
+	NurbsFactory::create_torus(5., 2., ns);
+
+	Mesh m;
+	NurbsUtil::to_mesh(ns, m, 10);
+	m.merge_vertices();
+
+	OBJWriter ow;
+	ow.open("test_nurbsrevolve_create_torus.obj");
+	ow.write(m);
+}
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
 	test_nurbsrevolve_vase();
 	test_nurbsrevolve_sphere();
 	test_nurbsrevolve_create_sphere();
+	test_nurbsrevolve_create_cylinder();
+	test_nurbsrevolve_create_torus();
 
 	cout << "Test Finished.";
 	return 0;
