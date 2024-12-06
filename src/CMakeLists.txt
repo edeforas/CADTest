@@ -4,7 +4,9 @@ set(CADTEST_FILES
 	BodyUnion.cpp BodyUnion.h
 	BodyIntersection.cpp BodyIntersection.h
 	BodyDifference.cpp BodyDifference.h	
+	Solid.cpp Solid.h
 	Face.cpp Face.h
+	
 
 	#FaceMesh.cpp FaceMesh.h
 	#FaceNurbs.cpp FaceNurbs.h

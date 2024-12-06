@@ -60,10 +60,12 @@ target_link_libraries(test_nurbsruled libCADTest)
 add_executable(test_nurbsrevolve test_nurbsrevolve.cpp  )
 target_link_libraries(test_nurbsrevolve libCADTest)
 
+add_executable(test_solid test_solid.cpp  )
+target_link_libraries(test_solid libCADTest)
+
 add_test(test_geometry test_geometry)
 add_test(test_bmpfile test_bmpfile)
 add_test(test_mandelbrot_mesh test_mandelbrot_mesh)
-
 add_test(test_measurements test_measurements)
 add_test(test_bodyfactory test_bodyfactory)
 add_test(test_level_of_details test_level_of_details)
@@ -77,5 +79,6 @@ add_test(test_nurbssurface test_nurbssurface)
 add_test(test_nurbsextrude test_nurbsextrude)
 add_test(test_nurbsruled test_nurbsruled)
 add_test(test_nurbsrevolve test_nurbsrevolve)
+add_test(test_solid test_solid)
 
 add_test(test_renderer test_renderer)
