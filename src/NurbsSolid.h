@@ -1,5 +1,5 @@
-#ifndef Solid_
-#define Solid_
+#ifndef NurbsSolid_
+#define NurbsSolid_
 
 #include "NurbsSurface.h"
 
@@ -8,11 +8,11 @@ using namespace std;
 
 
 ///////////////////////////////////////////////////////////////////////////
-class Solid
+class NurbsSolid
 {
 public:
-    Solid();
-    virtual ~Solid();
+    NurbsSolid();
+    virtual ~NurbsSolid();
     void clear();
 
     void add_surface(const NurbsSurface& ns); 

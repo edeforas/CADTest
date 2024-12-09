@@ -3,7 +3,7 @@
 #include "NurbsFactory.h"
 #include "NurbsExtrude.h"
 #include "NurbsUtil.h"
-#include "Solid.h"
+#include "NurbsSolid.h"
 #include "OBJFile.h"
 
 #include <iostream>
@@ -22,7 +22,7 @@ void test_near(double a, double ref, double epsilon=1.e-10,const string& sMessag
 ///////////////////////////////////////////////////////////////////////////
 void test_solid_cylinder()
 {
-	Solid s;
+	NurbsSolid s;
 	
 	cout << endl << "test_nurbsextrude_cylinder" << endl;
 

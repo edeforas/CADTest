@@ -4,7 +4,6 @@ set(CADTEST_FILES
 	BodyUnion.cpp BodyUnion.h
 	BodyIntersection.cpp BodyIntersection.h
 	BodyDifference.cpp BodyDifference.h	
-	Solid.cpp Solid.h
 	Face.cpp Face.h
 	
 
@@ -35,6 +34,7 @@ set(CADTEST_FILES
 	NurbsRevolve.cpp NurbsRevolve.h
 	NurbsUtil.cpp NurbsUtil.h
 	NurbsFactory.cpp NurbsFactory.h
+	NurbsSolid.cpp NurbsSolid.h
 	StepFile.cpp StepFile.h
 	
 	Renderer.cpp Renderer.h

@@ -1,25 +1,25 @@
-#include "Solid.h"
+#include "NurbsSolid.h"
 
 ///////////////////////////////////////////////////////////////////////////
-Solid::Solid()
+NurbsSolid::NurbsSolid()
 {
 	clear();
 }
 
-Solid::~Solid()
+NurbsSolid::~NurbsSolid()
 { }
 
-void Solid::clear()
+void NurbsSolid::clear()
 {
 	_surfaces.clear();
 }
 
-vector<NurbsSurface>& Solid::surfaces()
+vector<NurbsSurface>& NurbsSolid::surfaces()
 {
 	return _surfaces;
 }
 
-void Solid::add_surface(const NurbsSurface& ns)
+void NurbsSolid::add_surface(const NurbsSurface& ns)
 {
 	_surfaces.push_back(ns);
 }
