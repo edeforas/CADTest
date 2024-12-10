@@ -61,7 +61,7 @@ add_executable(test_nurbsrevolve test_nurbsrevolve.cpp  )
 target_link_libraries(test_nurbsrevolve libCADTest)
 
 add_executable(test_nurbssolid test_nurbssolid.cpp  )
-target_link_libraries(test_solid libCADTest)
+target_link_libraries(test_nurbssolid libCADTest)
 
 add_test(test_geometry test_geometry)
 add_test(test_bmpfile test_bmpfile)

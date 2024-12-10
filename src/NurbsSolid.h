@@ -17,6 +17,7 @@ public:
 
     void add_surface(const NurbsSurface& ns); 
     vector<NurbsSurface>& surfaces();
+    const vector<NurbsSurface>& surfaces() const;
 
 private:
 	vector<NurbsSurface> _surfaces;

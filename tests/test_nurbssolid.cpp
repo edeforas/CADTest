@@ -20,34 +20,8 @@ void test_near(double a, double ref, double epsilon=1.e-10,const string& sMessag
 	}
 }
 ///////////////////////////////////////////////////////////////////////////
-void test_solid_cylinder()
-{
-	NurbsSolid s;
-	
-	cout << endl << "test_nurbsextrude_cylinder" << endl;
-
-	//create profile curve
-	NurbsCurve nc;
-	NurbsFactory::create_circle(1., nc);
-
-	Point3 direction(0, 0, 3);
-	NurbsSurface ns;
-
-	// extrude
-	NurbsExtrude ne;
-	ne.extrude(nc, direction, ns);
-
-	s.add_surface(ns);
-	
-	Mesh m;
-	NurbsUtil::to_mesh(ns,m,10);
-	OBJFile::save("test_solid_cylinder.obj", m);
-}
-///////////////////////////////////////////////////////////////////////////
 int main()
 {
-	test_solid_cylinder();
-
 	cout << "Test Finished.";
 	return 0;
 }

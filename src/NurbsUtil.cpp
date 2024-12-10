@@ -2,6 +2,7 @@
 
 #include "NurbsCurve.h"
 #include "NurbsSurface.h"
+#include "NurbsSolid.h"
 #include "Mesh.h"
 
 #include <cassert>
@@ -31,9 +32,10 @@ void NurbsUtil::to_pointsmesh(const NurbsSurface& n,Mesh& m) //show the ctrl poi
 		}
 }
 ///////////////////////////////////////////////////////////////////////////
-void NurbsUtil::to_mesh(const NurbsSurface& n, Mesh& m, int iNbSegments)
+void NurbsUtil::to_mesh(const NurbsSurface& n, Mesh& m, int iNbSegments,bool bClearMesh)
 {
-	m.clear();
+	if(bClearMesh)
+		m.clear();
 
 	int iNbSegmentsU = iNbSegments * n.nb_points_u();
 	int iNbSegmentsV = iNbSegments * n.nb_points_v();
@@ -59,6 +61,14 @@ void NurbsUtil::to_mesh(const NurbsSurface& n, Mesh& m, int iNbSegments)
 
 			m.add_quad(p1, p2, p3, p4);
 		}
+}
+///////////////////////////////////////////////////////////////////////////
+void NurbsUtil::to_mesh(const NurbsSolid& ns, Mesh& m, int iNbSegments)
+{
+	for (const auto& f : ns.surfaces())
+	{
+		to_mesh(f, m, iNbSegments,false);
+	}
 }
 ///////////////////////////////////////////////////////////////////////////
 bool NurbsUtil::elevate_degree(NurbsCurve& n)

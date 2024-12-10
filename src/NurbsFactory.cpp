@@ -2,6 +2,8 @@
 
 #include "NurbsCurve.h"
 #include "NurbsSurface.h"
+#include "NurbsSolid.h"
+
 #include "NurbsRevolve.h"
 
 #include <cassert>
@@ -28,6 +30,26 @@ void NurbsFactory::create_circle(double dRadius, NurbsCurve& nc)
 	nc.set_knots(knots);
 	nc.set_weights(weights);
 	nc.set_points(points);
+}
+///////////////////////////////////////////////////////////////////////////
+void NurbsFactory::create_disk(double dRadius, NurbsSurface& ns)
+{
+	ns.clear();
+
+	//create profile curve
+	NurbsCurve nc;
+	vector<Point3> points = {
+		Point3(0., 0.,0.),
+		Point3(dRadius,0.,0.),
+	};
+
+	nc.set_degree(1);
+	nc.set_points(points);
+	nc.set_uniform();
+	nc.set_equals_weights();
+
+	NurbsRevolve nr;
+	nr.revolve(nc, ns);
 }
 ///////////////////////////////////////////////////////////////////////////
 void NurbsFactory::create_curve_from_points(const vector<Point3>& points, int degree,NurbsCurve& nc) //no rational, uniform
@@ -61,32 +83,37 @@ void NurbsFactory::create_sphere(double dRadius,NurbsSurface& ns)
 	nc.set_weights(weights);
 	nc.set_knots(knots);
 
-	// revolve
 	NurbsRevolve nr;
 	nr.revolve(nc, ns);
 }
 ///////////////////////////////////////////////////////////////////////////
-void NurbsFactory::create_cylinder(double dRadius, double dHeight, NurbsSurface& ns)
+void NurbsFactory::create_cylinder(double dRadius, double dHeight, NurbsSolid& nsd)
 {
-	ns.clear();
+	nsd.clear();
+
+	NurbsSurface s1, s2, s3;
+
+	create_disk(dRadius, s1);
+	for (auto& i : s1.points())
+		i.z() -= dHeight / 2.;
+
+	create_disk(dRadius, s3);
+	for (auto& i : s3.points())
+		i.z() += dHeight / 2.;
 
 	//create profile curve
 	NurbsCurve nc;
 	vector<Point3> points = {
-		Point3(0., 0.,-dHeight / 2.),
-		Point3(0.,dRadius,-dHeight / 2.),
-		Point3(0.,dRadius,dHeight / 2.),
-		Point3(0., 0.,dHeight / 2.),
+		Point3(0.,dRadius,-dHeight / 2.),Point3(0.,dRadius,dHeight / 2.)
 	};
 
-	nc.set_degree(1);
-	nc.set_points(points);
-	nc.set_uniform();
-	nc.set_equals_weights();
-
-	// revolve
+	create_curve_from_points(points,1, nc);
 	NurbsRevolve nr;
-	nr.revolve(nc, ns);
+	nr.revolve(nc, s2);
+
+	nsd.add_surface(s1);
+	nsd.add_surface(s2);
+	nsd.add_surface(s3);
 }
 ///////////////////////////////////////////////////////////////////////////
 void NurbsFactory::create_torus(double dMajorRadius,double dMinorRadius, NurbsSurface& ns)
