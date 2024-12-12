@@ -1,9 +1,6 @@
 #include "NurbsCurve.h"
 #include "NurbsSurface.h"
 #include "NurbsFactory.h"
-#include "NurbsSolid.h"
-#include "NurbsUtil.h"
-#include "OBJFile.h"
 
 #include <iostream>
 #include <cassert>
@@ -61,23 +58,10 @@ void test_nurbs_factory_create_sphere()
 	}
 }
 ///////////////////////////////////////////////////////////////////////////
-void test_nurbs_factory_cylinder()
-{
-	cout << endl << "test_nurbs_factory_cylinder" << endl;
-
-	NurbsSolid ns;
-	NurbsFactory::create_cylinder(1, 3, ns);
-
-	Mesh m;
-	NurbsUtil::to_mesh(ns, m, 10);
-	OBJFile::save("test_nurbs_factory_cylinder.obj", m);
-}
-///////////////////////////////////////////////////////////////////////////
 int main()
 {
 	test_nurbs_factory_create_circle();
 	test_nurbs_factory_create_sphere();
-	test_nurbs_factory_cylinder();
 
 	cout << "Test Finished.";
 	return 0;

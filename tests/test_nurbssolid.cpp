@@ -20,8 +20,22 @@ void test_near(double a, double ref, double epsilon=1.e-10,const string& sMessag
 	}
 }
 ///////////////////////////////////////////////////////////////////////////
+void test_nurbssolid_cylinder()
+{
+	cout << endl << "test_nurbssolid_cylinder" << endl;
+
+	NurbsSolid ns;
+	NurbsFactory::create_cylinder(1, 3, ns);
+
+	Mesh m;
+	NurbsUtil::to_mesh(ns, m, 10);
+	OBJFile::save("test_nurbssolid_cylinder.obj", m);
+}
+
+///////////////////////////////////////////////////////////////////////////
 int main()
 {
+	test_nurbssolid_cylinder();
 	cout << "Test Finished.";
 	return 0;
 }
