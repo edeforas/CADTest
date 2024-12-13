@@ -87,35 +87,6 @@ void NurbsFactory::create_sphere(double dRadius,NurbsSurface& ns)
 	nr.revolve(nc, ns);
 }
 ///////////////////////////////////////////////////////////////////////////
-void NurbsFactory::create_cylinder(double dRadius, double dHeight, NurbsSolid& nsd)
-{
-	nsd.clear();
-
-	NurbsSurface s1, s2, s3;
-
-	create_disk(dRadius, s1);
-	for (auto& i : s1.points())
-		i.z() -= dHeight / 2.;
-
-	create_disk(dRadius, s3);
-	for (auto& i : s3.points())
-		i.z() += dHeight / 2.;
-
-	//create profile curve
-	NurbsCurve nc;
-	vector<Point3> points = {
-		Point3(0.,dRadius,-dHeight / 2.),Point3(0.,dRadius,dHeight / 2.)
-	};
-
-	create_curve_from_points(points,1, nc);
-	NurbsRevolve nr;
-	nr.revolve(nc, s2);
-
-	nsd.add_surface(s1);
-	nsd.add_surface(s2);
-	nsd.add_surface(s3);
-}
-///////////////////////////////////////////////////////////////////////////
 void NurbsFactory::create_torus(double dMajorRadius,double dMinorRadius, NurbsSurface& ns)
 {
 	ns.clear();
@@ -138,3 +109,49 @@ void NurbsFactory::create_torus(double dMajorRadius,double dMinorRadius, NurbsSu
 	NurbsRevolve nr;
 	nr.revolve(nc, ns);
 }
+///////////////////////////////////////////////////////////////////////////
+void NurbsFactory::create_cylinder(double dRadius, double dHeight, NurbsSolid& n)
+{
+	n.clear();
+
+	NurbsSurface s1, s2, s3;
+
+	create_disk(dRadius, s1);
+	for (auto& i : s1.points())
+		i.z() -= dHeight / 2.;
+
+	create_disk(dRadius, s3);
+	for (auto& i : s3.points())
+		i.z() += dHeight / 2.;
+
+	//create profile curve
+	NurbsCurve nc;
+	vector<Point3> points = {
+		Point3(0.,dRadius,-dHeight / 2.),Point3(0.,dRadius,dHeight / 2.)
+	};
+
+	create_curve_from_points(points, 1, nc);
+	NurbsRevolve nr;
+	nr.revolve(nc, s2);
+
+	n.add_surface(s1);
+	n.add_surface(s2);
+	n.add_surface(s3);
+}
+///////////////////////////////////////////////////////////////////////////
+void NurbsFactory::create_torus(double dMajorRadius, double dMinorRadius, NurbsSolid& n)
+{
+	n.clear();
+	NurbsSurface ns;
+	create_torus(dMajorRadius, dMinorRadius, ns);
+	n.add_surface(ns);
+}
+///////////////////////////////////////////////////////////////////////////
+void NurbsFactory::create_sphere(double dRadius, NurbsSolid& n)
+{
+	n.clear();
+	NurbsSurface ns;
+	create_sphere(dRadius, ns);
+	n.add_surface(ns);
+}
+///////////////////////////////////////////////////////////////////////////

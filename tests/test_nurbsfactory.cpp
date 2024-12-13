@@ -1,6 +1,10 @@
 #include "NurbsCurve.h"
 #include "NurbsSurface.h"
 #include "NurbsFactory.h"
+#include "NurbsSolid.h"
+#include "NurbsExtrude.h"
+#include "NurbsUtil.h"
+#include "OBJFile.h"
 
 #include <iostream>
 #include <cassert>
@@ -58,10 +62,49 @@ void test_nurbs_factory_create_sphere()
 	}
 }
 ///////////////////////////////////////////////////////////////////////////
+void test_nurbssolid_cylinder()
+{
+	cout << endl << "test_nurbssolid_cylinder" << endl;
+
+	NurbsSolid ns;
+	NurbsFactory::create_cylinder(1, 3, ns);
+
+	Mesh m;
+	NurbsUtil::to_mesh(ns, m, 10);
+	OBJFile::save("test_nurbssolid_cylinder.obj", m);
+}
+///////////////////////////////////////////////////////////////////////////
+void test_nurbssolid_sphere()
+{
+	cout << endl << "test_nurbssolid_sphere" << endl;
+
+	NurbsSolid ns;
+	NurbsFactory::create_sphere(2, ns);
+
+	Mesh m;
+	NurbsUtil::to_mesh(ns, m, 10);
+	OBJFile::save("test_nurbssolid_sphere.obj", m);
+}
+///////////////////////////////////////////////////////////////////////////
+void test_nurbssolid_torus()
+{
+	cout << endl << "test_nurbssolid_torus" << endl;
+
+	NurbsSolid ns;
+	NurbsFactory::create_torus(5,2, ns);
+
+	Mesh m;
+	NurbsUtil::to_mesh(ns, m, 10);
+	OBJFile::save("test_nurbssolid_torus.obj", m);
+}
+///////////////////////////////////////////////////////////////////////////
 int main()
 {
 	test_nurbs_factory_create_circle();
 	test_nurbs_factory_create_sphere();
+	test_nurbssolid_cylinder();
+	test_nurbssolid_sphere();
+	test_nurbssolid_torus();
 
 	cout << "Test Finished.";
 	return 0;
