@@ -113,6 +113,13 @@ vector<Point3>& NurbsCurve::points()
 	return _points;
 }
 
+bool NurbsCurve::is_closed(double dTol) const
+{
+	if (_points.size() <= 1)
+		return false;
+	return (_points[0] - _points[_points.size() - 1]).norm_square() < (dTol * dTol);
+}
+
 int NurbsCurve::find_knot_span(const vector <double>& knots,double t)
 {
 	if (knots.size()<2)

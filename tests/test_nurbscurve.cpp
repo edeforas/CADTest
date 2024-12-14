@@ -7,6 +7,15 @@
 #include <cmath>
 using namespace std;
 
+void test(bool b, string s="")
+{
+	if (b == false)
+	{
+		cout << "condition: [" << s << "] is not realized!" << endl;
+		exit(-1);
+	}
+}
+
 void test_near(double a, double ref, double epsilon=1.e-10,const string& sMessage="")
 {
 	if ((a > ref + epsilon) || (a < ref - epsilon))
@@ -232,7 +241,44 @@ void test_knot_insertion()
 		//test_near(norm, 1., 1.e-10); //TODO
 	}
 }
+///////////////////////////////////////////////////////////////////////////
+void test_is_closed()
+{
+	cout << endl << "test_is_closed" << endl;
 
+	{
+		NurbsCurve n;
+		test(n.is_closed() == false);
+	}
+
+	{
+		NurbsCurve n;
+		vector<Point3> points = { Point3(1.,0.,0.) };
+		NurbsFactory::create_curve_from_points(points, 1, n);
+		test(n.is_closed() == false);
+	}
+
+	{
+		NurbsCurve n;
+		vector<Point3> points = { Point3(1.,0.,0.),Point3(1.,1.,0.),Point3(0.,1.,0.) };
+		NurbsFactory::create_curve_from_points(points, 1, n);
+		test(n.is_closed() == false);
+	}
+
+	{
+		NurbsCurve n;
+		vector<Point3> points = { Point3(1.,0.,0.),Point3(1.,1.,0.),Point3(1.,0.,0.) };
+		NurbsFactory::create_curve_from_points(points, 1, n);
+		test(n.is_closed() == true);
+	}
+
+	{
+		NurbsCurve n;
+		vector<Point3> points = { Point3(1.+1.1e-6,0.,0.),Point3(1.,1.,0.),Point3(1.,0.,0.) };
+		NurbsFactory::create_curve_from_points(points, 1, n);
+		test(n.is_closed() == false);
+	}
+}
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
@@ -244,6 +290,7 @@ int main()
 	test_cubic_circle_approximation();
 	
 	test_random_deg2();
+	test_is_closed();
 
 	//test_knot_insertion();
 

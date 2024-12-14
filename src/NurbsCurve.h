@@ -29,6 +29,8 @@ public:
 	void set_points(const vector <Point3>& points);
 	int nb_points() const;
 
+	bool is_closed(double dTol = 1.e-6) const;
+
 	void insert_knot(double u);
 
 	const vector<Point3>& points() const;
