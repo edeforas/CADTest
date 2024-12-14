@@ -62,49 +62,49 @@ void test_nurbs_factory_create_sphere()
 	}
 }
 ///////////////////////////////////////////////////////////////////////////
-void test_nurbssolid_cylinder()
+void test_nurbssolid_create_cylinder()
 {
-	cout << endl << "test_nurbssolid_cylinder" << endl;
+	cout << endl << "test_nurbssolid_create_cylinder" << endl;
 
 	NurbsSolid ns;
 	NurbsFactory::create_cylinder(1, 3, ns);
 
 	Mesh m;
 	NurbsUtil::to_mesh(ns, m, 10);
-	OBJFile::save("test_nurbssolid_cylinder.obj", m);
+	OBJFile::save("test_nurbssolid_create_cylinder.obj", m);
 }
 ///////////////////////////////////////////////////////////////////////////
-void test_nurbssolid_sphere()
+void test_nurbssolid_create_sphere()
 {
-	cout << endl << "test_nurbssolid_sphere" << endl;
+	cout << endl << "test_nurbssolid_create_sphere" << endl;
 
 	NurbsSolid ns;
 	NurbsFactory::create_sphere(2, ns);
 
 	Mesh m;
 	NurbsUtil::to_mesh(ns, m, 10);
-	OBJFile::save("test_nurbssolid_sphere.obj", m);
+	OBJFile::save("test_nurbssolid_create_sphere.obj", m);
 }
 ///////////////////////////////////////////////////////////////////////////
-void test_nurbssolid_torus()
+void test_nurbssolid_create_torus()
 {
-	cout << endl << "test_nurbssolid_torus" << endl;
+	cout << endl << "test_nurbssolid_create_torus" << endl;
 
 	NurbsSolid ns;
 	NurbsFactory::create_torus(5,2, ns);
 
 	Mesh m;
 	NurbsUtil::to_mesh(ns, m, 10);
-	OBJFile::save("test_nurbssolid_torus.obj", m);
+	OBJFile::save("test_nurbssolid_create_torus.obj", m);
 }
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
 	test_nurbs_factory_create_circle();
 	test_nurbs_factory_create_sphere();
-	test_nurbssolid_cylinder();
-	test_nurbssolid_sphere();
-	test_nurbssolid_torus();
+	test_nurbssolid_create_cylinder();
+	test_nurbssolid_create_sphere();
+	test_nurbssolid_create_torus();
 
 	cout << "Test Finished.";
 	return 0;
