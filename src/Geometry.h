@@ -1,9 +1,6 @@
 #ifndef _Geometry_
 #define _Geometry_
 
-#include <vector>
-using namespace std;
-
 class Plane3;
 ///////////////////////////////////////////////////////////////////////////
 class Point3
@@ -143,22 +140,6 @@ private:
 	double _x1, _y1, _z1;
 	double _x2, _y2, _z2;
 	bool _bInitialized;
-};
-
-class Transform
-{
-public:
-	Transform();
-
-	void set_global_translation(const Point3& translation);
-	void set_global_translation(double x, double y, double z);
-	void reset();
-
-	void apply(vector<Point3>& v) const;
-	void apply(Point3& p) const;
-
-private:
-	Point3 _translation;
 };
 
 ///////////////////////////////////////////////////////////////////////////

@@ -67,7 +67,7 @@ void test_nurbssolid_create_cylinder()
 	cout << endl << "test_nurbssolid_create_cylinder" << endl;
 
 	NurbsSolid ns;
-	NurbsFactory::create_cylinder(1, 3, ns);
+	NurbsFactory::create_cylinder(10, 30, ns);
 
 	Mesh m;
 	NurbsUtil::to_mesh(ns, m, 10);
@@ -79,7 +79,7 @@ void test_nurbssolid_create_sphere()
 	cout << endl << "test_nurbssolid_create_sphere" << endl;
 
 	NurbsSolid ns;
-	NurbsFactory::create_sphere(2, ns);
+	NurbsFactory::create_sphere(20, ns);
 
 	Mesh m;
 	NurbsUtil::to_mesh(ns, m, 10);
@@ -91,7 +91,7 @@ void test_nurbssolid_create_torus()
 	cout << endl << "test_nurbssolid_create_torus" << endl;
 
 	NurbsSolid ns;
-	NurbsFactory::create_torus(5,2, ns);
+	NurbsFactory::create_torus(30,10, ns);
 
 	Mesh m;
 	NurbsUtil::to_mesh(ns, m, 10);

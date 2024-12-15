@@ -5,6 +5,8 @@
 #include <cmath>
 using namespace std;
 
+#include "Transform.h"
+
 namespace BodyFactory
 {
 	///////////////////////////////////////////////////////////////////////////

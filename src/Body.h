@@ -3,6 +3,7 @@
 
 #include "Mesh.h"
 #include "Geometry.h"
+#include "Transform.h"
 #include "Face.h"
 
 #include <vector>

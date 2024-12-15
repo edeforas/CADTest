@@ -12,6 +12,8 @@ set(CADTEST_FILES
 	#FaceBezierPatches.cpp FaceBezierPatches.h
 	#FaceBezierTriangles.cpp FaceBezierTriangles.h
 	Geometry.cpp Geometry.h
+	Transform.cpp Transform.h
+	
 	
 	Mesh.cpp Mesh.h
 	MeshKernel.cpp MeshKernel.h

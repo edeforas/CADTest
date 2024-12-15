@@ -85,6 +85,12 @@ void NurbsFactory::create_sphere(double dRadius,NurbsSurface& ns)
 
 	NurbsRevolve nr;
 	nr.revolve(nc, ns);
+
+	for (auto& p : ns.points())
+	{
+		p.y() = -p.y();
+	}
+
 }
 ///////////////////////////////////////////////////////////////////////////
 void NurbsFactory::create_torus(double dMajorRadius,double dMinorRadius, NurbsSurface& ns)
@@ -117,14 +123,17 @@ void NurbsFactory::create_cylinder(double dRadius, double dHeight, NurbsSolid& n
 	NurbsSurface s1, s2, s3;
 
 	create_disk(dRadius, s1);
-	for (auto& i : s1.points())
-		i.z() -= dHeight / 2.;
+	for (auto& p : s1.points())
+	{
+		p.z() -= dHeight / 2.;
+		p.y() = -p.y();
+	}
 
 	create_disk(dRadius, s3);
-	for (auto& i : s3.points())
-		i.z() += dHeight / 2.;
-
-	//todo rotate s3 upside down
+	for (auto& p : s3.points())
+	{
+		p.z() += dHeight / 2.;
+	}
 
 	//create profile curve
 	NurbsCurve nc;
@@ -136,6 +145,11 @@ void NurbsFactory::create_cylinder(double dRadius, double dHeight, NurbsSolid& n
 	NurbsRevolve nr;
 	nr.revolve(nc, s2);
 
+	for (auto& p : s2.points())
+	{
+		p.y() = -p.y();
+	}
+
 	n.add_surface(s1);
 	n.add_surface(s2);
 	n.add_surface(s3);
@@ -146,6 +160,12 @@ void NurbsFactory::create_torus(double dMajorRadius, double dMinorRadius, NurbsS
 	n.clear();
 	NurbsSurface ns;
 	create_torus(dMajorRadius, dMinorRadius, ns);
+
+	for (auto& p : ns.points())
+	{
+		p.y() = -p.y();
+	}
+
 	n.add_surface(ns);
 }
 ///////////////////////////////////////////////////////////////////////////
