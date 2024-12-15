@@ -17,12 +17,23 @@ public:
 
 	void reset();
 
-	void apply(Point3& p) const;
+	virtual void apply(Point3& p) const;
 
 private:
 	Point3 _translation;
 	double 	_yaw , _pitch, _roll;
 	double _yawCos, _yawSin, _pitchCos, _pitchSin, _rollCos, _rollSin;
+};
+
+class Translation : public Transform
+{
+public:
+	Translation(const Point3& translation);
+
+	virtual void apply(Point3& p) const override;
+
+private:
+	Point3 _translation;
 };
 
 ///////////////////////////////////////////////////////////////////////////

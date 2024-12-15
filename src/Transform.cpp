@@ -62,3 +62,15 @@ void Transform::set_angles(double yaw, double pitch, double roll)
 	_rollSin = sin(_roll * dDegToRad);
 }
 ///////////////////////////////////////////////////////////////////////////
+
+
+Translation::Translation(const Point3& translation)
+{
+	_translation = translation;
+}
+
+void Translation::apply(Point3& p) const
+{
+	p += _translation; 
+}
+

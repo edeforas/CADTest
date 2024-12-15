@@ -13,8 +13,7 @@ int main()
 	ow.write(m);
 
 	MeshFactory::create_box(40., 50., 60., m);
-	//m.apply_transform()
-//	box.transform().set_global_translation(Point3(100., 0., 0.));
+	m.apply_transform(Translation(Point3(100., 0., 0.)));
 	ow.write(m);
 
 	MeshFactory::Cylinder cylinder(60., 30.);
