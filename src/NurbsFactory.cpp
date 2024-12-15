@@ -124,10 +124,12 @@ void NurbsFactory::create_cylinder(double dRadius, double dHeight, NurbsSolid& n
 	for (auto& i : s3.points())
 		i.z() += dHeight / 2.;
 
+	//todo rotate s3 upside down
+
 	//create profile curve
 	NurbsCurve nc;
 	vector<Point3> points = {
-		Point3(0.,dRadius,-dHeight / 2.),Point3(0.,dRadius,dHeight / 2.)
+		Point3(dRadius,0.,-dHeight / 2.),Point3(dRadius,0.,dHeight / 2.)
 	};
 
 	create_curve_from_points(points, 1, nc);
