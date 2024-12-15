@@ -9,7 +9,7 @@ namespace MeshFactory
     void create_box(double xSize, double ySize, double zSize, Mesh& m);
 
     ///////////////////////////////////////////////////////////////////////////
-    class Box : public Body
+  /*  class Box : public Body
     {
     public:
         explicit Box(double xSize, double ySize, double zSize);
@@ -19,7 +19,7 @@ namespace MeshFactory
     private:
         double _xSize, _ySize, _zSize;
     };
-    ///////////////////////////////////////////////////////////////////////////
+   */ ///////////////////////////////////////////////////////////////////////////
     class Octahedron : public Body
     {
     public:

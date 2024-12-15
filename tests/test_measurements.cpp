@@ -35,14 +35,14 @@ void test_box_volume_surface()
 {
 	double radius = 1.;
 	Mesh m;
-	MeshFactory::create_box(1.,2.,3.,m);
+	MeshFactory::create_box(2.,3.,4.,m);
 
 	double dMeasuredVolume = MeshMeasurements::volume(m);
-	double dTheoricalVolume = 1.*1.*1.;
+	double dTheoricalVolume = 2.*3.*4.;
 	test_near(dMeasuredVolume, dTheoricalVolume);
 
 	double dMeasuredSurface = MeshMeasurements::surface(m);
-	double dTheoricalSurface = 6.*1.*1.;
+	double dTheoricalSurface = 2.*(2.*3.+3.*4.+2.*4.);
 	test_near(dMeasuredSurface, dTheoricalSurface);
 }
 

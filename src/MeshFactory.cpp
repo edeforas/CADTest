@@ -24,18 +24,23 @@ namespace MeshFactory
 		m.add_triangle(0, 2, 3);
 	}
 
-	void create_box(double x, double y, double z, Mesh& m)
+	void create_box(double xSize, double ySize, double zSize, Mesh& m)
 	{
+		
+		double x = xSize / 2.;
+		double y = ySize / 2.;
+		double z = zSize / 2.;
+
 		m.clear();
 
 		m.add_vertex(x, y, z);
 		m.add_vertex(-x, y, z);
-		m.add_vertex(-x, -y, z);
 		m.add_vertex(x, -y, z);
+		m.add_vertex(-x, -y, z);
 		m.add_vertex(x, y, -z);
 		m.add_vertex(-x, y, -z);
-		m.add_vertex(-x, -x, -z);
-		m.add_vertex(x, -x, -z);
+		m.add_vertex(x, -y, -z);
+		m.add_vertex(-x, -y, -z);
 
 		m.add_quad(0, 1, 2, 3);
 		m.add_quad(7, 6, 5, 4);
