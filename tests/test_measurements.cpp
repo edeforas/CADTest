@@ -24,18 +24,18 @@ void test_mesh_closed()
 
 	for (int i = 0; i < m.nb_triangles(); i++)
 	{
-		if (rand() / (float)RAND_MAX > 0.5)
+		if (i %2 ==0)
 			m.unlink_triangle(i);
 	}
 
 	test_near(MeshMeasurements::is_closed(m), 0.);
 }
 
-void test_cube_volume_surface()
+void test_box_volume_surface()
 {
 	double radius = 1.;
 	Mesh m;
-	MeshFactory::create_box(1.,1.,1.,m);
+	MeshFactory::create_box(1.,2.,3.,m);
 
 	double dMeasuredVolume = MeshMeasurements::volume(m);
 	double dTheoricalVolume = 1.*1.*1.;
@@ -97,7 +97,7 @@ int main()
 	cout << "Test Start." << endl;
 
 	test_mesh_closed();
-	test_cube_volume_surface();
+	test_box_volume_surface();
 	test_sphereuv_volume_surface();
 	test_spheregeodesic_volume_surface();
 	test_torus_volume_surface();
