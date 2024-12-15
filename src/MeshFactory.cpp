@@ -35,12 +35,12 @@ namespace MeshFactory
 
 		m.add_vertex(x, y, z);
 		m.add_vertex(-x, y, z);
-		m.add_vertex(x, -y, z);
 		m.add_vertex(-x, -y, z);
+		m.add_vertex(x, -y, z);
 		m.add_vertex(x, y, -z);
 		m.add_vertex(-x, y, -z);
-		m.add_vertex(x, -y, -z);
 		m.add_vertex(-x, -y, -z);
+		m.add_vertex(x, -y, -z);
 
 		m.add_quad(0, 1, 2, 3);
 		m.add_quad(7, 6, 5, 4);
