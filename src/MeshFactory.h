@@ -1,21 +1,13 @@
-#ifndef _BodyFactory_
-#define _BodyFactory_
+#ifndef _MeshFactory_
+#define _MeshFactory_
 
 #include "Body.h"
 
-namespace BodyFactory
+namespace MeshFactory
 {
-    ///////////////////////////////////////////////////////////////////////////
-    class Tetrahedron : public Body
-    {
-    public:
-        explicit Tetrahedron(double dSize);
+    void create_tetrahedron(double dSize, Mesh& m);
+    void create_box(double xSize, double ySize, double zSize, Mesh& m);
 
-        virtual void compute_mesh() override;
-
-    private:
-        double _size;
-    };
     ///////////////////////////////////////////////////////////////////////////
     class Box : public Body
     {

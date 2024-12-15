@@ -1,7 +1,7 @@
 #include "Renderer.h"
 #include "Image.h"
 #include "ImageIoBmp.h"
-#include "BodyFactory.h"
+#include "MeshFactory.h"
 #include "NurbsCurve.h"
 #include "NurbsFactory.h"
 
@@ -15,11 +15,11 @@ int main()
 	int iHeight = 1200;
 	double dAngleX = 20., dAngleY = 10., dAhead = 50., dZoom = 2000.;
 	
-	BodyFactory::Torus torus(15, 3);
+	MeshFactory::Torus torus(15, 3);
 	torus.set_color(GREY);
 	torus.set_mesh_precision(32);
 
-	BodyFactory::SphereGeodesic sphere(5.);
+	MeshFactory::SphereGeodesic sphere(5.);
 	sphere.set_color(DARK_GREEN);
 	sphere.set_mesh_precision(6);
 	sphere.transform().set_global_translation(Point3(10, 0., 0.));

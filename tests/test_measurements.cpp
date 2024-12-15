@@ -1,4 +1,4 @@
-#include "BodyFactory.h"
+#include "MeshFactory.h"
 
 #include "Mesh.h"
 #include "MeshMeasurements.h"
@@ -18,7 +18,7 @@ void test_near(double a, double ref, double epsilon = 1.e-10, const string& sMes
 
 void test_mesh_closed()
 {
-	BodyFactory::SphereUV sphere(1.);
+	MeshFactory::SphereUV sphere(1.);
 	Mesh m = sphere.mesh();
 	test_near(MeshMeasurements::is_closed(m), 0); //TODO
 
@@ -34,14 +34,14 @@ void test_mesh_closed()
 void test_cube_volume_surface()
 {
 	double radius = 1.;
-	BodyFactory::Box cube(1.,1.,1.);
-	cube.set_mesh_precision(100);
+	Mesh m;
+	MeshFactory::create_box(1.,1.,1.,m);
 
-	double dMeasuredVolume = MeshMeasurements::volume(cube.mesh());
+	double dMeasuredVolume = MeshMeasurements::volume(m);
 	double dTheoricalVolume = 1.*1.*1.;
 	test_near(dMeasuredVolume, dTheoricalVolume);
 
-	double dMeasuredSurface = MeshMeasurements::surface(cube.mesh());
+	double dMeasuredSurface = MeshMeasurements::surface(m);
 	double dTheoricalSurface = 6.*1.*1.;
 	test_near(dMeasuredSurface, dTheoricalSurface);
 }
@@ -49,7 +49,7 @@ void test_cube_volume_surface()
 void test_sphereuv_volume_surface()
 {
 	double radius = 1.;
-	BodyFactory::SphereUV sphere(1.);
+	MeshFactory::SphereUV sphere(1.);
 	sphere.set_mesh_precision(100);
 
 	double dMeasuredVolume = MeshMeasurements::volume(sphere.mesh());
@@ -64,7 +64,7 @@ void test_sphereuv_volume_surface()
 void test_spheregeodesic_volume_surface()
 {
 	double radius = 1.;
-	BodyFactory::SphereGeodesic sphere(1.);
+	MeshFactory::SphereGeodesic sphere(1.);
 	sphere.set_mesh_precision(20);
 
 	double dMeasuredVolume = MeshMeasurements::volume(sphere.mesh());
@@ -79,7 +79,7 @@ void test_spheregeodesic_volume_surface()
 void test_torus_volume_surface()
 {
 	double radius = 1.;
-	BodyFactory::Torus torus(3,1.);
+	MeshFactory::Torus torus(3,1.);
 	torus.set_mesh_precision(100);
 
 	double dMeasuredVolume = MeshMeasurements::volume(torus.mesh());

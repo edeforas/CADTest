@@ -1,12 +1,7 @@
 set(CADTEST_FILES
 	Body.cpp Body.h
-	BodyFactory.cpp BodyFactory.h
-	BodyUnion.cpp BodyUnion.h
-	BodyIntersection.cpp BodyIntersection.h
-	BodyDifference.cpp BodyDifference.h	
 	Face.cpp Face.h
 	
-
 	#FaceMesh.cpp FaceMesh.h
 	#FaceNurbs.cpp FaceNurbs.h
 	#FaceBezierPatches.cpp FaceBezierPatches.h
@@ -14,8 +9,8 @@ set(CADTEST_FILES
 	Geometry.cpp Geometry.h
 	Transform.cpp Transform.h
 	
-	
 	Mesh.cpp Mesh.h
+	MeshFactory.cpp MeshFactory.h
 	MeshKernel.cpp MeshKernel.h
 	MeshKernelTIN.cpp MeshKernelTIN.h
 	MeshKernelHalfEdge.cpp MeshKernelHalfEdge.h

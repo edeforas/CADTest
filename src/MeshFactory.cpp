@@ -1,4 +1,4 @@
-#include "BodyFactory.h"
+#include "MeshFactory.h"
 
 #include "MeshTessellate.h"
 
@@ -7,61 +7,42 @@ using namespace std;
 
 #include "Transform.h"
 
-namespace BodyFactory
+namespace MeshFactory
 {
-	///////////////////////////////////////////////////////////////////////////
-	Tetrahedron::Tetrahedron(double dSize)
+	void create_tetrahedron(double dSize, Mesh& m)
 	{
-		_size = dSize;
+		m.clear();
+
+		m.add_vertex(dSize, dSize, dSize);
+		m.add_vertex(-dSize, -dSize, dSize);
+		m.add_vertex(dSize, -dSize, -dSize);
+		m.add_vertex(-dSize, dSize, -dSize);
+
+		m.add_triangle(0, 1, 2);
+		m.add_triangle(1, 3, 2);
+		m.add_triangle(0, 3, 1);
+		m.add_triangle(0, 2, 3);
 	}
-	void Tetrahedron::compute_mesh()
+
+	void create_box(double x, double y, double z, Mesh& m)
 	{
-		if (!_mesh.empty())
-			return;
+		m.clear();
 
-		_mesh.add_vertex(_size, _size, _size);
-		_mesh.add_vertex(-_size, -_size, _size);
-		_mesh.add_vertex(_size, -_size, -_size);
-		_mesh.add_vertex(-_size, _size, -_size);
+		m.add_vertex(x, y, z);
+		m.add_vertex(-x, y, z);
+		m.add_vertex(-x, -y, z);
+		m.add_vertex(x, -y, z);
+		m.add_vertex(x, y, -z);
+		m.add_vertex(-x, y, -z);
+		m.add_vertex(-x, -x, -z);
+		m.add_vertex(x, -x, -z);
 
-		_mesh.add_triangle(0, 1, 2);
-		_mesh.add_triangle(1, 3, 2);
-		_mesh.add_triangle(0, 3, 1);
-		_mesh.add_triangle(0, 2, 3);
-
-		_mesh.apply_transform(_transform);
-	}
-	///////////////////////////////////////////////////////////////////////////
-	Box::Box(double xSize, double ySize, double zSize)
-	{
-		_xSize = xSize; _ySize = ySize; _zSize = zSize;
-	}
-	void Box::compute_mesh()
-	{
-		if (!_mesh.empty())
-			return;
-
-		double x = _xSize * 0.5;
-		double y = _ySize * 0.5;
-		double z = _zSize * 0.5;
-
-		_mesh.add_vertex(x, y, z);
-		_mesh.add_vertex(-x, y, z);
-		_mesh.add_vertex(-x, -y, z);
-		_mesh.add_vertex(x, -y, z);
-		_mesh.add_vertex(x, y, -z);
-		_mesh.add_vertex(-x, y, -z);
-		_mesh.add_vertex(-x, -x, -z);
-		_mesh.add_vertex(x, -x, -z);
-
-		_mesh.add_quad(0, 1, 2, 3);
-		_mesh.add_quad(7, 6, 5, 4);
-		_mesh.add_quad(4, 5, 1, 0);
-		_mesh.add_quad(3, 2, 6, 7);
-		_mesh.add_quad(5, 6, 2, 1);
-		_mesh.add_quad(0, 3, 7, 4);
-
-		_mesh.apply_transform(_transform);
+		m.add_quad(0, 1, 2, 3);
+		m.add_quad(7, 6, 5, 4);
+		m.add_quad(4, 5, 1, 0);
+		m.add_quad(3, 2, 6, 7);
+		m.add_quad(5, 6, 2, 1);
+		m.add_quad(0, 3, 7, 4);
 	}
 	///////////////////////////////////////////////////////////////////////////
 	Octahedron::Octahedron(double dSize)

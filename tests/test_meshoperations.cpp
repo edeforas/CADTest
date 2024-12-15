@@ -1,4 +1,4 @@
-#include "BodyFactory.h"
+#include "MeshFactory.h"
 #include "MeshTessellate.h"
 #include "STLFile.h"
 #include "Mesh.h"
@@ -21,7 +21,7 @@ void test_deleting_triangles()
 	cout << endl << "test_deleting_triangles" << endl;
 
 	// test triangles deleted
-	BodyFactory::SphereUV sphere(100.);
+	MeshFactory::SphereUV sphere(100.);
 	Mesh m = sphere.mesh();
 	for (int i = 0; i < m.nb_triangles(); i++)
 	{
@@ -35,7 +35,7 @@ void test_deleting_triangles()
 ///////////////////////////////////////////////////////////////////////////
 void test_vertices_merge()
 {
-	BodyFactory::Icosahedron ico(1.);
+	MeshFactory::Icosahedron ico(1.);
 
 	//create body with redondant vertices
 	MeshTessellate mt;
@@ -55,7 +55,7 @@ void test_triangle_subdivision()
 {
 	cout << endl << "test_triangle_subdivision" << endl;
 	// test triangles subdivision
-	BodyFactory::SphereGeodesic sphere(100.);
+	MeshFactory::SphereGeodesic sphere(100.);
 	Mesh m = sphere.mesh();
 
 	// two scales split

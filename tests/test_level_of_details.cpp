@@ -1,4 +1,4 @@
-#include "BodyFactory.h"
+#include "MeshFactory.h"
 #include "OBJFile.h"
 
 #include <iostream>
@@ -13,7 +13,7 @@ int main()
 	for (int iLevel = 1; iLevel < 10; iLevel++)
 	{
 		cout << "Generating SphereUV with level of details=" << iLevel << endl;
-		BodyFactory::SphereUV sphere(50);
+		MeshFactory::SphereUV sphere(50);
 		sphere.set_mesh_precision(iLevel);
 		sphere.transform().set_global_translation(Point3(120.*iLevel, 0., 0.));
 		ow.write(sphere.mesh());
@@ -22,7 +22,7 @@ int main()
 	for (int iLevel = 1; iLevel < 10; iLevel++)
 	{
 		cout << "Generating Torus with level of details=" << iLevel << endl;
-		BodyFactory::Torus torus(30,20);
+		MeshFactory::Torus torus(30,20);
 		torus.set_mesh_precision(iLevel);
 		torus.transform().set_global_translation(Point3(120.*iLevel, 120., 0.));
 		ow.write(torus.mesh());
@@ -31,7 +31,7 @@ int main()
 	for (int iLevel = 1; iLevel < 10; iLevel++)
 	{
 		cout << "Generating SphereGeodesic with level of details=" << iLevel << endl;
-		BodyFactory::SphereGeodesic sphere(50);
+		MeshFactory::SphereGeodesic sphere(50);
 		sphere.set_mesh_precision(iLevel);
 		sphere.transform().set_global_translation(Point3(120.*iLevel, 240., 0.));
 		ow.write(sphere.mesh());
@@ -40,7 +40,7 @@ int main()
 	for (int iLevel = 1; iLevel < 10; iLevel++)
 	{
 		cout << "Generating Cylinder with level of details=" << iLevel << endl;
-		BodyFactory::Cylinder cylinder(60.,40);
+		MeshFactory::Cylinder cylinder(60.,40);
 		cylinder.set_mesh_precision(iLevel);
 		cylinder.transform().set_global_translation(Point3(120. * iLevel, 360., 0.));
 		ow.write(cylinder.mesh());

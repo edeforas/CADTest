@@ -1,4 +1,4 @@
-#include "BodyFactory.h"
+#include "MeshFactory.h"
 #include "STLFile.h"
 #include "Mesh.h"
 
@@ -8,7 +8,7 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
-	BodyFactory::SphereGeodesic sphere(50);
+	MeshFactory::SphereGeodesic sphere(50);
 	STLFile::save("test_mesh_geosphere.stl", sphere.mesh());
 
 	cout << "Test Finished.";
