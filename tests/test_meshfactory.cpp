@@ -5,15 +5,15 @@
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
-	
 	OBJWriter ow;
-	ow.open("test_body_factory.obj");
+	ow.open("test_meshfactory.obj");
 
 	Mesh m;
 	MeshFactory::create_tetrahedron(25.,m);
 	ow.write(m);
 
 	MeshFactory::create_box(40., 50., 60., m);
+	//m.apply_transform()
 //	box.transform().set_global_translation(Point3(100., 0., 0.));
 	ow.write(m);
 
