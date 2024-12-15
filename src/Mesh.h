@@ -21,7 +21,7 @@ public:
 
     int nb_vertices() const;
     int add_vertex(const Point3& vertex);
-    void add_vertex(double a, double b, double c);
+    int add_vertex(double a, double b, double c);
     void set_vertex(int iVertex, const Point3& vertex);
     void get_vertex(int iVertex, Point3& vertex) const;
     void merge_vertices(double dDistanceTol=1.e-6);

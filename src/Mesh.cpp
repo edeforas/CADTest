@@ -311,9 +311,9 @@ int Mesh::add_vertex(const Point3& vertex)
 	return _pKernel->add_vertex(vertex);
 }
 
-void Mesh::add_vertex(double a, double b, double c)
+int Mesh::add_vertex(double a, double b, double c)
 {
-	_pKernel->add_vertex(Point3(a, b, c));
+	return _pKernel->add_vertex(Point3(a, b, c));
 }
 
 void Mesh::set_vertex(int iVertex, const Point3& vertex)
@@ -348,7 +348,6 @@ void Mesh::apply_transform(const Transform& t)
 		set_vertex(i, pv);
 	}
 }
-
 //////////////////////////////////////////////////////////////////////////////////
 void Mesh::merge_vertices(double dDistanceTol)
 {
@@ -483,12 +482,9 @@ void Mesh::split_triangle(int iTriangle, const Triangle3 & tSplitter)
 
 		assert((b12 && b13 && b23) == false); //not possible to intersect all 3 sides
 
-
 	}
 
-
 	/*
-
 
 	if (vIntersections.size() > 0)
 	{
