@@ -23,7 +23,6 @@ set(CADTEST_FILES
 	
 	MeshTessellate.cpp MeshTessellate.h
 	MeshBoolean.cpp MeshBoolean.h
-	Transform.cpp Transform.h
 	STLFile.cpp STLFile.h
 	OBJFile.cpp OBJFile.h
 	

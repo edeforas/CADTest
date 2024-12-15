@@ -27,7 +27,7 @@ namespace BodyFactory
 		_mesh.add_triangle(0, 3, 1);
 		_mesh.add_triangle(0, 2, 3);
 
-		_transform.apply(_mesh);
+		_mesh.apply_transform(_transform);
 	}
 	///////////////////////////////////////////////////////////////////////////
 	Box::Box(double xSize, double ySize, double zSize)
@@ -59,7 +59,7 @@ namespace BodyFactory
 		_mesh.add_quad(5, 6, 2, 1);
 		_mesh.add_quad(0, 3, 7, 4);
 
-		_transform.apply(_mesh);
+		_mesh.apply_transform(_transform);
 	}
 	///////////////////////////////////////////////////////////////////////////
 	Octahedron::Octahedron(double dSize)
@@ -87,7 +87,7 @@ namespace BodyFactory
 		_mesh.add_triangle(5, 3, 1);
 		_mesh.add_triangle(4, 5, 0);
 
-		_transform.apply(_mesh);
+		_mesh.apply_transform(_transform);
 	}
 	///////////////////////////////////////////////////////////////////////////
 	Dodecahedron::Dodecahedron(double dSize)
@@ -149,7 +149,7 @@ namespace BodyFactory
 		_mesh.add_pentagon(18, 4, 8, 9, 5);
 		_mesh.add_pentagon(2, 10, 11, 3, 17);
 
-		_transform.apply(_mesh);
+		_mesh.apply_transform(_transform);
 	}
 	///////////////////////////////////////////////////////////////////////////
 	Icosahedron::Icosahedron(double dSize)
@@ -207,7 +207,7 @@ namespace BodyFactory
 		_mesh.add_triangle(2, 4, 9);
 		_mesh.add_triangle(1, 10, 7);
 
-		_transform.apply(_mesh);
+		_mesh.apply_transform(_transform);
 	}
 	///////////////////////////////////////////////////////////////////////////
 	Cylinder::Cylinder(double height, double radius)
@@ -256,7 +256,7 @@ namespace BodyFactory
 		}
 		_mesh.add_triangle(iNbSegmentLongitude * 2 + 1, 1, 2 * iNbSegmentLongitude - 1);
 
-		_transform.apply(_mesh);
+		_mesh.apply_transform(_transform);
 	}
 	///////////////////////////////////////////////////////////////////////////
 	SphereGeodesic::SphereGeodesic(double radius)
@@ -284,7 +284,7 @@ namespace BodyFactory
  		
 		_mesh.merge_vertices(dEdgesize/ _iNbSegments/20.); //todo better formula
 
-		_transform.apply(_mesh);
+		_mesh.apply_transform(_transform);
 	}
 	///////////////////////////////////////////////////////////////////////////
 	SphereUV::SphereUV(double radius):Body()
@@ -351,7 +351,7 @@ namespace BodyFactory
 			_mesh.add_triangle( iLongitude1 * iNbVertexLatitude+ iNbVertexLatitude-1, iPoleSouth, iLongitude2 * iNbVertexLatitude+ iNbVertexLatitude-1);
 		}
 
-		_transform.apply(_mesh);
+		_mesh.apply_transform(_transform);
 	}
 	///////////////////////////////////////////////////////////////////////////
 	Torus::Torus(double dMajorRadius, double dMinorRadius)
@@ -402,7 +402,7 @@ namespace BodyFactory
 			}
 		}
 
-		_transform.apply(_mesh);
+		_mesh.apply_transform(_transform);
 	}
 	///////////////////////////////////////////////////////////////////////////
 }

@@ -335,6 +335,18 @@ int Mesh::nb_vertices() const
 	return _pKernel->nb_vertices();
 }
 
+void Mesh::apply_transform(const Transform& t)
+{
+	for (int i = 0; i < nb_vertices(); i++)
+	{
+		// todo optimize
+		Point3 pv;
+		get_vertex(i, pv);
+		t.apply(pv);
+		set_vertex(i, pv);
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////////////
 void Mesh::merge_vertices(double dDistanceTol)
 {
