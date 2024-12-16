@@ -7,11 +7,12 @@
 int main()
 {
 	// build object
-	MeshFactory::Cylinder cylinder(100., 40.);
+	Mesh m;
+	MeshFactory::create_cylinder(100., 40., 8, m);
 
 	//test save
-	STLFile::save("cylinder.stl", cylinder.mesh());
-	OBJFile::save("cylinder.obj", cylinder.mesh());
+	STLFile::save("cylinder.stl", m);
+	OBJFile::save("cylinder.obj", m);
 
 	//test load and save stl
 	Mesh m1;

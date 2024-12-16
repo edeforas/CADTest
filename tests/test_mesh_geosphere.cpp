@@ -8,8 +8,9 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
-	MeshFactory::SphereGeodesic sphere(50);
-	STLFile::save("test_mesh_geosphere.stl", sphere.mesh());
+	Mesh m;
+	MeshFactory::create_sphere_geodesic(50,8,m);
+	STLFile::save("test_mesh_geosphere.stl", m);
 
 	cout << "Test Finished.";
 	return 0;

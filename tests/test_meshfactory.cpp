@@ -1,6 +1,7 @@
 #include "MeshFactory.h"
 #include "Mesh.h"
 #include "OBJFile.h"
+#include "Transform.h"
 
 ///////////////////////////////////////////////////////////////////////////
 int main()
@@ -16,33 +17,33 @@ int main()
 	m.apply_transform(Translation(Point3(100., 0., 0.)));
 	ow.write(m);
 
-	MeshFactory::Cylinder cylinder(60., 30.);
-	cylinder.transform().set_global_translation(Point3(200., 0., 0.));
-	ow.write(cylinder.mesh());
+	MeshFactory::create_cylinder(60., 30.,10, m);
+	m.apply_transform(Translation(Point3(200., 0., 0.)));
+	ow.write(m);
 
-	MeshFactory::Octahedron octahedron(40.);
-	octahedron.transform().set_global_translation(Point3(0., 100., 0.));
-	ow.write(octahedron.mesh());
+	MeshFactory::create_octahedron(40.,m);
+	m.apply_transform(Translation(Point3(0., 100., 0.)));
+	ow.write(m);
 
-	MeshFactory::Dodecahedron dodecahedron(20.);
-	dodecahedron.transform().set_global_translation(Point3(100., 100., 0.));
-	ow.write(dodecahedron.mesh());
+	MeshFactory::create_dodecahedron(20.,m);
+	m.apply_transform(Translation(Point3(100., 100., 0.)));
+	ow.write(m);
 
-	MeshFactory::Icosahedron icosahedron(30.);
-	icosahedron.transform().set_global_translation(Point3(200, 100, 0.));
-	ow.write(icosahedron.mesh());
+	MeshFactory::create_icosahedron(30.,m);
+	m.apply_transform(Translation(Point3(200, 100, 0.)));
+	ow.write(m);
 
-	MeshFactory::SphereUV sphereUV(30.);
-	sphereUV.transform().set_global_translation(Point3(0., 200., 0));
-	ow.write(sphereUV.mesh());
+	MeshFactory::create_sphere_uv(30.,8,m);
+	m.apply_transform(Translation(Point3(0., 200., 0)));
+	ow.write(m);
 
-	MeshFactory::SphereGeodesic sphereGeo(30.);
-	sphereGeo.transform().set_global_translation(Point3(100., 200., 0));
-	ow.write(sphereGeo.mesh());
+	MeshFactory::create_sphere_geodesic(30.,10,m);
+	m.apply_transform(Translation(Point3(100., 200., 0)));
+	ow.write(m);
 
-	MeshFactory::Torus torus(25.,10.);
-	torus.transform().set_global_translation(Point3(200., 200., 0.));
-	ow.write(torus.mesh());
+	MeshFactory::create_torus(25.,10.,4,m);
+	m.apply_transform(Translation(Point3(200., 200., 0.)));
+	ow.write(m);
 
 	ow.close();
 	return 0;

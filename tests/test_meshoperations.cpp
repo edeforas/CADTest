@@ -21,8 +21,8 @@ void test_deleting_triangles()
 	cout << endl << "test_deleting_triangles" << endl;
 
 	// test triangles deleted
-	MeshFactory::SphereUV sphere(100.);
-	Mesh m = sphere.mesh();
+	Mesh m;
+	MeshFactory::create_sphere_uv(100.,8,m);
 	for (int i = 0; i < m.nb_triangles(); i++)
 	{
 		if (rand() / (float)RAND_MAX > 0.5)
@@ -35,12 +35,13 @@ void test_deleting_triangles()
 ///////////////////////////////////////////////////////////////////////////
 void test_vertices_merge()
 {
-	MeshFactory::Icosahedron ico(1.);
+	Mesh mi;
+	MeshFactory::create_icosahedron(1.,mi);
 
 	//create body with redondant vertices
 	MeshTessellate mt;
 	Mesh m;
-	mt.compute(ico.mesh(), 2, m);
+	mt.compute(mi, 2, m);
 	int iNbVerticeOld = m.nb_vertices();
 	test(iNbVerticeOld == m.nb_triangles() * 3 ); //each triangle has 3 vertices
 
@@ -53,10 +54,10 @@ void test_vertices_merge()
 
 void test_triangle_subdivision()
 {
+	Mesh m;
 	cout << endl << "test_triangle_subdivision" << endl;
 	// test triangles subdivision
-	MeshFactory::SphereGeodesic sphere(100.);
-	Mesh m = sphere.mesh();
+	MeshFactory::create_sphere_geodesic(100.,8,m);
 
 	// two scales split
 	for (int iScale = 0; iScale < 2; iScale++)

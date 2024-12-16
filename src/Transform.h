@@ -17,7 +17,7 @@ public:
 
 	void reset();
 
-	virtual void apply(Point3& p) const;
+	virtual void apply(Point3& p) const =0 ;
 
 private:
 	Point3 _translation;
@@ -30,7 +30,7 @@ class Translation : public Transform
 public:
 	Translation(const Point3& translation);
 
-	virtual void apply(Point3& p) const override;
+	virtual void apply(Point3& p) const;
 
 private:
 	Point3 _translation;

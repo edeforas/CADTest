@@ -4,6 +4,7 @@
 #include "MeshFactory.h"
 #include "NurbsCurve.h"
 #include "NurbsFactory.h"
+#include "Transform.h"
 
 #include <iostream>
 using namespace std;
@@ -15,14 +16,14 @@ int main()
 	int iHeight = 1200;
 	double dAngleX = 20., dAngleY = 10., dAhead = 50., dZoom = 2000.;
 	
-	MeshFactory::Torus torus(15, 3);
-	torus.set_color(GREY);
-	torus.set_mesh_precision(32);
+	Mesh mTorus;
+	MeshFactory::create_torus(15, 3, 32,mTorus);
+	mTorus.set_color(GREY);
 
-	MeshFactory::SphereGeodesic sphere(5.);
-	sphere.set_color(DARK_GREEN);
-	sphere.set_mesh_precision(6);
-	sphere.transform().set_global_translation(Point3(10, 0., 0.));
+	Mesh mSphere;
+	MeshFactory::create_sphere_geodesic(5.,6, mSphere);
+	mSphere.set_color(DARK_GREEN);
+	mSphere.apply_transform(Translation(Point3(10, 0., 0.)));
 
 	Image img(iWidth, iHeight, 4);
 	Renderer eng((int*)img.data(),iWidth, iHeight);
@@ -52,8 +53,8 @@ int main()
 		eng.clear();
 		eng.set_camera(0., 0., 0., dAhead, i, i/2., i/3., dZoom);
 		
-		eng.draw_mesh(torus.mesh(),false);
-		eng.draw_mesh(sphere.mesh(),true);
+		eng.draw_mesh(mTorus,false);
+		eng.draw_mesh(mSphere,true);
 		eng.draw_polyline(nurbPL, WHITE);
 		eng.draw_polyline(points, GREEN);
 

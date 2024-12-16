@@ -4,12 +4,12 @@
 #include <string>
 using namespace std;
 
-#include "Body.h"
+//#include "Body.h"
 
 namespace StepFile
 {
-	bool save(const string& filename, const Body& body);
-	bool load(const string& filename, Body& body);
+//	bool save(const string& filename, const Body& body);
+//	bool load(const string& filename, Body& body);
 }
 
 #endif

@@ -13,7 +13,7 @@ void Transform::reset()
 	set_angles(0., 0., 0.);
 	set_global_translation( Point3(0., 0., 0.));
 }
-
+/*
 void Transform::apply(Point3& p) const
 {
 	p += _translation; //todo rotation
@@ -34,7 +34,6 @@ void Transform::apply(Point3& p) const
 	pLocal.x() = pLocal.x() * _rollCos + pLocal.y() * _rollSin;
 	pLocal.y() = pLocal.y() * _rollCos - tmp * _rollSin;
 */
-}
 
 void Transform::set_global_translation(const Point3& translation)
 {
@@ -62,8 +61,6 @@ void Transform::set_angles(double yaw, double pitch, double roll)
 	_rollSin = sin(_roll * dDegToRad);
 }
 ///////////////////////////////////////////////////////////////////////////
-
-
 Translation::Translation(const Point3& translation)
 {
 	_translation = translation;
@@ -73,4 +70,4 @@ void Translation::apply(Point3& p) const
 {
 	p += _translation; 
 }
-
+///////////////////////////////////////////////////////////////////////////
