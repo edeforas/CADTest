@@ -41,7 +41,7 @@ int main()
 	m.apply_transform(Translation(Point3(100., 200., 0)));
 	ow.write(m);
 
-	MeshFactory::create_torus(25.,10.,4,m);
+	MeshFactory::create_torus(25.,15.,8,m);
 	m.apply_transform(Translation(Point3(200., 200., 0.)));
 	ow.write(m);
 

@@ -4,6 +4,7 @@
 #include "NurbsSolid.h"
 #include "NurbsExtrude.h"
 #include "NurbsUtil.h"
+#include "Transform.h"
 #include "OBJFile.h"
 
 #include <iostream>
@@ -98,6 +99,38 @@ void test_nurbssolid_create_torus()
 	OBJFile::save("test_nurbssolid_create_torus.obj", m);
 }
 ///////////////////////////////////////////////////////////////////////////
+void test_nurbssolid_create_torus_transform()
+{
+	cout << endl << "test_nurbssolid_create_torus_transform" << endl;
+
+	OBJWriter ow;
+	ow.open("test_nurbssolid_create_torus_transform.obj");
+
+	for (double i=0.5; i < 5; i *= 2.)
+		for (double j = 0.5; j < 5; j *= 2.)
+			for (double k = 0.5; k < 5; k *= 2.)
+			{
+				NurbsSurface ns;
+				NurbsFactory::create_torus(30, 10, ns);
+				Scale scale(i, j, k);
+				Translation translate(Point3(i, j, k) * 100.);
+				Rotation rotate(i*10, j*10, k*10);
+				for (auto& p : ns.points())
+				{
+					rotate.apply(p);
+					scale.apply(p);
+					translate.apply(p);
+				}
+
+				Mesh m;
+				NurbsUtil::to_mesh(ns, m, 4);
+				ow.write(m);
+		}
+
+	ow.close();
+}
+///////////////////////////////////////////////////////////////////////////
+
 int main()
 {
 	test_nurbs_factory_create_circle();
@@ -105,6 +138,7 @@ int main()
 	test_nurbssolid_create_cylinder();
 	test_nurbssolid_create_sphere();
 	test_nurbssolid_create_torus();
+	test_nurbssolid_create_torus_transform();
 
 	cout << "Test Finished.";
 	return 0;
