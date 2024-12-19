@@ -116,8 +116,8 @@ void test_nurbssurface_deg1()
 {
 	cout << endl << "test_nurbssurface_deg1" << endl;
 
-	int nbPointsU = 7;
-	int nbPointsV = 7;
+	int nbPointsU = 11;
+	int nbPointsV = 11;
 
 	NurbsSurface n;
 	int degree = 1;
@@ -125,7 +125,7 @@ void test_nurbssurface_deg1()
 	
 	for (int v = 0; v < nbPointsV; v++)
 		for(int u= 0; u < nbPointsU; u++)
-			points.push_back(Point3(u,v,(float)rand()/RAND_MAX));
+			points.push_back(Point3(u,v,(float)rand()/RAND_MAX*3.));
 
 	n.set_degree(degree, degree);
 	n.set_points(points, nbPointsU, nbPointsV);
@@ -143,8 +143,8 @@ void test_nurbssurface_deg2()
 {
 	cout << endl << "test_nurbssurface_deg2" << endl;
 
-	int nbPointsU = 7;
-	int nbPointsV = 7;
+	int nbPointsU = 11;
+	int nbPointsV = 11;
 
 	NurbsSurface n;
 	int degree = 2;
@@ -152,7 +152,7 @@ void test_nurbssurface_deg2()
 
 	for (int v = 0; v < nbPointsV; v++)
 		for (int u = 0; u < nbPointsU; u++)
-			points.push_back(Point3(u, v, (float)rand() / RAND_MAX));
+			points.push_back(Point3(u, v, (float)rand() / RAND_MAX*3.));
 
 	n.set_degree(degree, degree);
 	n.set_points(points, nbPointsU, nbPointsV);
@@ -164,6 +164,34 @@ void test_nurbssurface_deg2()
 	Mesh m;
 	NurbsUtil::to_mesh(n, m, 20);
 	OBJFile::save("test_nurbssurface_deg2.obj", m);
+}
+
+///////////////////////////////////////////////////////////////////////////
+void test_nurbssurface_deg3()
+{
+	cout << endl << "test_nurbssurface_deg3" << endl;
+
+	int nbPointsU = 11;
+	int nbPointsV = 11;
+
+	NurbsSurface n;
+	int degree = 3;
+	vector<Point3> points;
+
+	for (int v = 0; v < nbPointsV; v++)
+		for (int u = 0; u < nbPointsU; u++)
+			points.push_back(Point3(u, v, (float)rand() / RAND_MAX*3.));
+
+	n.set_degree(degree, degree);
+	n.set_points(points, nbPointsU, nbPointsV);
+
+	n.set_uniform_u();
+	n.set_uniform_v();
+	n.set_equals_weights();
+
+	Mesh m;
+	NurbsUtil::to_mesh(n, m, 20);
+	OBJFile::save("test_nurbssurface_deg3.obj", m);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbssurface_degxy()
@@ -285,6 +313,7 @@ int main()
 	test_nurbssurface_ruled_deg2();
 	test_nurbssurface_deg1();
 	test_nurbssurface_deg2();
+	test_nurbssurface_deg3();
 	test_nurbssurface_degxy();
 	test_nurbssurface_cylinder();
 	test_nurbssurface_flatdisk();
