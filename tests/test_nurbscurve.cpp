@@ -50,7 +50,6 @@ void test_knots_span()
 	test_near(i_11, 1);
 }
 
-
 void test_simple_segment()
 {
 	cout << endl << "test_simple_segment" << endl;
@@ -274,7 +273,6 @@ void test_knot_insertion_deg2()
 		test_near((p - p2).norm(), 0., 1.e-10);
 	}
 }
-
 
 void test_knot_insertion_deg3()
 {

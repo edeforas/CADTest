@@ -16,7 +16,7 @@ class Translation : public Transform
 public:
 	Translation(const Point3& translation);
 
-	virtual void apply(Point3& p) const;
+	virtual void apply(Point3& p) const override;
 
 private:
 	Point3 _translation;
@@ -27,7 +27,7 @@ class Rotation : public Transform
 public:
 	Rotation(double yaw, double pitch, double roll);
 
-	virtual void apply(Point3& p) const;
+	virtual void apply(Point3& p) const override;
 
 private:
 	double 	_yaw, _pitch, _roll;
@@ -41,7 +41,7 @@ class Scale : public Transform
 public:
 	Scale(double scaleX, double scaleY, double scaleZ);
 
-	virtual void apply(Point3& p) const;
+	virtual void apply(Point3& p) const override;
 
 private:
 	double 	_scaleX, _scaleY, _scaleZ;
