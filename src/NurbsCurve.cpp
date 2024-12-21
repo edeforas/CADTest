@@ -189,8 +189,7 @@ int NurbsCurve::find_knot_span(const vector <double>& knots,double t)
 
 void NurbsCurve::insert_knot(double u)
 {
-	//as in https://public.vrac.iastate.edu/~oliver/courses/me625/week9.pdf
-
+	// no test for multiplicity for now
 	int indexU = find_knot_span(_knots,u);
 
 	vector<double> k=_knots;
@@ -198,21 +197,30 @@ void NurbsCurve::insert_knot(double u)
 	vector<double> w;
 
 	//reconstruct the curve
-	for (int i = 0; i < _points.size(); i++)
+	for (int i = 0; i < _points.size()+1; i++)
 	{
-		if( (i <= indexU - _degree) || (i>=indexU+1) )
+		if( i <= indexU - _degree )
 		{
-			p.push_back(_points[i]);
+			p.push_back(_points[i]*_weights[i]);
 			w.push_back(_weights[i]);
+			continue;
 		}
-		else
-		{
-			double dAlpha = (u - _knots[i]) / (_knots[i + _degree] - _knots[i]);
 
-			w.push_back(_weights[i]* dAlpha + _weights[i - 1]* (1. - dAlpha));
-			p.push_back(_points[i] * dAlpha + _points[i - 1]* (1. - dAlpha));
+		if (i >= indexU + 1)
+		{
+			p.push_back(_points[i-1]* _weights[i-1]);
+			w.push_back(_weights[i-1]);
+			continue;
 		}
+
+		double dAlpha = (u - _knots[i]) / (_knots[i + _degree] - _knots[i]);
+		w.push_back(_weights[i]* dAlpha + _weights[i - 1]* (1. - dAlpha));
+		p.push_back(_points[i]* _weights[i] * dAlpha + _points[i - 1]* _weights[i - 1] * (1. - dAlpha));
 	}
+
+	//to 3D coords
+	for (int i = 0; i < _points.size() ; i++)
+		p[i] /= w[i];
 
 	k.insert(k.begin()+indexU+1,u);
 	set_knots(k);
