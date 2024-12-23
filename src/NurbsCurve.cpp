@@ -274,3 +274,84 @@ void NurbsCurve::to_polyline(vector<Point3>& polyline) const
 	}
 }
 ///////////////////////////////////////////////////////////////////////////
+bool NurbsCurve::degree_elevation()
+{
+	if (_degree >= 3)
+		return false; //only deg <=3 are handled
+
+	//Procedure ElevateKnots
+	vector<double> elevatedKnots, knotMultiplicity;
+	int nbKnots = _knots.size();
+	int l = 1;
+	for(int k=0; k< nbKnots - 1;k++)
+	{
+		elevatedKnots.push_back( _knots[k]);
+		
+		if (_knots[k] != _knots[k + 1])
+		{
+			elevatedKnots.push_back(_knots[k]);
+			knotMultiplicity.push_back(l);
+			l = 0;
+		}
+		l++;
+	}
+	knotMultiplicity.push_back(l);
+	elevatedKnots.push_back(_knots[nbKnots - 1]);
+	elevatedKnots.push_back(_knots[nbKnots - 1]);
+
+	set_knots(elevatedKnots);
+
+	if (_degree == 1)
+	{
+		// from paper: DIRECT DEGREE ELEVATION OF NURBS CURVES Kestutis Jankauskas, Dalius Rubliauskas
+		vector<Point3> newPoints(2 * _iNbPoints - 1);
+		vector<double> newWeights(2 * _iNbPoints - 1);
+		for(int i=0;i<_iNbPoints-2;i++)
+		{
+			newPoints[2*i] = _points[i]*_weights[i];
+			newPoints[2*i+1] = (_points[i] * _weights[i] + _points[i+1] * _weights[i+1])/2.;
+
+			newWeights[2 * i] = _weights[i];
+			newWeights[2 * i + 1] = (_weights[i] + _weights[i + 1]) / 2.;
+		}
+		newPoints[2* _iNbPoints-2] = _points[_iNbPoints-1];
+		newWeights[2 * _iNbPoints - 2] = _weights[_iNbPoints - 1];
+		set_points(newPoints);
+		set_weights(newWeights);
+	}
+	else if (_degree == 2)
+	{
+		/*Procedure DDEQuadratic
+		// in: U[m] – knot vector ==_knots
+		// in: P[n] – control points ==_points
+		// in: S[ns] – knot multiplicity vector
+		// out: Q[n+ns-1] – elevated control points
+
+		k = 2; B = 1; b1 = 1./3.; b2 = 2./3.;
+		Q[0] = _points[0];
+		for (int l = 1 ; l<= nl – 1 ; l++)
+		{
+			if (S[l-1] > 1)
+				Q[k+l-2] = b2*_points[k-1] + b1*_points[k-2];
+
+			if (S[l] > 1)
+			{
+				Q[k+l-1] = b1*_points[k] + b2*_points[k-1];
+				Q[k+l] = _points[k];
+			}
+			else
+			{
+				B=(_knots[k+1]-_knots[k])/(3*(_knots[k+2]-_knots[k]));
+				Q[k+l-1] = B*_points[k] + (1-B)*_points[k-1];
+				Q[k+l] = (B+b2)*_points[k]+(b1-B)*_points[k-1];
+			}
+			k += S[l];
+		}
+		Q[2*n-2] = _points[n-1]);
+*/
+	}
+
+	set_degree(_degree+1);
+	return true;
+}
+///////////////////////////////////////////////////////////////////////////

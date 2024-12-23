@@ -32,6 +32,7 @@ public:
 	bool is_closed(double dTol = 1.e-6) const;
 
 	void insert_knot(double u);
+	bool degree_elevation();
 
 	const vector<Point3>& points() const;
 	vector<Point3>& points();

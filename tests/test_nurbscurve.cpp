@@ -310,6 +310,39 @@ void test_knot_insertion_deg3()
 	}
 }
 ///////////////////////////////////////////////////////////////////////////
+void test_degree_elevation_deg1()
+{
+	cout << endl << "test_degree_elevation_deg1" << endl;
+
+	NurbsCurve n;
+	int degree = 1;
+	vector<double> knots = { 0,0,0.6,1,1 };
+	vector<double> weights = { 1.,0.5,2 };
+	vector<Point3> points = {
+		Point3(-2,-3,1.),
+		Point3(5,2,3.),
+		Point3(-1,-4,2.),
+	};
+
+	n.set_degree(degree);
+	n.set_knots(knots);
+	n.set_points(points);
+	n.set_weights(weights);
+
+	// elevate degree from 1 to 2
+	NurbsCurve n2 = n;
+	n2.degree_elevation();
+	test(n2.degree() == 2);
+
+	for (double u = 0.; u <= 1.; u += 0.01)
+	{
+		Point3 p, p2;
+		n.evaluate(u, p);
+		n2.evaluate(u, p2);
+		test_near((p - p2).norm(), 0., 1.e-10);
+	}
+}
+///////////////////////////////////////////////////////////////////////////
 void test_is_closed()
 {
 	cout << endl << "test_is_closed" << endl;
@@ -362,6 +395,8 @@ int main()
 	test_knot_insertion_deg1();
 	test_knot_insertion_deg2();
 	test_knot_insertion_deg3();
+
+	test_degree_elevation_deg1();
 
 	test_is_closed();
 
