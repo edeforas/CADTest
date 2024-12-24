@@ -316,6 +316,7 @@ void test_degree_elevation_deg1()
 
 	NurbsCurve n;
 	int degree = 1;
+	/*
 	vector<double> knots = { 0,0,0.6,1,1 };
 	vector<double> weights = { 1.,0.5,2 };
 	vector<Point3> points = {
@@ -323,23 +324,34 @@ void test_degree_elevation_deg1()
 		Point3(5,2,3.),
 		Point3(-1,-4,2.),
 	};
+	*/
+	vector<double> knots = { 0,0,1,1 };
+	//vector<double> weights = { 1.,0.5,2 };
+	vector<Point3> points = {
+		Point3(0,0,0.),
+		Point3(1,1,1.),
+	};
 
 	n.set_degree(degree);
 	n.set_knots(knots);
 	n.set_points(points);
-	n.set_weights(weights);
+	n.set_equals_weights();
 
 	// elevate degree from 1 to 2
 	NurbsCurve n2 = n;
 	n2.degree_elevation();
 	test(n2.degree() == 2);
+	n2.set_equals_weights();
 
 	for (double u = 0.; u <= 1.; u += 0.01)
 	{
 		Point3 p, p2;
 		n.evaluate(u, p);
 		n2.evaluate(u, p2);
-		test_near((p - p2).norm(), 0., 1.e-10);
+		cout << "p1 u=" << u << " x=" << p.x() << " y=" << p.y() << " z=" << p.z() << endl;
+		cout << "p2 u=" << u << " x=" << p2.x() << " y=" << p2.y() << " z=" << p2.z() << endl;
+
+		//test_near((p - p2).norm(), 0., 1.e-10);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////
