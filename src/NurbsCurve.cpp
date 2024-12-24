@@ -89,7 +89,7 @@ const vector<double>& NurbsCurve::weights() const
 
 void NurbsCurve::set_equals_weights() //non rational
 {
-	_weights.resize(_iNbPoints, 1.);
+	_weights.assign(_iNbPoints, 1.);
 }
 
 void NurbsCurve::set_points(const vector <Point3>& points)
@@ -321,34 +321,40 @@ bool NurbsCurve::degree_elevation()
 	}
 	else if (_degree == 2)
 	{
-		/*Procedure DDEQuadratic
+		vector<Point3> newPoints;
+		vector<double> newWeights;
+		
+		//Procedure DDEQuadratic
 		// in: U[m] – knot vector ==_knots
 		// in: P[n] – control points ==_points
-		// in: S[ns] – knot multiplicity vector
-		// out: Q[n+ns-1] – elevated control points
+		// in: S[ns] – knot multiplicity vector ==knotMultiplicity
+		// out: Q[n+ns-1] – elevated control points ==newPoints
 
-		k = 2; B = 1; b1 = 1./3.; b2 = 2./3.;
-		Q[0] = _points[0];
-		for (int l = 1 ; l<= nl – 1 ; l++)
+		int k = 2;
+		int B = 1; 
+		double b1 = 1./3.;
+		double b2 = 2./3.;
+		newPoints[0] = _points[0];
+		for (int l = 1; l < _iNbPoints ; l++) // was //for (int l = 1 ; l<= nl – 1 ; l++)
 		{
-			if (S[l-1] > 1)
-				Q[k+l-2] = b2*_points[k-1] + b1*_points[k-2];
+			if (knotMultiplicity[l-1] > 1)
+				newPoints[k+l-2] = _points[k-1]*b2 + _points[k-2]*b1;
 
-			if (S[l] > 1)
+			if (knotMultiplicity[l] > 1)
 			{
-				Q[k+l-1] = b1*_points[k] + b2*_points[k-1];
-				Q[k+l] = _points[k];
+				newPoints[k+l-1] = _points[k]*b1 + _points[k-1]*b2;
+				newPoints[k+l] = _points[k];
 			}
 			else
 			{
 				B=(_knots[k+1]-_knots[k])/(3*(_knots[k+2]-_knots[k]));
-				Q[k+l-1] = B*_points[k] + (1-B)*_points[k-1];
-				Q[k+l] = (B+b2)*_points[k]+(b1-B)*_points[k-1];
+				newPoints[k+l-1] = _points[k]*B + _points[k-1]*(1-B);
+				newPoints[k+l] = _points[k]* (B + b2) +_points[k-1]* (b1 - B);
 			}
-			k += S[l];
+			k += knotMultiplicity[l];
 		}
-		Q[2*n-2] = _points[n-1]);
-*/
+		
+		newPoints[2*_iNbPoints-2] = _points[_iNbPoints-1];
 	}
 
 	set_degree(_degree+1);
