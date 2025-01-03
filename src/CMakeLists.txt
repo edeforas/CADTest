@@ -30,7 +30,7 @@ set(CADTEST_FILES
 	NurbsUtil.cpp NurbsUtil.h
 	NurbsFactory.cpp NurbsFactory.h
 	NurbsSolid.cpp NurbsSolid.h
-	#StepFile.cpp StepFile.h
+	StepFile.cpp StepFile.h
 	
 	Renderer.cpp Renderer.h
 	RendererCamera.cpp RendererCamera.h
