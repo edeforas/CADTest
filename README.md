@@ -1,30 +1,33 @@
-Test and code about a CAD server, in C++:
+CAD server in C++:
 
--Renderer:
---soft rendering
---ambient light
---render curves, meshes, nurbs (wip)
+- Renderer:
+  - soft rendering
+  - ambient light
+  - render curves, meshes, nurbs (wip)
+  - image factory
 
--Mesh:
---several mesh kernels (wip)
---factory
---cleanup
+- Mesh:
+  - several mesh kernels (wip)
+  - factory
+  - cleanup
 
--Nurbs:
---surfaces
---curves
---solid
---factory
---spherical/circular
---extrude
---ruled
---revolve
---insert knots
---elevate degree
---conv to meshes
+- Nurbs:
+  - surfaces
+  - curves
+  - solid
+  - factory
+  - spherical/circular
+  - extrude
+  - ruled
+  - revolve
+  - insert knots
+  - elevate degree
+  - conv to meshes
 
--Files:
---bmp
---obj
---stl
---step (wip)
+- Files:
+  - bmp
+  - obj
+  - stl
+  - step format ( wip)
+
+- Many tests
