@@ -14,6 +14,5 @@ namespace MeshFactory
     void create_sphere_geodesic(double dRadius, int iNbSegments, Mesh& m);
     void create_sphere_uv(double dRadius, int iNbSegments, Mesh& m);
     void create_torus(double dMajorRadius, double dMinorRadius, int iNbSegments, Mesh& m);
-    
 }
 #endif

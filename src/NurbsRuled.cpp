@@ -41,6 +41,8 @@ bool NurbsRuled::create_ruled(const NurbsCurve& nc1, const NurbsCurve& nc2, Nurb
 	ns.set_weights(vw);
 	ns.set_points(vp, nc1.points().size(),2);
 
+	ns.set_closed_u(nc1.is_closed() && nc2.is_closed());
+
 	return true;
 }
 ///////////////////////////////////////////////////////////////////////////

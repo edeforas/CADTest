@@ -28,11 +28,17 @@ public:
 	void set_weights(const vector <double>& weights);
 	void set_equals_weights(); //non rational
 
+	void set_closed_u(bool bClosedU);
+	void set_closed_v(bool bClosedV);
+
 	void set_points(const vector <Point3>& points, int iNbPointsU, int iNbPointsV);
 	const vector<Point3>& points() const;
 	vector<Point3>& points();
 	int nb_points_u() const;
 	int nb_points_v() const;
+
+	bool is_closed_u() const;
+	bool is_closed_v() const;
 
 	void apply_transform(const Transform& t);
 
@@ -43,6 +49,7 @@ private:
 
 	int _degreeU, _degreeV;
 	int _iNbPointsU, _iNbPointsV;
+	bool _bClosedU, _bClosedV;
 
 	vector <double> _knotsU, _knotsV;
 	vector <double> _weights;

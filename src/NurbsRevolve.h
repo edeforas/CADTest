@@ -13,7 +13,6 @@ public:
 	NurbsRevolve();
 	virtual ~NurbsRevolve();
 	bool revolve(const NurbsCurve& nc, NurbsSurface& ns) const;
-
 };
 ///////////////////////////////////////////////////////////////////////////
 

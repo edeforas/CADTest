@@ -6,7 +6,7 @@ using namespace std;
 #include "StepFile.h"
 
 namespace StepFile
-{   
+{   /*
     class StepLine
     {
     public:
@@ -27,7 +27,7 @@ namespace StepFile
         int _id;
         //string _type;
     };
-
+    
     bool save(const string& filename, const Body& body)
     {
         ofstream f(filename);
@@ -79,4 +79,42 @@ namespace StepFile
         return true;
     }
     ///////////////////////////////////////////////////////////////////////////
+    */
 }
+
+StepWriter::StepWriter()
+{
+
+}
+
+StepWriter::~StepWriter()
+{
+    if (_f.is_open())
+        _f.close();
+}
+
+void StepWriter::open(const string& filename)
+{
+    _f.open(filename);
+}
+
+bool StepWriter::is_open()
+{
+    return _f.is_open();
+}
+
+void StepWriter::close()
+{
+    _f.close();
+}
+
+void StepWriter::write(const Mesh& to_mesh)
+{
+
+}
+
+void StepWriter::write(const vector<Point3>& polyline)
+{
+
+}
+///////////////////////////////////////////////////////////////////////////

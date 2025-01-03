@@ -11,77 +11,82 @@
 using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////
-void NurbsUtil::to_pointsmesh(const NurbsSurface& n,Mesh& m) //show the ctrl points mesh lattice
+void NurbsUtil::to_pointsmesh(const NurbsSurface& n, Mesh& m) //show the ctrl points mesh lattice
 {
 	const vector<Point3>& points = n.points();
 	int iNbPointsU = n.nb_points_u();
 	int iNbPointsV = n.nb_points_v();
 
 	m.clear();
-	for(int u=0;u< iNbPointsU-1;u++)
-		for (int v = 0; v < iNbPointsV-1; v++)
+	for (int u = 0; u < iNbPointsU - 1; u++)
+		for (int v = 0; v < iNbPointsV - 1; v++)
 		{
 			Point3 p1, p2, p3, p4;
 
 			p1 = points[v * iNbPointsU + u];
-			p2 = points[v * iNbPointsU + (u+1)];
-			p3 = points[(v+1) * iNbPointsU + (u+1)];
-			p4 = points[(v+1) * iNbPointsU + u];
+			p2 = points[v * iNbPointsU + (u + 1)];
+			p3 = points[(v + 1) * iNbPointsU + (u + 1)];
+			p4 = points[(v + 1) * iNbPointsU + u];
 
 			m.add_quad(p1, p2, p3, p4);
 		}
 }
 ///////////////////////////////////////////////////////////////////////////
-void NurbsUtil::to_mesh(const NurbsSurface& n, Mesh& m, int iNbSegments,bool bClearMesh)
+void NurbsUtil::to_mesh(const NurbsSurface& n, Mesh& m, int iNbSegments, bool bClearMesh)
 {
-	if(bClearMesh)
+	if (bClearMesh)
 		m.clear();
 
-	int iNbSegmentsU = iNbSegments * n.nb_points_u();
-	int iNbSegmentsV = iNbSegments * n.nb_points_v();
+	bool bIsClosedU = n.is_closed_u();
+	bool bIsClosedV = n.is_closed_v();
 
-	if (iNbSegmentsU * iNbSegmentsU == 0)
+	int iNbPointsStart = m.nb_vertices();
+	int iNbPointsU = iNbSegments * n.nb_points_u();
+	int iNbPointsV = iNbSegments * n.nb_points_v();
+
+	if (iNbPointsU * iNbPointsU == 0)
 		return;
 
+	// add vertices, for now we keep all vertices, even if not used because closed
 	Point3 p;
-	for (int v = 0; v < iNbSegmentsV; v++)
-		for (int u = 0; u < iNbSegmentsU; u++)
+	for (int v = 0; v <= iNbPointsV; v++)
+		for (int u = 0; u <= iNbPointsU; u++)
 		{
-			//TODO slow
-			double du1 = (double)u / iNbSegmentsU;
-			double dv1 = (double)v / iNbSegmentsV;
-			double du2 = (double)(u + 1) / iNbSegmentsU;
-			double dv2 = (double)(v + 1) / iNbSegmentsV;
+			double du1 = (double)u / iNbPointsU;
+			double dv1 = (double)v / iNbPointsV;
 
-			Point3 p1, p2, p3, p4;
-			n.evaluate(du1, dv1, p1);
-			n.evaluate(du2, dv1, p2);
-			n.evaluate(du2, dv2, p3);
-			n.evaluate(du1, dv2, p4);
+			n.evaluate(du1, dv1, p);
+			m.add_vertex(p);
+		}
 
-			m.add_quad(p1, p2, p3, p4,false);
+	// add quad linked to vertices
+	for (int v = 0; v < iNbPointsV; v++)
+		for (int u = 0; u < iNbPointsU; u++)
+		{
+			int iEndU = u + 1;
+			int iEndV = v + 1;
+
+			if (bIsClosedU && (u == iNbPointsU - 1))
+				iEndU = 0;
+
+			if (bIsClosedV && (v == iNbPointsV - 1))
+				iEndV = 0;
+
+			m.add_quad(
+				iNbPointsStart + u + (iNbPointsU + 1) * v,
+				iNbPointsStart + iEndU + (iNbPointsU + 1) * v,
+				iNbPointsStart + iEndU + (iNbPointsU + 1) * iEndV,
+				iNbPointsStart + u + (iNbPointsU + 1) * iEndV
+			);
 		}
 }
 ///////////////////////////////////////////////////////////////////////////
 void NurbsUtil::to_mesh(const NurbsSolid& ns, Mesh& m, int iNbSegments)
 {
+	m.clear();
 	for (const auto& f : ns.surfaces())
 	{
-		to_mesh(f, m, iNbSegments,false);
+		to_mesh(f, m, iNbSegments, false);
 	}
-}
-///////////////////////////////////////////////////////////////////////////
-bool NurbsUtil::elevate_degree(NurbsCurve& n)
-{
-	//from paper DIRECT DEGREE ELEVATION OF NURBS CURVES Kestutis Jankauskas, Dalius Rubliauskas
-	if (n.degree() == 1)
-	{	
-		//elevate knots
-
-
-	}
-
-	//todo
-	return false;
 }
 ///////////////////////////////////////////////////////////////////////////
