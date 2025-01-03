@@ -37,29 +37,34 @@ void NurbsUtil::to_mesh(const NurbsSurface& n, Mesh& m, int iNbSegments,bool bCl
 	if(bClearMesh)
 		m.clear();
 
-	int iNbSegmentsU = iNbSegments * n.nb_points_u();
-	int iNbSegmentsV = iNbSegments * n.nb_points_v();
+	int iNbPointsU = iNbSegments * n.nb_points_u();
+	int iNbPointsV = iNbSegments * n.nb_points_v();
 
-	if (iNbSegmentsU * iNbSegmentsU == 0)
+	if (iNbPointsU * iNbPointsU == 0)
 		return;
 
+	// add vertices
 	Point3 p;
-	for (int v = 0; v < iNbSegmentsV; v++)
-		for (int u = 0; u < iNbSegmentsU; u++)
+	for (int v = 0; v <= iNbPointsV; v++)
+		for (int u = 0; u <= iNbPointsU; u++)
 		{
-			//TODO slow
-			double du1 = (double)u / iNbSegmentsU;
-			double dv1 = (double)v / iNbSegmentsV;
-			double du2 = (double)(u + 1) / iNbSegmentsU;
-			double dv2 = (double)(v + 1) / iNbSegmentsV;
+			double du1 = (double)u / iNbPointsU;
+			double dv1 = (double)v / iNbPointsV;
 
-			Point3 p1, p2, p3, p4;
-			n.evaluate(du1, dv1, p1);
-			n.evaluate(du2, dv1, p2);
-			n.evaluate(du2, dv2, p3);
-			n.evaluate(du1, dv2, p4);
+			n.evaluate(du1, dv1, p);
+			m.add_vertex(p);
+		}
 
-			m.add_quad(p1, p2, p3, p4,false);
+	// add quad linked to vertices
+	for (int v = 0; v < iNbPointsV; v++)
+		for (int u = 0; u < iNbPointsU; u++)
+		{
+			m.add_quad(
+				u + (iNbPointsU+1) * v,
+				(u + 1) + (iNbPointsU+1) * v,
+				(u + 1) + (iNbPointsU+1) * (v + 1),
+				u + (iNbPointsU+1) * (v + 1)
+			);
 		}
 }
 ///////////////////////////////////////////////////////////////////////////
@@ -69,19 +74,5 @@ void NurbsUtil::to_mesh(const NurbsSolid& ns, Mesh& m, int iNbSegments)
 	{
 		to_mesh(f, m, iNbSegments,false);
 	}
-}
-///////////////////////////////////////////////////////////////////////////
-bool NurbsUtil::elevate_degree(NurbsCurve& n)
-{
-	//from paper DIRECT DEGREE ELEVATION OF NURBS CURVES Kestutis Jankauskas, Dalius Rubliauskas
-	if (n.degree() == 1)
-	{	
-		//elevate knots
-
-
-	}
-
-	//todo
-	return false;
 }
 ///////////////////////////////////////////////////////////////////////////

@@ -45,7 +45,6 @@ void test_nurbsrevolve_vase()
 
 	Mesh m;
 	NurbsUtil::to_mesh(ns,m,10);
-	MeshUtil::merge_vertices(m);
 
 	OBJWriter ow;
 	ow.open("test_nurbsrevolve_vase.obj");
@@ -75,7 +74,6 @@ void test_nurbsrevolve_sphere()
 
 	Mesh m;
 	NurbsUtil::to_mesh(ns, m, 10);
-	MeshUtil::merge_vertices(m);
 
 	// test all points are on distance 1. to center
 	for (int i = 0; i < m.nb_vertices(); i++)
@@ -101,7 +99,6 @@ void test_nurbsrevolve_create_sphere()
 
 	Mesh m;
 	NurbsUtil::to_mesh(ns, m, 10);
-	MeshUtil::merge_vertices(m);
 
 	// test all points are on distance 1. to center
 	for (int i = 0; i < m.nb_vertices(); i++)
@@ -127,7 +124,6 @@ void test_nurbsrevolve_create_torus()
 
 	Mesh m;
 	NurbsUtil::to_mesh(ns, m, 10);
-	MeshUtil::merge_vertices(m);
 
 	OBJWriter ow;
 	ow.open("test_nurbsrevolve_create_torus.obj");

@@ -9,7 +9,7 @@ using namespace std;
 int main()
 {
 	OBJWriter ow;
-	ow.open("test_level_of_details.obj");
+	ow.open("test_mesh_level_of_details.obj");
 	Mesh m;
 
 	for (int iLevel = 1; iLevel < 10; iLevel++)

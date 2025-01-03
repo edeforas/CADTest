@@ -5,22 +5,26 @@ using namespace std;
 #include "ImageGenerator.h"
 #include "ImageIoBmp.h"
 
+#include "Transform.h"
 #include "MeshUtil.h"
 #include "OBJFile.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 int main()
 {
-	//create a mesh using mandelbort set
+	//create a mesh using generated Mandelbrot set 
 
 	Image imgMandelbrot;
 	ImageGenerator::Mandelbrot(imgMandelbrot, 256, 256,128);
-	ImageIoBmp::write("test_mandelbrot_mesh.bmp", &imgMandelbrot);
+	ImageIoBmp::write("test_mesh_mandelbrot.bmp", &imgMandelbrot);
 	
 	Mesh m;
 	MeshUtil::create_mesh_from_image(imgMandelbrot, m);
+	m.apply_transform(Scale(1, 1, 0.3));
 
-	OBJFile::save("test_mandelbrot_mesh.obj", m);
+	//todo add base
+
+	OBJFile::save("test_mesh_mandelbrot.obj", m);
 
 	return 0;
 }
