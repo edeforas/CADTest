@@ -44,6 +44,8 @@ bool NurbsExtrude::extrude(const NurbsCurve& nc, const Point3& direction, NurbsS
 	ns.set_weights(weights);
 	ns.set_points(points, iOldSize,2);
 
+	ns.set_closed_u(nc.is_closed());
+
 	return true;
 }
 ///////////////////////////////////////////////////////////////////////////

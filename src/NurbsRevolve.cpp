@@ -87,6 +87,9 @@ bool NurbsRevolve::revolve(const NurbsCurve& nc, NurbsSurface& ns) const
 	ns.set_knots_v(nc.knots());
 	ns.set_weights(wc);
 
+	ns.set_closed_u(true);
+	ns.set_closed_v(nc.is_closed()); //todo add case when nc.begin() and nc.end() are on axis
+
 	return true;
 }
 ///////////////////////////////////////////////////////////////////////////

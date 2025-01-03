@@ -9,7 +9,7 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////
 NurbsSurface::NurbsSurface() :
-	_degreeU(0), _degreeV(0), _iNbPointsU(0), _iNbPointsV(0)
+	_degreeU(0), _degreeV(0), _iNbPointsU(0), _iNbPointsV(0), _bClosedU(false), _bClosedV(false)
 { }
 
 NurbsSurface::~NurbsSurface()
@@ -155,6 +155,26 @@ int NurbsSurface::nb_points_u() const
 int NurbsSurface::nb_points_v() const
 {
 	return _iNbPointsV;
+}
+
+void NurbsSurface::set_closed_u(bool bClosedU)
+{
+	_bClosedU= bClosedU;
+}
+
+void NurbsSurface::set_closed_v(bool bClosedV)
+{
+	_bClosedV = bClosedV;
+}
+
+bool NurbsSurface::is_closed_u() const
+{
+	return _bClosedU;
+}
+
+bool NurbsSurface::is_closed_v() const
+{
+	return _bClosedV;
 }
 
 const vector<Point3>& NurbsSurface::points() const
