@@ -37,6 +37,7 @@ void NurbsUtil::to_mesh(const NurbsSurface& n, Mesh& m, int iNbSegments,bool bCl
 	if(bClearMesh)
 		m.clear();
 
+	int iNbPointsStart = m.nb_vertices();
 	int iNbPointsU = iNbSegments * n.nb_points_u();
 	int iNbPointsV = iNbSegments * n.nb_points_v();
 
@@ -60,16 +61,17 @@ void NurbsUtil::to_mesh(const NurbsSurface& n, Mesh& m, int iNbSegments,bool bCl
 		for (int u = 0; u < iNbPointsU; u++)
 		{
 			m.add_quad(
-				u + (iNbPointsU+1) * v,
-				(u + 1) + (iNbPointsU+1) * v,
-				(u + 1) + (iNbPointsU+1) * (v + 1),
-				u + (iNbPointsU+1) * (v + 1)
+				iNbPointsStart+u + (iNbPointsU+1) * v,
+				iNbPointsStart+(u + 1) + (iNbPointsU+1) * v,
+				iNbPointsStart+(u + 1) + (iNbPointsU+1) * (v + 1),
+				iNbPointsStart+u + (iNbPointsU+1) * (v + 1)
 			);
 		}
 }
 ///////////////////////////////////////////////////////////////////////////
 void NurbsUtil::to_mesh(const NurbsSolid& ns, Mesh& m, int iNbSegments)
 {
+	m.clear();
 	for (const auto& f : ns.surfaces())
 	{
 		to_mesh(f, m, iNbSegments,false);
