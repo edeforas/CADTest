@@ -305,8 +305,6 @@ bool NurbsCurve::degree_elevation()
 	elevatedKnots.push_back(_knots[nbKnots - 1]);
 	elevatedKnots.push_back(_knots[nbKnots - 1]);
 
-	set_knots(elevatedKnots);
-
 	vector<Point3> newPoints;// (2 * _iNbPoints - 1);
 	vector<double> newWeights;// (2 * _iNbPoints - 1);
 
@@ -374,6 +372,7 @@ bool NurbsCurve::degree_elevation()
 	for (int i = 0; i < newPoints.size(); i++)
 		newPoints[i] /= newWeights[i];
 
+	set_knots(elevatedKnots);
 	set_points(newPoints);
 	set_weights(newWeights);
 	set_degree(_degree + 1);

@@ -280,7 +280,7 @@ void test_knot_insertion_deg3()
 
 	// data from https://pages.mtu.edu/~shene/COURSES/cs3621/NOTES/spline/NURBS/NURBS-knot-insert.html
 
-	NurbsCurve n;
+	NurbsCurve n_deg3;
 	int degree = 3;
 	vector<double> knots = { 0,0,0,0,0.5,1,1,1,1 };
 	vector<double> weights = { 1.,0.5,4,5,1 };
@@ -292,20 +292,20 @@ void test_knot_insertion_deg3()
 		Point3(-40,-76,0.)
 	};
 
-	n.set_degree(degree);
-	n.set_knots(knots);
-	n.set_points(points);
-	n.set_weights(weights);
+	n_deg3.set_degree(degree);
+	n_deg3.set_knots(knots);
+	n_deg3.set_points(points);
+	n_deg3.set_weights(weights);
 
 	// insert a knot at 0.4 and compare
-	NurbsCurve n2 = n;
-	n2.insert_knot(0.4);
+	NurbsCurve n_deg3_knot = n_deg3;
+	n_deg3_knot.insert_knot(0.4);
 
 	for (double u = 0.; u <= 1.; u += 0.01)
 	{
 		Point3 p, p2;
-		n.evaluate(u, p);
-		n2.evaluate(u, p2);
+		n_deg3.evaluate(u, p);
+		n_deg3_knot.evaluate(u, p2);
 		test_near((p - p2).norm(), 0., 1.e-10);
 	}
 }
@@ -314,38 +314,39 @@ void test_degree_elevation_from_deg1()
 {
 	cout << endl << "test_degree_elevation_from_deg1" << endl;
 
-	NurbsCurve n1;
+	NurbsCurve n_deg1;
 	int degree = 1;
 	
-	vector<double> knots = { 0,0,0.6,1,1 };
-	vector<double> weights = { 1.,0.5,2 };
+	vector<double> knots = { 0,0,0.6,0.8,1,1 };
+	vector<double> weights = { 1.,0.5,0.7,2 };
 	vector<Point3> points = {
 		Point3(-2,-3,1.),
 		Point3(5,2,3.),
+		Point3(-5,3,-1.),
 		Point3(-1,-4,2.),
 	};
 
-	n1.set_degree(degree);
-	n1.set_knots(knots);
-	n1.set_points(points);
-	n1.set_weights(weights);
+	n_deg1.set_degree(degree);
+	n_deg1.set_knots(knots);
+	n_deg1.set_points(points);
+	n_deg1.set_weights(weights);
 
 	// elevate degree from 1 to 2
-	NurbsCurve n2 = n1;
-	n2.degree_elevation();
-	test(n2.degree() == 2);
-	
+	NurbsCurve n_deg2 = n_deg1;
+	n_deg2.degree_elevation();
+	test(n_deg2.degree() == 2);
+
 	// elevate degree from 2 to 3
-	NurbsCurve n3 = n2;
-	n3.degree_elevation();
-	test(n3.degree() == 3);
+	NurbsCurve n_deg3 = n_deg2;
+	n_deg3.degree_elevation();
+	test(n_deg3.degree() == 3);
 
 	for (double u = 0.; u <= 1.; u += 0.01)
 	{
 		Point3 p1, p2,p3;
-		n1.evaluate(u, p1);
-		n2.evaluate(u, p2);
-		n3.evaluate(u, p3);
+		n_deg1.evaluate(u, p1);
+		n_deg2.evaluate(u, p2);
+		n_deg3.evaluate(u, p3);
 		//cout << "p1 u=" << u << " x=" << p.x() << " y=" << p.y() << " z=" << p.z() << endl;
 		//cout << "p2 u=" << u << " x=" << p2.x() << " y=" << p2.y() << " z=" << p2.z() << endl;
 
@@ -354,24 +355,63 @@ void test_degree_elevation_from_deg1()
 	}
 }
 ///////////////////////////////////////////////////////////////////////////
-void test_degree_elevation_circle_deg2()
+void test_degree_elevation_from_deg2()
 {
-	cout << endl << "test_degree_elevation_circle_deg2" << endl;
+	cout << endl << "test_degree_elevation_from_deg2" << endl;
 
-	NurbsCurve n2;
-	NurbsFactory::create_circle(1, n2);
-	test(n2.degree() == 2);
+	NurbsCurve n_deg2;
+	int degree = 2;
+
+	vector<double> knots = { 0,0,0, 0.5, 1,1,1 };
+	vector<double> weights = { 1., 0.7 ,0.8, 1.1 };
+	vector<Point3> points = {
+		Point3(-2,-3,1.),
+		Point3(5,2,3.),
+		Point3(-5,3,-6.),
+		Point3(-1,-4,2.),
+	};
+
+	n_deg2.set_degree(degree);
+	n_deg2.set_knots(knots);
+	n_deg2.set_points(points);
+	n_deg2.set_weights(weights);
 
 	// elevate degree from 2 to 3
-	NurbsCurve n3 = n2;
-	n3.degree_elevation();
-	test(n3.degree() == 3);
+	NurbsCurve n_deg3 = n_deg2;
+	n_deg3.degree_elevation();
+	test(n_deg3.degree() == 3);
 
 	for (double u = 0.; u <= 1.; u += 0.01)
 	{
 		Point3 p2, p3;
-		n2.evaluate(u, p2);
-		n3.evaluate(u, p3);
+		n_deg2.evaluate(u, p2);
+		n_deg3.evaluate(u, p3);
+
+		//cout << "p1 u=" << u << " x=" << p.x() << " y=" << p.y() << " z=" << p.z() << endl;
+		//cout << "p2 u=" << u << " x=" << p2.x() << " y=" << p2.y() << " z=" << p2.z() << endl;
+
+		test_near((p2 - p3).norm(), 0., 1.e-10);
+	}
+}
+///////////////////////////////////////////////////////////////////////////
+void test_degree_elevation_circle_deg2()
+{
+	cout << endl << "test_degree_elevation_circle_deg2" << endl;
+
+	NurbsCurve n_deg2;
+	NurbsFactory::create_circle(1, n_deg2);
+	test(n_deg2.degree() == 2);
+
+	// elevate degree from 2 to 3
+	NurbsCurve n_deg3 = n_deg2;
+	n_deg3.degree_elevation();
+	test(n_deg3.degree() == 3);
+
+	for (double u = 0.; u <= 1.; u += 0.01)
+	{
+		Point3 p2, p3;
+		n_deg2.evaluate(u, p2);
+		n_deg3.evaluate(u, p3);
 
 		test_near(p2.norm(), 1., 1.e-10);
 		test_near(p3.norm(), 1., 1.e-10);
@@ -435,6 +475,7 @@ int main()
 
 	test_degree_elevation_circle_deg2();
 	test_degree_elevation_from_deg1();
+	test_degree_elevation_from_deg2();
 
 	test_is_closed();
 

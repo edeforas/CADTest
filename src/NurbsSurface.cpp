@@ -5,6 +5,7 @@
 #include <algorithm>
 using namespace std;
 
+#include "NurbsCurve.h"
 #include "Transform.h"
 
 ///////////////////////////////////////////////////////////////////////////
@@ -140,6 +141,16 @@ void NurbsSurface::set_equals_weights() //non rational
 	_weights.resize(_points.size(), 1.);
 }
 
+const vector<double>& NurbsSurface::weights() const
+{
+	return _weights;
+}
+
+vector<double>& NurbsSurface::weights()
+{
+	return _weights;
+}
+
 void NurbsSurface::set_points(const vector <Point3>& points,int iNbPointsU,int iNbPointsV)
 {
 	_points = points;
@@ -214,6 +225,153 @@ int NurbsSurface::find_knot_span(const vector <double>& knots,double t)
 	}
 
 	return -1; // should never be here
+}
+
+
+void NurbsSurface::insert_knot_u(double u)
+{ 
+	vector<NurbsCurve> vu;
+	create_u_curves(vu);
+	
+	for (int i = 0; i < vu.size(); i++)
+		vu[i].insert_knot(u);
+
+	from_u_curves(vu);
+}
+void NurbsSurface::insert_knot_v(double v)
+{
+	vector<NurbsCurve> vv;
+	create_v_curves(vv);
+
+	for (int i = 0; i < vv.size(); i++)
+		vv[i].insert_knot(v);
+
+	from_v_curves(vv);
+}
+
+bool NurbsSurface::degree_elevation_u()
+{
+	if (_degreeU >= 3)
+		return false; //only deg <=3 are handled
+
+	vector<NurbsCurve> vu;
+	create_u_curves(vu);
+
+	for (int i = 0; i < vu.size(); i++)
+		vu[i].degree_elevation();
+
+	from_u_curves(vu);
+	return true;
+}
+bool NurbsSurface::degree_elevation_v()
+{
+	if (_degreeV >= 3)
+		return false; //only deg <=3 are handled
+
+	vector<NurbsCurve> vv;
+	create_v_curves(vv);
+
+	for (int i = 0; i < vv.size(); i++)
+		vv[i].degree_elevation();
+
+	from_v_curves(vv);
+	return true;
+}
+
+void NurbsSurface::create_u_curves(vector<NurbsCurve>& vu) const
+{
+	vu.clear();
+
+	for (int v = 0; v < nb_points_v(); v++)
+	{
+		NurbsCurve n;
+		n.set_degree(_degreeU);
+		n.set_knots(_knotsU);
+
+		vector<Point3> vp;
+		vector<double> vw;
+		for (int u = 0; u < nb_points_u(); u++)
+		{
+			vp.push_back(points()[u + nb_points_u() * v]);
+			vw.push_back(weights()[u + nb_points_u() * v]);
+		}
+
+		n.set_points(vp);
+		n.set_weights(vw);
+		vu.push_back(n);
+	}
+}
+
+void NurbsSurface::create_v_curves(vector<NurbsCurve>& vv) const
+{
+	vv.clear();
+
+	for (int u = 0; u < nb_points_u(); u++)
+	{
+		NurbsCurve n;
+		n.set_degree(_degreeV);
+		n.set_knots(_knotsV);
+
+		vector<Point3> vp;
+		vector<double> vw;
+		for (int v = 0; v < nb_points_v(); v++)
+		{
+			vp.push_back(points()[u + nb_points_u() * v]);
+			vw.push_back(weights()[u + nb_points_u() * v]);
+		}
+
+		n.set_points(vp);
+		n.set_weights(vw);
+		vv.push_back(n);
+	}
+}
+
+void NurbsSurface::from_u_curves(const vector<NurbsCurve>& vu) //reuse V knots and degree
+{
+	if (vu.empty())
+		return;
+
+	//update knots
+	set_knots_u(vu[0].knots());
+
+	//update_points
+	vector<Point3> vp;
+	vector<double> vw;
+	for (int v = 0; v < vu.size(); v++)
+	{
+		vp.insert(vp.end(), vu[v].points().begin(), vu[v].points().end());
+		vw.insert(vw.end(), vu[v].weights().begin(), vu[v].weights().end());
+	}
+	set_points(vp,vu[0].nb_points(),nb_points_v());
+	set_weights(vw);
+	set_degree(vu[0].degree(),degree_v());
+}
+
+void NurbsSurface::from_v_curves(const vector<NurbsCurve>& vv) //reuse U knots and degree
+{
+	if (vv.empty())
+		return;
+
+	//update knots
+	set_knots_v(vv[0].knots());
+
+	//update_points
+	int nbPointsV = vv[0].nb_points();
+	vector<Point3> vp(nb_points_u()* nbPointsV);
+	vector<double> vw(nb_points_u() * nbPointsV);
+	for (int u = 0; u < nb_points_u(); u++)
+	{
+		const NurbsCurve& nv = vv[u];
+
+		for (int v = 0; v < nbPointsV; v++)
+		{
+			vp[u + v * nb_points_u()] = nv.points()[v];
+			vw[u + v * nb_points_u()] = nv.weights()[v];
+		}
+	}
+	set_points(vp, nb_points_u(), vv[0].nb_points());
+	set_weights(vw);
+	set_degree(degree_u(),vv[0].degree());
 }
 
 //todo optimize all:

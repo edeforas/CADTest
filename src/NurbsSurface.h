@@ -5,6 +5,7 @@
 using namespace std;
 
 #include "Geometry.h"
+#include "NurbsCurve.h"
 class Transform;
 
 ///////////////////////////////////////////////////////////////////////////
@@ -27,6 +28,8 @@ public:
 
 	void set_weights(const vector <double>& weights);
 	void set_equals_weights(); //non rational
+	const vector<double>& weights() const;
+	vector<double>& weights();
 
 	void set_closed_u(bool bClosedU);
 	void set_closed_v(bool bClosedV);
@@ -40,12 +43,24 @@ public:
 	bool is_closed_u() const;
 	bool is_closed_v() const;
 
+	void insert_knot_u(double u);
+	void insert_knot_v(double v);
+
+	bool degree_elevation_u();
+	bool degree_elevation_v();
+
 	void apply_transform(const Transform& t);
 
 	void evaluate(double u,double v, Point3& p) const;
 
 private:
 	static int find_knot_span(const vector <double>& knots,double u);
+
+	void create_u_curves(vector<NurbsCurve>& vu) const;
+	void create_v_curves(vector<NurbsCurve>& vv) const;
+
+	void from_u_curves(const vector<NurbsCurve>& vu); //reuse V knots and degreee
+	void from_v_curves(const vector<NurbsCurve>& vv); //reuse U knots and degreee
 
 	int _degreeU, _degreeV;
 	int _iNbPointsU, _iNbPointsV;
