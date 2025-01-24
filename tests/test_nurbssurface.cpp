@@ -25,7 +25,7 @@ void test_near(double a, double ref, double epsilon=1.e-10,const string& sMessag
 		exit(-1);
 	}
 }
-
+///////////////////////////////////////////////////////////////////////////
 void test_nurbssurface_square()
 {
 	cout << endl << "test_nurbssurface_square" << endl;
@@ -56,7 +56,7 @@ void test_nurbssurface_square()
 	NurbsUtil::to_mesh(n, m);
 	OBJFile::save("test_nurbssurface_square.obj", m);
 }
-
+///////////////////////////////////////////////////////////////////////////
 void test_nurbssurface_ruled_deg1()
 {
 	cout << endl << "test_nurbssurface_ruled_deg1" << endl;
@@ -89,7 +89,7 @@ void test_nurbssurface_ruled_deg1()
 	NurbsUtil::to_mesh(n, m, 10);;
 	OBJFile::save("test_nurbssurface_ruled_deg1.obj", m);
 }
-
+///////////////////////////////////////////////////////////////////////////
 void test_nurbssurface_ruled_deg2()
 {
 	cout << endl << "test_nurbssurface_ruled_deg2" << endl;
@@ -111,7 +111,7 @@ void test_nurbssurface_ruled_deg2()
 	NurbsUtil::to_mesh(n, m, 10);
 	OBJFile::save("test_nurbssurface_ruled_deg2.obj", m);
 }
-
+///////////////////////////////////////////////////////////////////////////
 void test_nurbssurface_deg1()
 {
 	cout << endl << "test_nurbssurface_deg1" << endl;
@@ -138,7 +138,7 @@ void test_nurbssurface_deg1()
 	NurbsUtil::to_mesh(n, m, 20);
 	OBJFile::save("test_nurbssurface_deg1.obj", m);
 }
-
+///////////////////////////////////////////////////////////////////////////
 void test_nurbssurface_deg2()
 {
 	cout << endl << "test_nurbssurface_deg2" << endl;
@@ -165,7 +165,6 @@ void test_nurbssurface_deg2()
 	NurbsUtil::to_mesh(n, m, 20);
 	OBJFile::save("test_nurbssurface_deg2.obj", m);
 }
-
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbssurface_deg3()
 {
@@ -298,8 +297,10 @@ void test_nurbssurface_elevate_degree_from_deg1()
 	ndeg_u1v1.set_points(points, nbPointsU, nbPointsV);
 	ndeg_u1v1.set_weights(weights);
 
-	ndeg_u1v1.set_uniform_u(); //todo custom knots
-	ndeg_u1v1.set_uniform_v(); //todo custom knots
+	vector<double> knot_u = {0,0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1};
+	vector<double> knot_v = { 0,0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1};
+	ndeg_u1v1.set_knots_u(knot_u);
+	ndeg_u1v1.set_knots_v(knot_v);
 
 	NurbsSurface ndeg_u2v1 = ndeg_u1v1;
 	ndeg_u2v1.degree_elevation_u();
@@ -375,8 +376,10 @@ void test_nurbssurface_elevate_degree_from_deg2()
 	ndeg_u2v2.set_points(points, nbPointsU, nbPointsV);
 	ndeg_u2v2.set_weights(weights);
 
-	ndeg_u2v2.set_uniform_u(); //todo custom knots
-	ndeg_u2v2.set_uniform_v(); //todo custom knots
+	vector<double> knot_u = { 0,0,0,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1,1 };
+	vector<double> knot_v = { 0,0,0,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1,1 };
+	ndeg_u2v2.set_knots_u(knot_u);
+	ndeg_u2v2.set_knots_v(knot_v);
 
 	NurbsSurface ndeg_u3v2 = ndeg_u2v2;
 	ndeg_u3v2.degree_elevation_u();
@@ -400,6 +403,147 @@ void test_nurbssurface_elevate_degree_from_deg2()
 			test_near((pdeg_u2v2 - pdeg_u2v3).norm(), 0, 1.e-10);
 			test_near((pdeg_u2v2 - pdeg_u3v2).norm(), 0, 1.e-10);
 			test_near((pdeg_u2v2 - pdeg_u3v3).norm(), 0, 1.e-10);
+		}
+}
+///////////////////////////////////////////////////////////////////////////
+void test_nurbssurface_deg1_insert_knot()
+{
+	cout << endl << "test_nurbssurface_deg1_insert_knot" << endl;
+
+	int nbPointsU = 11;
+	int nbPointsV = 11;
+
+	NurbsSurface ndeg_u1v1;
+	int degree = 1;
+	vector<Point3> points;
+	vector<double> weights;
+
+	for (int v = 0; v < nbPointsV; v++)
+		for (int u = 0; u < nbPointsU; u++)
+		{
+			points.push_back(Point3(u, v, (float)rand() / RAND_MAX * 3.));
+			weights.push_back((float)rand() / RAND_MAX + 1);
+		}
+
+	ndeg_u1v1.set_degree(degree, degree);
+	ndeg_u1v1.set_points(points, nbPointsU, nbPointsV);
+	ndeg_u1v1.set_weights(weights);
+
+	vector<double> knot_u = { 0,0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1 };
+	vector<double> knot_v = { 0,0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1 };
+	ndeg_u1v1.set_knots_u(knot_u);
+	ndeg_u1v1.set_knots_v(knot_v);
+
+	NurbsSurface ndeg_u1v1_knot = ndeg_u1v1;
+	ndeg_u1v1_knot.insert_knot_u(0.15);
+	ndeg_u1v1_knot.insert_knot_u(0.45);
+	ndeg_u1v1_knot.insert_knot_u(0.88);
+	ndeg_u1v1_knot.insert_knot_v(0.25);
+	ndeg_u1v1_knot.insert_knot_v(0.66);
+	ndeg_u1v1_knot.insert_knot_v(0.77);
+
+	for (double u = 0.; u <= 1.; u += 0.1)
+		for (double v = 0.; v <= 1.; v += 0.1)
+		{
+			Point3 pdeg_u1v1, pdeg_u1v1_knot;
+			ndeg_u1v1.evaluate(u, v, pdeg_u1v1);
+			ndeg_u1v1_knot.evaluate(u, v, pdeg_u1v1_knot);
+
+			test_near((pdeg_u1v1 - pdeg_u1v1_knot).norm(), 0, 1.e-10);
+		}
+}
+///////////////////////////////////////////////////////////////////////////
+void test_nurbssurface_deg2_insert_knot()
+{
+	cout << endl << "test_nurbssurface_deg2_insert_knot" << endl;
+
+	int nbPointsU = 11;
+	int nbPointsV = 11;
+
+	NurbsSurface ndeg_u2v2;
+	int degree = 2;
+	vector<Point3> points;
+	vector<double> weights;
+
+	for (int v = 0; v < nbPointsV; v++)
+		for (int u = 0; u < nbPointsU; u++)
+		{
+			points.push_back(Point3(u, v, (float)rand() / RAND_MAX * 3.));
+			weights.push_back((float)rand() / RAND_MAX + 1);
+		}
+
+	ndeg_u2v2.set_degree(degree, degree);
+	ndeg_u2v2.set_points(points, nbPointsU, nbPointsV);
+	ndeg_u2v2.set_weights(weights);
+
+	vector<double> knot_u = { 0,0,0,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1,1 };
+	vector<double> knot_v = { 0,0,0,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1,1 };
+	ndeg_u2v2.set_knots_u(knot_u);
+	ndeg_u2v2.set_knots_v(knot_v);
+
+	NurbsSurface ndeg_u2v2_knot = ndeg_u2v2;
+	ndeg_u2v2_knot.insert_knot_u(0.15);
+	ndeg_u2v2_knot.insert_knot_u(0.45);
+	ndeg_u2v2_knot.insert_knot_u(0.88);
+	ndeg_u2v2_knot.insert_knot_v(0.25);
+	ndeg_u2v2_knot.insert_knot_v(0.66);
+	ndeg_u2v2_knot.insert_knot_v(0.77);
+
+	for (double u = 0.; u <= 1.; u += 0.1)
+		for (double v = 0.; v <= 1.; v += 0.1)
+		{
+			Point3 pdeg_u1v1, pdeg_u1v1_knot;
+			ndeg_u2v2.evaluate(u, v, pdeg_u1v1);
+			ndeg_u2v2_knot.evaluate(u, v, pdeg_u1v1_knot);
+
+			test_near((pdeg_u1v1 - pdeg_u1v1_knot).norm(), 0, 1.e-10);
+		}
+}
+///////////////////////////////////////////////////////////////////////////
+void test_nurbssurface_deg3_insert_knot()
+{
+	cout << endl << "test_nurbssurface_deg3_insert_knot" << endl;
+
+	int nbPointsU = 11;
+	int nbPointsV = 11;
+
+	NurbsSurface ndeg_u3v3;
+	int degree = 3;
+	vector<Point3> points;
+	vector<double> weights;
+
+	for (int v = 0; v < nbPointsV; v++)
+		for (int u = 0; u < nbPointsU; u++)
+		{
+			points.push_back(Point3(u, v, (float)rand() / RAND_MAX * 3.));
+			weights.push_back((float)rand() / RAND_MAX + 1);
+		}
+
+	ndeg_u3v3.set_degree(degree, degree);
+	ndeg_u3v3.set_points(points, nbPointsU, nbPointsV);
+	ndeg_u3v3.set_weights(weights);
+
+	vector<double> knot_u = { 0,0,0,0,0.2,0.4,0.5,0.6,0.7,0.8,0.9,1,1,1,1 };
+	vector<double> knot_v = { 0,0,0,0,0.2,0.4,0.5,0.6,0.7,0.8,0.9,1,1,1,1 };
+	ndeg_u3v3.set_knots_u(knot_u);
+	ndeg_u3v3.set_knots_v(knot_v);
+
+	NurbsSurface ndeg_u3v3_knot = ndeg_u3v3;
+	ndeg_u3v3_knot.insert_knot_u(0.15);
+	ndeg_u3v3_knot.insert_knot_u(0.45);
+	ndeg_u3v3_knot.insert_knot_u(0.88);
+	ndeg_u3v3_knot.insert_knot_v(0.25);
+	ndeg_u3v3_knot.insert_knot_v(0.66);
+	ndeg_u3v3_knot.insert_knot_v(0.77);
+
+	for (double u = 0.; u <= 1.; u += 0.1)
+		for (double v = 0.; v <= 1.; v += 0.1)
+		{
+			Point3 pdeg_u1v1, pdeg_u1v1_knot;
+			ndeg_u3v3.evaluate(u, v, pdeg_u1v1);
+			ndeg_u3v3_knot.evaluate(u, v, pdeg_u1v1_knot);
+
+			test_near((pdeg_u1v1 - pdeg_u1v1_knot).norm(), 0, 1.e-10);
 		}
 }
 ///////////////////////////////////////////////////////////////////////////
@@ -438,15 +582,24 @@ int main()
 	test_nurbssurface_square();
 	test_nurbssurface_ruled_deg1();
 	test_nurbssurface_ruled_deg2();
+	
+	test_nurbssurface_deg2();
+	test_nurbssurface_deg3();
+
 	test_nurbssurface_deg1();
 	test_nurbssurface_deg2();
 	test_nurbssurface_deg3();
+
 	test_nurbssurface_degxy();
 	test_nurbssurface_cylinder();
 	test_nurbssurface_flatdisk();
 
 	test_nurbssurface_elevate_degree_from_deg1();
-	//test_nurbssurface_elevate_degree_from_deg2();
+	test_nurbssurface_elevate_degree_from_deg2();
+	
+	test_nurbssurface_deg1_insert_knot();
+	test_nurbssurface_deg2_insert_knot();
+	test_nurbssurface_deg3_insert_knot();
 
 	cout << "Test Finished.";
 	return 0;

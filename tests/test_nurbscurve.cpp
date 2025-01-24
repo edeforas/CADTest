@@ -25,7 +25,7 @@ void test_near(double a, double ref, double epsilon=1.e-10,const string& sMessag
 		exit(-1);
 	}
 }
-
+///////////////////////////////////////////////////////////////////////////
 void test_knots_span()
 {
 	cout << endl << "test_knots_span" << endl;
@@ -49,7 +49,7 @@ void test_knots_span()
 	int i_11 = n.find_knot_span(knots, 1.1);
 	test_near(i_11, 1);
 }
-
+///////////////////////////////////////////////////////////////////////////
 void test_simple_segment()
 {
 	cout << endl << "test_simple_segment" << endl;
@@ -76,7 +76,7 @@ void test_simple_segment()
 		//cout << "u=" << u << " x=" << p.x() << " y=" << p.y() << " z=" << p.z() << endl;
 	}
 }
-
+///////////////////////////////////////////////////////////////////////////
 void test_quarter_circle_deg2()
 {
 	cout << endl<< "test_quarter_circle_deg2" << endl;
@@ -101,7 +101,7 @@ void test_quarter_circle_deg2()
 		test_near(norm, 1., 1.e-10);
 	}
 }
-
+///////////////////////////////////////////////////////////////////////////
 void test_half_circle_deg3()
 {
 	cout << endl << "test_half_circle_deg3" << endl;
@@ -126,7 +126,7 @@ void test_half_circle_deg3()
 		test_near(norm, 1., 1.e-10);
 	}
 }
-
+///////////////////////////////////////////////////////////////////////////
 void test_circle_approximation_deg3()
 {
 	//	approximation using cubic NURBS, not rational
@@ -155,7 +155,7 @@ void test_circle_approximation_deg3()
 		test_near(norm, 1., 2.e-4);
 	}
 }
-
+///////////////////////////////////////////////////////////////////////////
 void test_full_circle_deg2()
 {
 	cout << endl << "test_full_circle_deg2" << endl;
@@ -184,7 +184,7 @@ void test_full_circle_deg2()
 		test_near(norm, 1., 1.e-10);
 	}
 }
-
+///////////////////////////////////////////////////////////////////////////
 void test_random_deg2()
 {
 	cout << endl << "test_random_deg2" << endl;
@@ -206,107 +206,94 @@ void test_random_deg2()
 	//	cout << "u=" << u << " x=" << p.x() << " y=" << p.y() << " z=" << p.z() << endl;
 	}
 }
-
+///////////////////////////////////////////////////////////////////////////
 void test_knot_insertion_deg1()
 {
 	cout << endl << "test_knot_insertion_deg1" << endl;
 
-	NurbsCurve n;
+	NurbsCurve n_deg1;
 	int degree = 1;
 	vector<Point3> points = { Point3(2.,7.,0.1),Point3(1.,-4.,8.),Point3(-2.,0.,0.6) };
-
-	n.set_degree(degree);
-	n.set_points(points);
-	n.set_equals_weights();
-	n.set_uniform();
+	vector<double> weights = { 1.,1.2,0.7 };
+	vector<double> knots = { 0,0, 0.6 ,1,1 };
+	n_deg1.set_degree(degree);
+	n_deg1.set_points(points);
+	n_deg1.set_weights(weights);
+	n_deg1.set_knots(knots);
 
 	// insert knots and compare
-	NurbsCurve n2 = n;
-	n2.insert_knot(0.2);
-	n2.insert_knot(0.7);
-	n2.insert_knot(0.9);
+	NurbsCurve n_deg1k = n_deg1;
+	n_deg1k.insert_knot(0.2);
+	n_deg1k.insert_knot(0.7);
+	n_deg1k.insert_knot(0.9);
 
-	for (double u = 0.; u <= 1.; u += 0.01)
+	for (double u = 0.; u <= 1.; u += 0.1)
 	{
-		Point3 p, p2;
-		n.evaluate(u, p);
-		n2.evaluate(u, p2);
+		Point3 p1, p2;
+		n_deg1.evaluate(u, p1);
+		n_deg1k.evaluate(u, p2);
 
-		test_near((p - p2).norm(), 0., 1.e-10);
+		test_near((p1 - p2).norm(), 0., 1.e-10);
 	}
 }
-
+///////////////////////////////////////////////////////////////////////////
 void test_knot_insertion_deg2()
 {
 	cout << endl << "test_knot_insertion_deg2" << endl;
 
-	NurbsCurve n;
+	NurbsCurve n_deg2;
 	int degree = 2;
+	vector<Point3> points = { Point3(2.,7.,0.1),Point3(1.,-4.,8.),Point3(3.,-2.,7.),Point3(-2.,0.,0.6) };
+	vector<double> weights = { 1.,1.2,0.9,0.7 };
+	vector<double> knots = { 0,0,0, 0.6, 1,1,1 };
+	n_deg2.set_degree(degree);
+	n_deg2.set_points(points);
+	n_deg2.set_weights(weights);
+	n_deg2.set_knots(knots);
 
-	vector<double> knots = { 0,0,0,1,1,1 };
-	vector<double> weights = { 1.,1. / sqrt(2.),1. };
-	vector<Point3> points = { Point3(1.,0.,0.),Point3(1.,1.,0.),Point3(0.,1.,0.) };
+	// insert knots and compare
+	NurbsCurve n_deg2k = n_deg2;
+	n_deg2k.insert_knot(0.2);
+	n_deg2k.insert_knot(0.7);
+	n_deg2k.insert_knot(0.8);
 
-	n.set_degree(degree);
-	n.set_knots(knots);
-	n.set_points(points);
-	n.set_weights(weights);
-	test_near(n.knots().size(), 6);
-
-	// insert a knot at 0.4 and compare
-	NurbsCurve n2=n;
-	n2.insert_knot(0.4);
-	test_near(n2.knots().size() , 7);
-	
-	for (double u = 0.; u <= 1.; u += 0.01)
+	for (double u = 0.; u <= 1.; u += 0.1)
 	{
-		Point3 p,p2;
-		n.evaluate(u, p);
-		double norm = p.norm();
-		test_near(norm, 1., 1.e-10);
+		Point3 p1, p2;
+		n_deg2.evaluate(u, p1);
+		n_deg2k.evaluate(u, p2);
 
-		n2.evaluate(u, p2);
-		double norm2 = p2.norm();
-		test_near(norm2, 1., 1.e-10);
-
-		//cout << "u=" << u << " x=" << p.x() << " y=" << p.y() << " z=" << p.z() << " norm=" << norm << endl;
-		test_near((p - p2).norm(), 0., 1.e-10);
+		test_near((p1 - p2).norm(), 0., 1.e-10);
 	}
 }
-
+///////////////////////////////////////////////////////////////////////////
 void test_knot_insertion_deg3()
 {
 	cout << endl << "test_knot_insertion_deg3" << endl;
 
-	// data from https://pages.mtu.edu/~shene/COURSES/cs3621/NOTES/spline/NURBS/NURBS-knot-insert.html
-
 	NurbsCurve n_deg3;
 	int degree = 3;
-	vector<double> knots = { 0,0,0,0,0.5,1,1,1,1 };
-	vector<double> weights = { 1.,0.5,4,5,1 };
-	vector<Point3> points = {
-		Point3(-70,-76,0.),
-		Point3(-70,75,0.),
-		Point3(74,75,0.),
-		Point3(74,-77,0.),
-		Point3(-40,-76,0.)
-	};
-
+	vector<Point3> points = { Point3(2.,7.,0.1),Point3(1.,-4.,8.),Point3(3.,-2.,7.),Point3(4.,-6.,-5.),Point3(-2.,0.,0.6) };
+	vector<double> weights = { 1.,1.2,0.9,0.5,0.7 };
+	vector<double> knots = { 0,0,0,0, 0.6 , 1,1,1,1 };
 	n_deg3.set_degree(degree);
-	n_deg3.set_knots(knots);
 	n_deg3.set_points(points);
 	n_deg3.set_weights(weights);
+	n_deg3.set_knots(knots);
 
-	// insert a knot at 0.4 and compare
-	NurbsCurve n_deg3_knot = n_deg3;
-	n_deg3_knot.insert_knot(0.4);
+	// insert knots and compare
+	NurbsCurve n_deg3k = n_deg3;
+	n_deg3k.insert_knot(0.2);
+	n_deg3k.insert_knot(0.7);
+	n_deg3k.insert_knot(0.8);
 
-	for (double u = 0.; u <= 1.; u += 0.01)
+	for (double u = 0.; u <= 1.; u += 0.1)
 	{
-		Point3 p, p2;
-		n_deg3.evaluate(u, p);
-		n_deg3_knot.evaluate(u, p2);
-		test_near((p - p2).norm(), 0., 1.e-10);
+		Point3 p1, p2;
+		n_deg3.evaluate(u, p1);
+		n_deg3k.evaluate(u, p2);
+
+		test_near((p1 - p2).norm(), 0., 1.e-10);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////

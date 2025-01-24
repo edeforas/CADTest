@@ -223,7 +223,7 @@ void NurbsCurve::insert_knot(double u)
 	}
 
 	//Homogenous to 3D coords
-	for (int i = 0; i < _points.size(); i++)
+	for (int i = 0; i < p.size(); i++)
 		p[i] /= w[i];
 
 	k.insert(k.begin() + indexU + 1, u);
