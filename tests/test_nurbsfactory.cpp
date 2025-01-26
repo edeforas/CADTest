@@ -129,9 +129,9 @@ void test_nurbsfactory_create_solid_torus_transform()
 				Translation translate(Point3(i, j, k) * 100.);
 				Rotation rotate(i*10, j*10, k*10);
 
-				ns.apply_transform(rotate);
-				ns.apply_transform(scale);
-				ns.apply_transform(translate);
+				rotate.apply_all(ns.points());
+				scale.apply_all(ns.points());
+				translate.apply_all(ns.points());
 
 				Mesh m;
 				NurbsUtil::to_mesh(ns, m, 4);

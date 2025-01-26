@@ -4,8 +4,6 @@
 #include <algorithm>
 using namespace std;
 
-#include "Transform.h"
-
 ///////////////////////////////////////////////////////////////////////////
 NurbsCurve::NurbsCurve() :
 	_degree(0), _iNbPoints(0)
@@ -40,24 +38,24 @@ int NurbsCurve::degree() const
 void NurbsCurve::set_knots(const vector <double>& knots)
 {
 	_knots = knots;
+	scale_knots(_knots);
+}
 
-	//todo use a Matrix class
-
+void NurbsCurve::scale_knots(vector<double>& knots)
+{
 	//compute min and max
-	double dMin = _knots[0];
-	double dMax = _knots[0];
-	for (int i = 1; i < _knots.size(); i++)
+	double dMin = knots[0];
+	double dMax = knots[0];
+	for (int i = 1; i < knots.size(); i++)
 	{
-		double v = _knots[i];
+		double v = knots[i];
 		dMin = min(dMin, v);
 		dMax = max(dMax, v);
 	}
 
 	//apply scale so that 0<= knots <= 1
-	for (int i = 0; i < _knots.size(); i++)
-	{
-		_knots[i] = (_knots[i] - dMin) / (dMax - dMin);
-	}
+	for (int i = 0; i < knots.size(); i++)
+		knots[i] = (knots[i] - dMin) / (dMax - dMin);
 }
 
 void NurbsCurve::set_uniform()
@@ -312,7 +310,7 @@ bool NurbsCurve::degree_elevation()
 	{
 		for (int i = 0; i <= _iNbPoints - 2; i++)
 		{
-			newPoints.push_back( _points[i] * _weights[i]);
+			newPoints.push_back(_points[i] * _weights[i]);
 			newWeights.push_back(_weights[i]);
 
 			newPoints.push_back((_points[i] * _weights[i] + _points[i + 1] * _weights[i + 1]) / 2.);
@@ -333,19 +331,19 @@ bool NurbsCurve::degree_elevation()
 		double b1 = 1. / 3.;
 		double b2 = 2. / 3.;
 
-		newPoints.push_back( _points[0]* _weights[0]);
-		newWeights.push_back( _weights[0]);
+		newPoints.push_back(_points[0] * _weights[0]);
+		newWeights.push_back(_weights[0]);
 
 		for (int l = 1; l < knotMultiplicity.size(); l++) // was //for (int l = 1 ; l<= nl – 1 ; l++)
 		{
 			if (knotMultiplicity[l - 1] > 1)
 			{
-				newPoints.push_back( _points[k - 1] * _weights[k - 1] * b2 + _points[k - 2] * _weights[k - 2] * b1);
-				newWeights.push_back( _weights[k - 1] * b2 + _weights[k - 2] * b1);
+				newPoints.push_back(_points[k - 1] * _weights[k - 1] * b2 + _points[k - 2] * _weights[k - 2] * b1);
+				newWeights.push_back(_weights[k - 1] * b2 + _weights[k - 2] * b1);
 			}
 			if (knotMultiplicity[l] > 1)
 			{
-				newPoints.push_back( _points[k] * _weights[k] * b1 + _points[k - 1] * _weights[k - 1] * b2);
+				newPoints.push_back(_points[k] * _weights[k] * b1 + _points[k - 1] * _weights[k - 1] * b2);
 				newWeights.push_back(_weights[k] * b1 + _weights[k - 1] * b2);
 
 				newPoints.push_back(_points[k] * _weights[k]);
@@ -364,8 +362,8 @@ bool NurbsCurve::degree_elevation()
 			k += knotMultiplicity[l];
 		}
 
-	//	newPoints[2 * _iNbPoints - 2] = _points[_iNbPoints - 1] * _weights[_iNbPoints - 1];
-	//	newWeights[2 * _iNbPoints - 2] = _weights[_iNbPoints - 1];
+		//	newPoints[2 * _iNbPoints - 2] = _points[_iNbPoints - 1] * _weights[_iNbPoints - 1];
+		//	newWeights[2 * _iNbPoints - 2] = _weights[_iNbPoints - 1];
 	}
 
 	//homogenous to 3d points
@@ -377,11 +375,5 @@ bool NurbsCurve::degree_elevation()
 	set_weights(newWeights);
 	set_degree(_degree + 1);
 	return true;
-}
-///////////////////////////////////////////////////////////////////////////
-void NurbsCurve::apply_transform(const Transform& t)
-{
-	for (auto& p : points())
-		t.apply(p);
 }
 ///////////////////////////////////////////////////////////////////////////

@@ -17,7 +17,7 @@ public:
 
 	void clear();
 
-	void set_degree(int degreeU,int idegreeV);
+	void set_degree(int degreeU, int degreeV);
 	int degree_u() const;
 	int degree_v() const;
 
@@ -49,12 +49,11 @@ public:
 	bool degree_elevation_u();
 	bool degree_elevation_v();
 
-	void apply_transform(const Transform& t);
-
-	void evaluate(double u,double v, Point3& p) const;
+	void evaluate(double u, double v, Point3& p) const;
 
 private:
-	static int find_knot_span(const vector <double>& knots,double u);
+	static int find_knot_span(const vector <double>& knots, double u);
+	static void scale_knots(vector<double>& knots);
 
 	void create_u_curves(vector<NurbsCurve>& vu) const;
 	void create_v_curves(vector<NurbsCurve>& vv) const;

@@ -6,15 +6,16 @@
 using namespace std;
 
 #include "NurbsCurve.h"
-#include "Transform.h"
 
 ///////////////////////////////////////////////////////////////////////////
 NurbsSurface::NurbsSurface() :
 	_degreeU(0), _degreeV(0), _iNbPointsU(0), _iNbPointsV(0), _bClosedU(false), _bClosedV(false)
-{ }
+{
+}
 
 NurbsSurface::~NurbsSurface()
-{ }
+{
+}
 
 void NurbsSurface::clear()
 {
@@ -28,7 +29,7 @@ void NurbsSurface::clear()
 	_iNbPointsV = 0;
 }
 
-void NurbsSurface::set_degree(int degreeU,int degreeV)
+void NurbsSurface::set_degree(int degreeU, int degreeV)
 {
 	_degreeU = degreeU;
 	_degreeV = degreeV;
@@ -52,24 +53,7 @@ int NurbsSurface::degree_v() const
 void NurbsSurface::set_knots_u(const vector <double>& knots)
 {
 	_knotsU = knots;
-
-	//todo use a Matrix class
-
-	//compute min and max
-	double dMin = _knotsU[0];
-	double dMax = _knotsU[0];
-	for (int i = 1; i < _knotsU.size(); i++)
-	{
-		double v = _knotsU[i];
-		dMin = min(dMin, v);
-		dMax = max(dMax, v);
-	}
-
-	//apply scale so that 0<= knots <= 1
-	for (int i = 0; i < _knotsU.size(); i++)
-	{
-		_knotsU[i] = (_knotsU[i] - dMin) / (dMax - dMin);
-	}
+	scale_knots(_knotsU);
 }
 
 void NurbsSurface::set_uniform_u()
@@ -90,28 +74,10 @@ void NurbsSurface::set_uniform_u()
 	set_knots_u(knots);
 }
 
-
 void NurbsSurface::set_knots_v(const vector <double>& knots)
 {
 	_knotsV = knots;
-
-	//todo use a Matrix class
-
-	//compute min and max
-	double dMin = _knotsV[0];
-	double dMax = _knotsV[0];
-	for (int i = 1; i < _knotsV.size(); i++)
-	{
-		double v = _knotsV[i];
-		dMin = min(dMin, v);
-		dMax = max(dMax, v);
-	}
-
-	//apply scale so that 0<= knots <= 1
-	for (int i = 0; i < _knotsV.size(); i++)
-	{
-		_knotsV[i] = (_knotsV[i] - dMin) / (dMax - dMin);
-	}
+	scale_knots(_knotsV);
 }
 
 void NurbsSurface::set_uniform_v()
@@ -130,6 +96,22 @@ void NurbsSurface::set_uniform_v()
 	set_knots_v(knots);
 }
 
+void NurbsSurface::scale_knots(vector<double>& knots)
+{
+	//compute min and max
+	double dMin = knots[0];
+	double dMax = knots[0];
+	for (int i = 1; i < knots.size(); i++)
+	{
+		double v = knots[i];
+		dMin = min(dMin, v);
+		dMax = max(dMax, v);
+	}
+
+	//apply scale so that 0<= knots <= 1
+	for (int i = 0; i < knots.size(); i++)
+		knots[i] = (knots[i] - dMin) / (dMax - dMin);
+}
 
 void NurbsSurface::set_weights(const vector <double>& weights)
 {
@@ -151,7 +133,7 @@ vector<double>& NurbsSurface::weights()
 	return _weights;
 }
 
-void NurbsSurface::set_points(const vector <Point3>& points,int iNbPointsU,int iNbPointsV)
+void NurbsSurface::set_points(const vector <Point3>& points, int iNbPointsU, int iNbPointsV)
 {
 	_points = points;
 	_iNbPointsU = iNbPointsU;
@@ -170,7 +152,7 @@ int NurbsSurface::nb_points_v() const
 
 void NurbsSurface::set_closed_u(bool bClosedU)
 {
-	_bClosedU= bClosedU;
+	_bClosedU = bClosedU;
 }
 
 void NurbsSurface::set_closed_v(bool bClosedV)
@@ -198,7 +180,7 @@ vector<Point3>& NurbsSurface::points()
 	return _points;
 }
 
-int NurbsSurface::find_knot_span(const vector <double>& knots,double t)
+int NurbsSurface::find_knot_span(const vector <double>& knots, double t)
 {
 	if (knots.size() < 2)
 		return 0;
@@ -227,17 +209,17 @@ int NurbsSurface::find_knot_span(const vector <double>& knots,double t)
 	return -1; // should never be here
 }
 
-
 void NurbsSurface::insert_knot_u(double u)
-{ 
+{
 	vector<NurbsCurve> vu;
 	create_u_curves(vu);
-	
+
 	for (int i = 0; i < vu.size(); i++)
 		vu[i].insert_knot(u);
 
 	from_u_curves(vu);
 }
+
 void NurbsSurface::insert_knot_v(double v)
 {
 	vector<NurbsCurve> vv;
@@ -263,6 +245,7 @@ bool NurbsSurface::degree_elevation_u()
 	from_u_curves(vu);
 	return true;
 }
+
 bool NurbsSurface::degree_elevation_v()
 {
 	if (_degreeV >= 3)
@@ -342,9 +325,9 @@ void NurbsSurface::from_u_curves(const vector<NurbsCurve>& vu) //reuse V knots a
 		vp.insert(vp.end(), vu[v].points().begin(), vu[v].points().end());
 		vw.insert(vw.end(), vu[v].weights().begin(), vu[v].weights().end());
 	}
-	set_points(vp,vu[0].nb_points(),nb_points_v());
+	set_points(vp, vu[0].nb_points(), nb_points_v());
 	set_weights(vw);
-	set_degree(vu[0].degree(),degree_v());
+	set_degree(vu[0].degree(), degree_v());
 }
 
 void NurbsSurface::from_v_curves(const vector<NurbsCurve>& vv) //reuse U knots and degree
@@ -357,7 +340,7 @@ void NurbsSurface::from_v_curves(const vector<NurbsCurve>& vv) //reuse U knots a
 
 	//update_points
 	int nbPointsV = vv[0].nb_points();
-	vector<Point3> vp(nb_points_u()* nbPointsV);
+	vector<Point3> vp(nb_points_u() * nbPointsV);
 	vector<double> vw(nb_points_u() * nbPointsV);
 	for (int u = 0; u < nb_points_u(); u++)
 	{
@@ -371,23 +354,23 @@ void NurbsSurface::from_v_curves(const vector<NurbsCurve>& vv) //reuse U knots a
 	}
 	set_points(vp, nb_points_u(), vv[0].nb_points());
 	set_weights(vw);
-	set_degree(degree_u(),vv[0].degree());
+	set_degree(degree_u(), vv[0].degree());
 }
 
-//todo optimize all:
 void NurbsSurface::evaluate(double u, double v, Point3& p) const
 {
-	assert( _points.size() == _weights.size());
+	//todo optimize all:
+	assert(_points.size() == _weights.size());
 
-	int knotIndexU = find_knot_span(_knotsU,u);
-	int knotIndexV = find_knot_span(_knotsV,v);
+	int knotIndexU = find_knot_span(_knotsU, u);
+	int knotIndexV = find_knot_span(_knotsV, v);
 	int iNbCtrlPointsU = nb_points_u();
 	int iNbCtrlPointsV = nb_points_v();
 
 	assert(iNbCtrlPointsU == _knotsU.size() - _degreeU - 1);
 	assert(iNbCtrlPointsV == _knotsV.size() - _degreeV - 1);
-	assert(iNbCtrlPointsU*iNbCtrlPointsV == _points.size());
-	
+	assert(iNbCtrlPointsU * iNbCtrlPointsV == _points.size());
+
 	//tensor product
 	for (int vi = 0; vi < _degreeV + 1; vi++)
 	{
@@ -414,11 +397,11 @@ void NurbsSurface::evaluate(double u, double v, Point3& p) const
 				_tempPointsU[ju] = _tempPointsU[ju - 1] * (1. - alpha) + _tempPointsU[ju] * alpha;
 				_tempWeightsU[ju] = _tempWeightsU[ju - 1] * (1. - alpha) + _tempWeightsU[ju] * alpha;
 			}
-		
+
 		_tempPointsV[vi] = _tempPointsU[_degreeU];
 		_tempWeightsV[vi] = _tempWeightsU[_degreeU];
 	}
-	
+
 	//evaluate on v direction
 	for (int rv = 1; rv < _degreeV + 1; rv++)
 		for (int jv = _degreeV; jv > rv - 1; jv--)
@@ -427,12 +410,6 @@ void NurbsSurface::evaluate(double u, double v, Point3& p) const
 			_tempPointsV[jv] = _tempPointsV[jv - 1] * (1. - alpha) + _tempPointsV[jv] * alpha;
 			_tempWeightsV[jv] = _tempWeightsV[jv - 1] * (1. - alpha) + _tempWeightsV[jv] * alpha;
 		}
-	
-	p = _tempPointsV[_degreeV]/ _tempWeightsV[_degreeV];
-}
 
-void NurbsSurface::apply_transform(const Transform& t)
-{
-	for (auto& p : points())
-		t.apply(p);
+	p = _tempPointsV[_degreeV] / _tempWeightsV[_degreeV];
 }

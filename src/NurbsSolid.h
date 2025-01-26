@@ -15,7 +15,7 @@ public:
     virtual ~NurbsSolid();
     void clear();
 
-    void add_surface(const NurbsSurface& ns); 
+    void add_surface(const NurbsSurface& ns);
     vector<NurbsSurface>& surfaces();
     const vector<NurbsSurface>& surfaces() const;
 

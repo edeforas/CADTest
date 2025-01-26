@@ -5,7 +5,6 @@
 using namespace std;
 
 #include "Geometry.h"
-class Transform;
 
 ///////////////////////////////////////////////////////////////////////////
 class NurbsCurve
@@ -39,13 +38,13 @@ public:
 	vector<Point3>& points();
 	void evaluate(double u, Point3& p) const;
 
-	void apply_transform(const Transform& t);
-
 	void to_polyline(vector<Point3>& polyline) const;
 
-	static int find_knot_span(const vector <double>& knots,double t);
+	static int find_knot_span(const vector <double>& knots, double t);
 
 private:
+	static void scale_knots(vector<double>& knots);
+
 	int _degree;
 	vector <double> _knots;
 	vector <double> _weights;

@@ -2,6 +2,8 @@
 #define _Transform_
 
 #include "Geometry.h"
+#include <vector>
+using namespace std;
 
 class Transform
 {
@@ -9,6 +11,7 @@ public:
 	Transform();
 
 	virtual void apply(Point3& p) const =0 ;
+	void apply_all(vector<Point3>& vp) const;
 };
 
 class Translation : public Transform
