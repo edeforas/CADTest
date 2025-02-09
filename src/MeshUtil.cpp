@@ -10,7 +10,32 @@
 using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////
-void MeshUtil::create_mesh_from_grid(const vector<Point3>& vp, int iSizeX, int iSizeY, Mesh& m)
+void MeshUtil::create_from_z(const vector<double>& vz, int iSizeX, int iSizeY, Mesh& m)
+{
+	m.clear();
+
+	assert(iSizeX * iSizeY == vz.size());
+
+	// add vertices
+	int idx = 0;
+	for (int y = 0; y < iSizeY; y++)
+		for (int x = 0; x < iSizeX; x++)
+		{
+			m.add_vertex(Point3(x, y, vz[idx]));
+			idx++;
+		}
+
+	// add quad ref to vertices
+	for (int j = 0; j < iSizeY - 1; j++)
+		for (int i = 0; i < iSizeX - 1; i++)
+			m.add_quad(
+				i + iSizeX * j,
+				(i + 1) + iSizeX * j,
+				(i + 1) + iSizeX * (j + 1),
+				i + iSizeX * (j + 1));
+}
+///////////////////////////////////////////////////////////////////////////
+void MeshUtil::create_from_grid(const vector<Point3>& vp, int iSizeX, int iSizeY, Mesh& m)
 {
 	m.clear();
 
@@ -29,22 +54,6 @@ void MeshUtil::create_mesh_from_grid(const vector<Point3>& vp, int iSizeX, int i
 				(i+1) + iSizeX * j,
 				(i+1) + iSizeX * (j+1),
 				i + iSizeX * (j+1));
-}
-///////////////////////////////////////////////////////////////////////////
-void MeshUtil::create_mesh_from_image(const Image& im, Mesh& m)
-{
-	m.clear();
-	Image imBW;
-
-	ImageUtil::convert_to_bw(im, imBW);
-
-	// todo avoid big object creation?
-	vector<Point3> vp;
-	for (int i = 0; i < imBW.width(); i++)
-		for (int j = 0; j < imBW.height(); j++)
-			vp.push_back(Point3(i,j,imBW(i,j)));
-
-	create_mesh_from_grid(vp, imBW.width(), imBW.height(), m);
 }
 ///////////////////////////////////////////////////////////////////////////
 void MeshUtil::merge_vertices(Mesh& m, double dDistanceTol)

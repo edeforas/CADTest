@@ -18,49 +18,6 @@ namespace OBJFile
 		ow.write(to_mesh);
 		ow.close();
 		return true;
-
-		/*
-
-        ofstream f(filename);
-        if (!f)
-            return false;
-
-		double colorR = 0., colorG = 0., colorB = 0.;
-		bool bHasColor = to_mesh.get_color() != -1;
-		if (bHasColor)
-		{
-			colorR = (to_mesh.get_color() >> 16) / 255.;
-			colorG = ((to_mesh.get_color() & 0xFF00) >> 8) / 255.;
-			colorB = (to_mesh.get_color() & 0xFF) / 255.;
-		}
-
-		// write vertices
-		Point3 vertex;
-		for (int i = 0; i < to_mesh.nb_vertices(); i++)
-		{
-			to_mesh.get_vertex(i, vertex);
-			if(bHasColor)
-				// save color as in: http://paulbourke.net/dataformats/obj/colour.html
-				f << "v " << vertex._x << " " << vertex._y << " " << vertex._z << " " << colorR << " " << colorG << " " << colorB << endl;
-			else
-				f << "v " << vertex._x << " " << vertex._y << " " << vertex._z << endl;
-		}
-		f << endl;
-
-		// write triangle vertices
-		int iVertex1 = 0, iVertex2 = 0, iVertex3 = 0; 
-
-		for (int i = 0; i < to_mesh.nb_triangles(); i++)
-		{
-			if (to_mesh.is_triangle_unlinked(i))
-				continue;
-
-			to_mesh.get_triangle_vertices(i, iVertex1, iVertex2, iVertex3);
-			f << "f " << iVertex1 + 1 << " " << iVertex2 + 1 << " " << iVertex3 + 1 << endl;
-		}
-
-        return true;
-    */
 	}
     ///////////////////////////////////////////////////////////////////////////
 	// todo add vertex aliasing on load
