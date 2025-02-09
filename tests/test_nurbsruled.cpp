@@ -35,6 +35,7 @@ void test_nurbsruled_deg1()
 {
 	cout << endl << "test_nurbsruled_deg1" << endl;
 
+	// test handcrafted ruled surface
 	NurbsSurface n;
 	int degree = 1;
 	vector<Point3> points = { Point3(0.,0.,1.),Point3(1.,0.,-1.),Point3(0.,1.,-1.),Point3(1.,1.,1.) };
@@ -68,6 +69,7 @@ void test_nurbsruled_deg2()
 {
 	cout << endl << "test_nurbsruled_deg2" << endl;
 
+	// test handcrafted ruled surface
 	NurbsSurface n;
 	int degreeU = 2;
 	vector<Point3> points = {
@@ -110,11 +112,37 @@ void test_nurbsruled_cylinder()
 	OBJFile::save("test_nurbsruled_cylinder.obj", m);
 }
 ///////////////////////////////////////////////////////////////////////////
+void test_nurbsruled_ribbon_deg3()
+{
+	NurbsCurve n1, n2;
+	vector<Point3> points1, points2;
+	int nbPoints = 11;
+	for (int i = 0; i < nbPoints; i++)
+		points1.push_back(Point3((double)rand() / RAND_MAX + i * 2, (double)rand() / RAND_MAX, 10.*(double)rand() / RAND_MAX));
+	for (int i = 0; i < nbPoints; i++)
+		points2.push_back(Point3((double)rand() / RAND_MAX + i * 2, (double)rand() / RAND_MAX + 2, 10.*(double)rand() / RAND_MAX));
+
+	int degree = 3;
+	NurbsFactory::create_curve_from_points(points1, degree, n1);
+	NurbsFactory::create_curve_from_points(points2, degree, n2);
+
+	NurbsSurface ns;
+
+	// ruled
+	NurbsRuled ne;
+	ne.create_ruled(n1, n2, ns);
+
+	Mesh m;
+	NurbsUtil::to_mesh(ns, m, 10);
+	OBJFile::save("test_nurbsruled_ribbon_deg3.obj", m);
+}
+///////////////////////////////////////////////////////////////////////////
 int main()
 {
 	test_nurbsruled_deg1();
 	test_nurbsruled_deg2();
 	test_nurbsruled_cylinder();
+	test_nurbsruled_ribbon_deg3();
 
 	cout << "Test Finished.";
 	return 0;
