@@ -11,7 +11,34 @@
 using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////
-void NurbsUtil::to_pointsmesh(const NurbsSurface& n, Mesh& m) //show the ctrl points mesh lattice
+void NurbsUtil::create_from_z(const vector<double>& z, int iSizeX, int iSizeY, int iDegree, NurbsSurface& n)
+{
+	n.clear();
+
+	vector < Point3> points;
+
+	int idx = 0;
+	for (int x = 0; x < iSizeX; x++)
+		for (int y = 0; y < iSizeY; y++)
+		{
+			Point3 p;
+			p.x() = x;
+			p.y() = y;
+			p.z() = z[idx];
+			points.push_back(p);
+
+			idx++;
+		}
+
+	n.set_degree(iDegree, iDegree);
+	n.set_points(points, iSizeX, iSizeY);
+	n.set_uniform_u();
+	n.set_uniform_v();
+	n.set_equals_weights();
+}
+///////////////////////////////////////////////////////////////////////////
+
+void NurbsUtil::to_controlpoints_mesh(const NurbsSurface& n, Mesh& m) //show the ctrl points mesh lattice
 {
 	const vector<Point3>& points = n.points();
 	int iNbPointsU = n.nb_points_u();

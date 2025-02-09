@@ -57,14 +57,18 @@ target_link_libraries(test_nurbsruled libCADTest)
 add_executable(test_nurbsrevolve test_nurbsrevolve.cpp  )
 target_link_libraries(test_nurbsrevolve libCADTest)
 
+add_executable(test_nurbs_mandelbrot test_nurbs_mandelbrot.cpp  )
+target_link_libraries(test_nurbs_mandelbrot libCADTest)
+
+
 add_test(test_geometry test_geometry)
 add_test(test_bmpfile test_bmpfile)
-add_test(test_mesh_mandelbrot test_mesh_mandelbrot)
 add_test(test_measurements test_measurements)
 add_test(test_meshfactory test_meshfactory)
 add_test(test_mesh_level_of_details test_mesh_level_of_details)
 add_test(test_mesh_geosphere test_mesh_geosphere)
 add_test(test_fractal_tetrahedron test_fractal_tetrahedron)
+add_test(test_mesh_mandelbrot test_mesh_mandelbrot)
 
 add_test(test_nurbscurve test_nurbscurve)
 add_test(test_nurbsutil test_nurbsutil)
@@ -73,5 +77,6 @@ add_test(test_nurbssurface test_nurbssurface)
 add_test(test_nurbsextrude test_nurbsextrude)
 add_test(test_nurbsruled test_nurbsruled)
 add_test(test_nurbsrevolve test_nurbsrevolve)
+add_test(test_nurbs_mandelbrot test_nurbs_mandelbrot)
 
 add_test(test_renderer test_renderer)
