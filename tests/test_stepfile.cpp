@@ -2,17 +2,18 @@
 
 #include <iostream>
 using namespace std;
+#include "NurbsFactory.h"
+#include "NurbsSurface.h"
 
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
-//	Body body;
-//	StepFile::load("test_sphere_hole.step", body);
-//	StepFile::save("test_sphere_hole_out.step", body);
+	NurbsSurface ns;
+	NurbsFactory::create_torus(50, 20, ns);
 
 	StepWriter sw;
-	sw.open("test_sphere_hole_out.step");
-	sw.close();
+	sw.open("test_torus.step");
+	sw.write(ns);
 
 	cout << "Test Finished.";
 	return 0;

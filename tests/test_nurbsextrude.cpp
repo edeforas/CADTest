@@ -6,6 +6,7 @@
 #include "NurbsFactory.h"
 
 #include "OBJFile.h"
+#include "StepFile.h"
 
 #include <iostream>
 #include <cassert>
@@ -39,6 +40,10 @@ void test_nurbsextrude_cylinder()
 	Mesh m;
 	NurbsUtil::to_mesh(ns,m,10);
 	OBJFile::save("test_nurbsextrude_cylinder.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbsextrude_cylinder.step");
+	sw.write(ns);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbsextrude_random_deg2()
@@ -65,6 +70,10 @@ void test_nurbsextrude_random_deg2()
 	Mesh m;
 	NurbsUtil::to_mesh(ns, m, 10);
 	OBJFile::save("test_nurbsextrude_random_deg2.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbsextrude_random_deg2.step");
+	sw.write(ns);
 }
 ///////////////////////////////////////////////////////////////////////////
 int main()

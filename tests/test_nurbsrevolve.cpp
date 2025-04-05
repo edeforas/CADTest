@@ -7,6 +7,7 @@
 
 #include "MeshUtil.h"
 #include "OBJFile.h"
+#include "StepFile.h"
 
 #include <iostream>
 #include <cassert>
@@ -24,65 +25,54 @@ void test_near(double a, double ref, double epsilon=1.e-10,const string& sMessag
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbsrevolve_flatdisk()
 {
-	cout << endl << "test_nurbsrevolve_flatdisk using 4 quarter circles as borders" << endl;
+	cout << endl << "test_nurbsrevolve_flatdisk" << endl;
 
-	// create circle profile using 4 quarter circles as borders
-	// use revolve surface instead, to create a disk
-	int degreeU = 2;
-	vector<double> knots = { 0., 0., 0., 1., 1., 1. };
-	vector<double> weights = { 1.,1. / sqrt(2.),1.,   1. / sqrt(2.),1.,1. / sqrt(2.),   1.,1. / sqrt(2.),1. };
-	vector<Point3> points = {
-		Point3(1.,0.,0.),Point3(1.,1.,0.),Point3(0.,1.,0.),
-		Point3(1.,-1,0.),Point3(0.,0.,0),Point3(-1.,1.,0.),
-		Point3(0.,-1.,0.),Point3(-1.,-1.,0.),Point3(-1.,0.,0.),
-	};
+	//create profile curve
+	vector<Point3> points = {Point3(0.,0.,0.),Point3(1.,0.,0.) };
+	NurbsCurve nc;
+	NurbsFactory::create_curve_from_points(points, 1, nc);
 
+	// revolve
+	NurbsRevolve nr;
 	NurbsSurface n;
-	n.set_degree(2, 2);
-	n.set_knots_u(knots);
-	n.set_knots_v(knots);
-	n.set_weights(weights);
-	n.set_points(points, 3, 3);
+	nr.revolve(nc, n);
 
 	Mesh m;
 	NurbsUtil::to_mesh(n, m, 10);
-	OBJFile::save("test_nurbsrevolve_flatdisk.obj", m);
+
+	OBJWriter ow;
+	ow.open("test_nurbsrevolve_flatdisk.obj");
+	ow.write(m);
+
+	StepWriter sw;
+	sw.open("test_nurbsrevolve_flatdisk.step");
+	sw.write(n);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbsrevolve_cylinder()
 {
 	cout << endl << "test_nurbsrevolve_cylinder" << endl;
 
-	//creation with elementary operators
-	int degreeU = 2;
-	vector<double> knotsU = { 0., 0., 0., 0.25, 0.25, 0.5, 0.5, 0.75, 0.75, 1., 1., 1. };
-	vector<double> weights = {
-		1.,1. / sqrt(2.),1.,1. / sqrt(2.),1.,1. / sqrt(2.),1.,1. / sqrt(2.),1.,
-		1.,1. / sqrt(2.),1.,1. / sqrt(2.),1.,1. / sqrt(2.),1.,1. / sqrt(2.),1.
-	};
+	//create profile curve
+	vector<Point3> points = { Point3(0.,0.,0.),Point3(1.,0.,0.),Point3(1.,0.,3.),Point3(0.,0.,3.) };
+	NurbsCurve nc;
+	NurbsFactory::create_curve_from_points(points, 1, nc);
 
-	vector<Point3> points = {
-		Point3(1.,0.,0.),Point3(1.,1.,0.),Point3(0.,1.,0.),
-		Point3(-1.,1.,0.),Point3(-1.,0.,0.),Point3(-1.,-1.,0.),
-		Point3(0.,-1.,0.),Point3(1.,-1.,0.),Point3(1.,0.,0.),
-		Point3(1.,0.,2.),Point3(1.,1.,2.),Point3(0.,1.,2.),
-		Point3(-1.,1.,2.),Point3(-1.,0.,2.),Point3(-1.,-1.,2.),
-		Point3(0.,-1.,2.),Point3(1.,-1.,2.),Point3(1.,0.,2.),
-	};
-
-	int degreeV = 1;
-	vector<double> knotsV = { 0., 0., 1., 1. };
-
+	// revolve
+	NurbsRevolve nr;
 	NurbsSurface n;
-	n.set_degree(degreeU, degreeV);
-	n.set_knots_u(knotsU);
-	n.set_knots_v(knotsV);
-	n.set_weights(weights);
-	n.set_points(points, 9, 2);
+	nr.revolve(nc, n);
 
 	Mesh m;
-	NurbsUtil::to_mesh(n, m);
-	OBJFile::save("test_nurbsrevolve_cylinder.obj", m);
+	NurbsUtil::to_mesh(n, m, 10);
+
+	OBJWriter ow;
+	ow.open("test_nurbsrevolve_cylinder.obj");
+	ow.write(m);
+
+	StepWriter sw;
+	sw.open("test_nurbsrevolve_cylinder.step");
+	sw.write(n);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbsrevolve_vase()
@@ -100,15 +90,19 @@ void test_nurbsrevolve_vase()
 
 	// revolve
 	NurbsRevolve nr;
-	NurbsSurface ns;
-	nr.revolve(nc, ns);
+	NurbsSurface n;
+	nr.revolve(nc, n);
 
 	Mesh m;
-	NurbsUtil::to_mesh(ns,m,10);
+	NurbsUtil::to_mesh(n,m,10);
 
 	OBJWriter ow;
 	ow.open("test_nurbsrevolve_vase.obj");
 	ow.write(m);
+
+	StepWriter sw;
+	sw.open("test_nurbsrevolve_vase.step");
+	sw.write(n);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbsrevolve_sphere()
@@ -146,6 +140,10 @@ void test_nurbsrevolve_sphere()
 	OBJWriter ow;
 	ow.open("test_nurbsrevolve_sphere.obj");
 	ow.write(m);
+
+	StepWriter sw;
+	sw.open("test_nurbsrevolve_sphere.step");
+	sw.write(ns);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbsrevolve_create_sphere()
@@ -170,6 +168,10 @@ void test_nurbsrevolve_create_sphere()
 	OBJWriter ow;
 	ow.open("test_nurbsrevolve_create_sphere.obj");
 	ow.write(m);
+
+	StepWriter sw;
+	sw.open("test_nurbsrevolve_create_sphere.step");
+	sw.write(ns);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbsrevolve_create_torus()
@@ -186,6 +188,10 @@ void test_nurbsrevolve_create_torus()
 	OBJWriter ow;
 	ow.open("test_nurbsrevolve_create_torus.obj");
 	ow.write(m);
+
+	StepWriter sw;
+	sw.open("test_nurbsrevolve_create_torus.step");
+	sw.write(ns);
 }
 ///////////////////////////////////////////////////////////////////////////
 int main()

@@ -7,6 +7,7 @@
 #include "Transform.h"
 
 #include "OBJFile.h"
+#include "StepFile.h"
 
 #include <iostream>
 #include <cassert>
@@ -63,6 +64,10 @@ void test_nurbsruled_deg1()
 	Mesh m;
 	NurbsUtil::to_mesh(n, m, 10);
 	OBJFile::save("test_nurbsruled_deg1.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbsruled_deg1.step");
+	sw.write(n);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbsruled_deg2()
@@ -86,6 +91,11 @@ void test_nurbsruled_deg2()
 	Mesh m;
 	NurbsUtil::to_mesh(n, m, 10);
 	OBJFile::save("test_nurbsruled_deg2.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbsruled_deg2.step");
+	sw.write(n);
+
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbsruled_cylinder()
@@ -101,15 +111,19 @@ void test_nurbsruled_cylinder()
 	Translation t(Point3(0, 0, 1));
 	t.apply_all(nc2.points());
 
-	NurbsSurface ns;
+	NurbsSurface n;
 
 	// ruled
 	NurbsRuled ne;
-	ne.create_ruled(nc1,nc2, ns);
+	ne.create_ruled(nc1,nc2, n);
 
 	Mesh m;
-	NurbsUtil::to_mesh(ns,m,10);
+	NurbsUtil::to_mesh(n,m,10);
 	OBJFile::save("test_nurbsruled_cylinder.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbsruled_cylinder.step");
+	sw.write(n);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbsruled_ribbon_deg3()
@@ -126,15 +140,19 @@ void test_nurbsruled_ribbon_deg3()
 	NurbsFactory::create_curve_from_points(points1, degree, n1);
 	NurbsFactory::create_curve_from_points(points2, degree, n2);
 
-	NurbsSurface ns;
+	NurbsSurface n;
 
 	// ruled
 	NurbsRuled ne;
-	ne.create_ruled(n1, n2, ns);
+	ne.create_ruled(n1, n2, n);
 
 	Mesh m;
-	NurbsUtil::to_mesh(ns, m, 10);
+	NurbsUtil::to_mesh(n, m, 10);
 	OBJFile::save("test_nurbsruled_ribbon_deg3.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbsruled_ribbon_deg3.step");
+	sw.write(n);
 }
 ///////////////////////////////////////////////////////////////////////////
 int main()

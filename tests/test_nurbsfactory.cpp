@@ -5,7 +5,9 @@
 #include "NurbsExtrude.h"
 #include "NurbsUtil.h"
 #include "Transform.h"
+
 #include "OBJFile.h"
+#include "StepFile.h"
 
 #include <iostream>
 #include <cassert>
@@ -73,19 +75,21 @@ void test_nurbsfactory_create_solid_cylinder()
 	Mesh m;
 	NurbsUtil::to_mesh(ns, m, 10);
 	OBJFile::save("test_nurbsfactory_create_solid_cylinder.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbsfactory_create_solid_cylinder.step");
+	sw.write(ns);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbsfactory_create_solid_sphere()
 {
 	cout << endl << "test_nurbsfactory_create_solid_sphere" << endl;
 
-	NurbsSolid ns;
-	NurbsFactory::create_sphere(20, ns);
+	NurbsSolid n;
+	NurbsFactory::create_sphere(20, n);
 
 	Mesh m;
-	NurbsUtil::to_mesh(ns, m, 10);
-	//m.merge_vertices();
-	//m.remove_empty_triangles();
+	NurbsUtil::to_mesh(n, m, 10);
 	OBJFile::save("test_nurbsfactory_create_solid_sphere.obj", m);
 }
 ///////////////////////////////////////////////////////////////////////////
@@ -93,12 +97,16 @@ void test_nurbsfactory_create_solid_torus()
 {
 	cout << endl << "test_nurbsfactory_create_solid_torus" << endl;
 
-	NurbsSolid ns;
-	NurbsFactory::create_torus(30,10, ns);
+	NurbsSolid n;
+	NurbsFactory::create_torus(30,10, n);
 
 	Mesh m;
-	NurbsUtil::to_mesh(ns, m, 10);
+	NurbsUtil::to_mesh(n, m, 10);
 	OBJFile::save("test_nurbsfactory_create_solid_torus.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbsfactory_create_solid_torus.step");
+	sw.write(n);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbsfactory_create_solid_box()
@@ -111,13 +119,21 @@ void test_nurbsfactory_create_solid_box()
 	Mesh m;
 	NurbsUtil::to_mesh(ns, m, 3);
 	OBJFile::save("test_nurbsfactory_create_solid_box.obj", m);
-}///////////////////////////////////////////////////////////////////////////
+
+	StepWriter sw;
+	sw.open("test_nurbsfactory_create_solid_box.step");
+	sw.write(ns);
+}
+///////////////////////////////////////////////////////////////////////////
 void test_nurbsfactory_create_solid_torus_transform()
 {
 	cout << endl << "test_nurbsfactory_create_solid_torus_transform" << endl;
 
 	OBJWriter ow;
 	ow.open("test_nurbsfactory_create_solid_torus_transform.obj");
+
+	StepWriter sw;
+	sw.open("test_nurbsfactory_create_solid_torus_transform.step");
 
 	for (double i=0.5; i < 5; i *= 2.)
 		for (double j = 0.5; j < 5; j *= 2.)
@@ -136,9 +152,11 @@ void test_nurbsfactory_create_solid_torus_transform()
 				Mesh m;
 				NurbsUtil::to_mesh(ns, m, 4);
 				ow.write(m);
+				sw.write(ns);
 		}
 
 	ow.close();
+	sw.close();
 }
 ///////////////////////////////////////////////////////////////////////////
 

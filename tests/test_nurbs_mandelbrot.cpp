@@ -10,6 +10,7 @@ using namespace std;
 #include "Transform.h"
 #include "ImageUtil.h"
 #include "OBJFile.h"
+#include "StepFile.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 int main()
@@ -28,11 +29,16 @@ int main()
 	imBW.to_double(vd);
 	NurbsUtil::create_from_z(vd, 64, 64, 3, n);
 
-	cout << "Saving NurbsSurface to Obj file" << endl;
+	cout << "Saving NurbsSurface to Obj and step file" << endl;
+
 	Mesh m;
 	NurbsUtil::to_mesh(n, m);
 	m.apply_transform(Scale(1, 1, 20./255.));
 	OBJFile::save("test_nurbs_mandelbrot.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbs_mandelbrot.step");
+	sw.write(n);
 
 	return 0;
 }

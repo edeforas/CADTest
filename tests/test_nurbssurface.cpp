@@ -1,6 +1,8 @@
 #include "NurbsSurface.h"
 #include "NurbsUtil.h"
+
 #include "OBJFile.h"
+#include "StepFile.h"
 
 #include <iostream>
 #include <cassert>
@@ -55,8 +57,83 @@ void test_nurbssurface_square()
 	Mesh m;
 	NurbsUtil::to_mesh(n, m);
 	OBJFile::save("test_nurbssurface_square.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbssurface_square.step");
+	sw.write(n);
 }
 ///////////////////////////////////////////////////////////////////////////
+void test_nurbssurface_flatdisk()
+{
+	cout << endl << "test_nurbssurface_flatdisk using 4 quarter circles as borders" << endl;
+
+	// create circle profile using 4 quarter circles as borders
+	int degreeU = 2;
+	vector<double> knots = { 0., 0., 0., 1., 1., 1. };
+	vector<double> weights = { 1.,1. / sqrt(2.),1.,   1. / sqrt(2.),1.,1. / sqrt(2.),   1.,1. / sqrt(2.),1. };
+	vector<Point3> points = {
+		Point3(1.,0.,0.),Point3(1.,1.,0.),Point3(0.,1.,0.),
+		Point3(1.,-1,0.),Point3(0.,0.,0),Point3(-1.,1.,0.),
+		Point3(0.,-1.,0.),Point3(-1.,-1.,0.),Point3(-1.,0.,0.),
+	};
+
+	NurbsSurface n;
+	n.set_degree(2, 2);
+	n.set_knots_u(knots);
+	n.set_knots_v(knots);
+	n.set_weights(weights);
+	n.set_points(points, 3, 3);
+
+	Mesh m;
+	NurbsUtil::to_mesh(n, m, 10);
+	OBJFile::save("test_nurbssurface_flatdisk.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbssurface_flatdisk.step");
+	sw.write(n);
+}
+///////////////////////////////////////////////////////////////////////////
+void test_nurbssurface_cylinder()
+{
+	cout << endl << "test_nurbssurface_cylinder" << endl;
+
+	//cylinder creation with elementary ctrl points
+	int degreeU = 2;
+	vector<double> knotsU = { 0., 0., 0., 0.25, 0.25, 0.5, 0.5, 0.75, 0.75, 1., 1., 1. };
+	vector<double> weights = {
+		1.,1. / sqrt(2.),1.,1. / sqrt(2.),1.,1. / sqrt(2.),1.,1. / sqrt(2.),1.,
+		1.,1. / sqrt(2.),1.,1. / sqrt(2.),1.,1. / sqrt(2.),1.,1. / sqrt(2.),1.
+	};
+
+	vector<Point3> points = {
+		Point3(1.,0.,0.),Point3(1.,1.,0.),Point3(0.,1.,0.),
+		Point3(-1.,1.,0.),Point3(-1.,0.,0.),Point3(-1.,-1.,0.),
+		Point3(0.,-1.,0.),Point3(1.,-1.,0.),Point3(1.,0.,0.),
+		Point3(1.,0.,2.),Point3(1.,1.,2.),Point3(0.,1.,2.),
+		Point3(-1.,1.,2.),Point3(-1.,0.,2.),Point3(-1.,-1.,2.),
+		Point3(0.,-1.,2.),Point3(1.,-1.,2.),Point3(1.,0.,2.),
+	};
+
+	int degreeV = 1;
+	vector<double> knotsV = { 0., 0., 1., 1. };
+
+	NurbsSurface n;
+	n.set_degree(degreeU, degreeV);
+	n.set_knots_u(knotsU);
+	n.set_knots_v(knotsV);
+	n.set_weights(weights);
+	n.set_points(points, 9, 2);
+
+	Mesh m;
+	NurbsUtil::to_mesh(n, m);
+	OBJFile::save("test_nurbssurface_cylinder.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbssurface_cylinder.step");
+	sw.write(n);
+}
+///////////////////////////////////////////////////////////////////////////
+
 void test_nurbssurface_deg1()
 {
 	cout << endl << "test_nurbssurface_deg1" << endl;
@@ -82,6 +159,10 @@ void test_nurbssurface_deg1()
 	Mesh m;
 	NurbsUtil::to_mesh(n, m, 20);
 	OBJFile::save("test_nurbssurface_deg1.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbssurface_deg1.step");
+	sw.write(n);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbssurface_deg2()
@@ -109,6 +190,10 @@ void test_nurbssurface_deg2()
 	Mesh m;
 	NurbsUtil::to_mesh(n, m, 20);
 	OBJFile::save("test_nurbssurface_deg2.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbssurface_deg2.step");
+	sw.write(n);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbssurface_deg3()
@@ -136,6 +221,10 @@ void test_nurbssurface_deg3()
 	Mesh m;
 	NurbsUtil::to_mesh(n, m, 20);
 	OBJFile::save("test_nurbssurface_deg3.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbssurface_deg3.step");
+	sw.write(n);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbssurface_degxy()
@@ -146,6 +235,9 @@ void test_nurbssurface_degxy()
 	int nbPointsV = 7;
 	OBJWriter ow;
 	ow.open("test_nurbssurface_degxy.obj");
+
+	StepWriter sw;
+	sw.open("test_nurbssurface_degxy.step");
 
 	vector<Point3> points,pt;
 	for (int v = 0; v < nbPointsV; v++)
@@ -176,6 +268,7 @@ void test_nurbssurface_degxy()
 			NurbsUtil::to_mesh(n, m, 10);
 			m.set_color((uDeg * 50 + 100) * 256 * 256 + (vDeg * 50 + 100) * 256); //red is degu , green is degv
 			ow.write(m);
+			sw.write(n);
 		}
 	ow.close();
 }
@@ -358,6 +451,14 @@ void test_nurbssurface_deg1_insert_knot()
 
 			test_near((pdeg_u1v1 - pdeg_u1v1_knot).norm(), 0, 1.e-10);
 		}
+
+	Mesh m;
+	NurbsUtil::to_mesh(ndeg_u1v1_knot, m, 20);
+	OBJFile::save("test_nurbssurface_deg1_insert_knot.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbssurface_deg1_insert_knot.step");
+	sw.write(ndeg_u1v1_knot);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbssurface_deg2_insert_knot()
@@ -405,6 +506,14 @@ void test_nurbssurface_deg2_insert_knot()
 
 			test_near((pdeg_u1v1 - pdeg_u1v1_knot).norm(), 0, 1.e-10);
 		}
+
+	Mesh m;
+	NurbsUtil::to_mesh(ndeg_u2v2_knot, m, 20);
+	OBJFile::save("test_nurbssurface_deg2_insert_knot.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbssurface_deg2_insert_knot.step");
+	sw.write(ndeg_u2v2_knot);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_nurbssurface_deg3_insert_knot()
@@ -452,11 +561,21 @@ void test_nurbssurface_deg3_insert_knot()
 
 			test_near((pdeg_u1v1 - pdeg_u1v1_knot).norm(), 0, 1.e-10);
 		}
+
+	Mesh m;
+	NurbsUtil::to_mesh(ndeg_u3v3_knot, m, 20);
+	OBJFile::save("test_nurbssurface_deg3_insert_knot.obj", m);
+
+	StepWriter sw;
+	sw.open("test_nurbssurface_deg3_insert_knot.step");
+	sw.write(ndeg_u3v3_knot);
 }
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
 	test_nurbssurface_square();
+	test_nurbssurface_flatdisk();
+	test_nurbssurface_cylinder();
 
 	test_nurbssurface_deg1();
 	test_nurbssurface_deg2();
