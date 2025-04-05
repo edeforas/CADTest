@@ -4,6 +4,7 @@
 using namespace std;
 
 #include "StepFile.h"
+#include "NurbsSurface.h"
 
 namespace StepFile
 {   /*
@@ -87,15 +88,32 @@ StepWriter::StepWriter()
 
 }
 
+void StepWriter::write_header()
+{
+    _f << "ISO - 10303 - 21;" << endl;
+    _f << "HEADER;" << endl;
+    _f << "FILE_DESCRIPTION((''),'2;1');" << endl;
+    _f << "FILE_NAME('" << _sNameFile << "','',(''),(''), '', 'CADTest', '');" << endl;
+    _f << "FILE_SCHEMA(('AUTOMOTIVE_DESIGN { 1 0 10303 214 3 1 1 }'));" << endl;
+    _f << "ENDSEC;" << endl;
+}
+
+void StepWriter::write_footer()
+{
+    _f << "END - ISO - 10303 - 21;" << endl;
+}
+
 StepWriter::~StepWriter()
 {
     if (_f.is_open())
-        _f.close();
+        close();
 }
 
 void StepWriter::open(const string& filename)
 {
+    _sNameFile = filename;
     _f.open(filename);
+    write_header();
 }
 
 bool StepWriter::is_open()
@@ -105,15 +123,11 @@ bool StepWriter::is_open()
 
 void StepWriter::close()
 {
+    write_footer();
     _f.close();
 }
 
-void StepWriter::write(const Mesh& to_mesh)
-{
-
-}
-
-void StepWriter::write(const vector<Point3>& polyline)
+void StepWriter::write(const NurbsSurface& n)
 {
 
 }

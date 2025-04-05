@@ -6,7 +6,7 @@
 #include <fstream>
 using namespace std;
 
-#include "Mesh.h"
+class NurbsSurface;
 
 namespace StepFile
 {
@@ -24,11 +24,14 @@ public:
 	bool is_open();
 	void close();
 
-	void write(const Mesh& to_mesh);
-	void write(const vector<Point3>& polyline);
+	void write(const NurbsSurface& n);
 
 private:
+	void write_header();
+	void write_footer();
+
 	ofstream _f;
+	string _sNameFile;
 };
 
 #endif
