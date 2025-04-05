@@ -5,6 +5,7 @@ using namespace std;
 
 #include "StepFile.h"
 #include "NurbsSurface.h"
+#include "NurbsSolid.h"
 
 namespace StepFile
 {   /*
@@ -83,24 +84,27 @@ namespace StepFile
     */
 }
 
-StepWriter::StepWriter()
+StepWriter::StepWriter():
+    _iItemIndex(0)
 {
-
 }
 
 void StepWriter::write_header()
 {
-    _f << "ISO - 10303 - 21;" << endl;
+    _f << "ISO-10303-21;" << endl;
     _f << "HEADER;" << endl;
     _f << "FILE_DESCRIPTION((''),'2;1');" << endl;
     _f << "FILE_NAME('" << _sNameFile << "','',(''),(''), '', 'CADTest', '');" << endl;
     _f << "FILE_SCHEMA(('AUTOMOTIVE_DESIGN { 1 0 10303 214 3 1 1 }'));" << endl;
     _f << "ENDSEC;" << endl;
+
+    _f << "DATA;" << endl;
 }
 
 void StepWriter::write_footer()
 {
-    _f << "END - ISO - 10303 - 21;" << endl;
+    _f << "ENDSEC;" << endl;
+    _f << "END-ISO-10303-21;" << endl;
 }
 
 StepWriter::~StepWriter()
@@ -111,6 +115,7 @@ StepWriter::~StepWriter()
 
 void StepWriter::open(const string& filename)
 {
+    _iItemIndex = 0;
     _sNameFile = filename;
     _f.open(filename);
     write_header();
@@ -123,12 +128,30 @@ bool StepWriter::is_open()
 
 void StepWriter::close()
 {
+    if (!_f.is_open())
+        return;
+
     write_footer();
     _f.close();
 }
 
+int StepWriter::write_cartesian_point(const Point3& p)
+{
+    _iItemIndex++;
+    _f << "#" << _iItemIndex << " = CARTESIAN_POINT('', (" << p.x() << ", " << p.y() << ", " << p.z() << "));" << endl;
+    return _iItemIndex;
+}
+
 void StepWriter::write(const NurbsSurface& n)
 {
+    const auto& vp = n.points();
+    for (const auto& p : vp)
+        write_cartesian_point(p);
+}
 
+void StepWriter::write(const NurbsSolid& n)
+{
+    for (const auto& f : n.surfaces())
+        write(f);
 }
 ///////////////////////////////////////////////////////////////////////////

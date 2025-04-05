@@ -7,6 +7,8 @@
 using namespace std;
 
 class NurbsSurface;
+class NurbsSolid;
+class Point3;
 
 namespace StepFile
 {
@@ -25,13 +27,16 @@ public:
 	void close();
 
 	void write(const NurbsSurface& n);
+	void write(const NurbsSolid& n);
 
 private:
 	void write_header();
 	void write_footer();
+	int write_cartesian_point(const Point3& p);
 
 	ofstream _f;
 	string _sNameFile;
+	int _iItemIndex;
 };
 
 #endif
