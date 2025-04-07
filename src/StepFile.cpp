@@ -144,9 +144,32 @@ int StepWriter::write_cartesian_point(const Point3& p)
 
 void StepWriter::write(const NurbsSurface& n)
 {
+    int iPointIndex = _iItemIndex;
     const auto& vp = n.points();
     for (const auto& p : vp)
         write_cartesian_point(p);
+
+    _iItemIndex++;
+    _f << "#" << _iItemIndex << " = UNIFORM_SURFACE('','',3,3,(";
+//    _f << "#" << _iItemIndex << " = B_SPLINE_SURFACE_WITH_KNOTS('','',3,3,(";
+    for (int j = 0; j < n.nb_points_v(); j++)
+    {
+        _f << "(";
+        for (int i = 0; i < n.nb_points_u(); i++)
+        {
+            _f << "#" << iPointIndex;
+            iPointIndex++;
+            if (i + 1 != n.nb_points_u())
+                _f << ",";
+        }
+        _f << ")";
+        if (j + 1 != n.nb_points_v())
+            _f << ",";
+    }
+
+    _f << ".UNSPECIFIED.,.T.,.T.,.F.";
+    _f << "); " << endl;
+
 }
 
 void StepWriter::write(const NurbsSolid& n)
