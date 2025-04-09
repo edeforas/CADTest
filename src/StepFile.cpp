@@ -138,7 +138,7 @@ void StepWriter::close()
 int StepWriter::write_cartesian_point(const Point3& p)
 {
     _iItemIndex++;
-    _f << "#" << _iItemIndex << " = CARTESIAN_POINT('', (" << p.x() << ", " << p.y() << ", " << p.z() << "));" << endl;
+    _f << "#" << _iItemIndex << "=CARTESIAN_POINT('',(" << p.x() << "," << p.y() << "," << p.z() << "));" << endl;
     return _iItemIndex;
 }
 
@@ -150,7 +150,7 @@ void StepWriter::write(const NurbsSurface& n)
         write_cartesian_point(p);
 
     _iItemIndex++;
-    _f << "#" << _iItemIndex << " = UNIFORM_SURFACE('','',3,3,(";
+    _f << "#" << _iItemIndex << "=UNIFORM_SURFACE('','',3,3,(";
 //    _f << "#" << _iItemIndex << " = B_SPLINE_SURFACE_WITH_KNOTS('','',3,3,(";
     for (int j = 0; j < n.nb_points_v(); j++)
     {
@@ -169,6 +169,20 @@ void StepWriter::write(const NurbsSurface& n)
 
     _f << ".UNSPECIFIED.,.T.,.T.,.F.";
     _f << "); " << endl;
+
+    _f << "#" << _iItemIndex+1 << "=ADVANCED_FACE('', '', #" << _iItemIndex << ", .T.)"<< endl;
+    _iItemIndex++;
+    _f << "#" << _iItemIndex+1 << "=CLOSED_SHELL('',(#" << _iItemIndex << "));" << endl;
+    _iItemIndex++;
+
+    _f << "#302 = (GEOMETRIC_REPRESENTATION_CONTEXT(3), GLOBAL_UNCERTAINTY_ASSIGNED_CONTEXT((#300)), GLOBAL_UNIT_ASSIGNED_CONTEXT((#304, #306, #307)), REPRESENTATION_CONTEXT('', '3D'));" << endl;
+    _f << "#304 = (LENGTH_UNIT(), NAMED_UNIT(*), SI_UNIT(.MILLI., .METRE.));" << endl;
+    _f << "#308 = SHAPE_DEFINITION_REPRESENTATION(#309, #310);" << endl;
+    _f << "#309 = PRODUCT_DEFINITION_SHAPE('', $, #312);" << endl;
+    _f << "#310 = SHAPE_REPRESENTATION('', (#41), #302);" << endl;
+    _f << "#311 = PRODUCT_DEFINITION_CONTEXT('part definition', #316, 'design');" << endl;
+    _f << "#312 = PRODUCT_DEFINITION('(Unsaved)', '(Unsaved)', #313, #311);" << endl;
+    _f << "#313 = PRODUCT_DEFINITION_FORMATION('', $, #318);" << endl;
 
 }
 
