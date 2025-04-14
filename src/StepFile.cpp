@@ -104,7 +104,7 @@ void StepWriter::write_header()
 void StepWriter::write_footer()
 {
     _f << "ENDSEC;" << endl;
-    _f << "END-ISO-10303-21;" << endl;
+    _f << "END-ISO-10303-21;" ;
 }
 
 StepWriter::~StepWriter()
@@ -148,10 +148,11 @@ void StepWriter::write(const NurbsSurface& n)
     for (const auto& p : vp)
         write_cartesian_point(p);
 
+    int itemFace = _iItemIndex;
 	_f << endl << "#" << _iItemIndex << "=(" << endl << "BOUNDED_SURFACE()" << endl;
 
 	//write control points
-	_f << "B_SPLINE_SURFACE(" << n.nb_points_u() << "," << n.nb_points_v()<<",";
+	_f << "B_SPLINE_SURFACE(" << n.degree_u() << "," << n.degree_v()<<",(";
     for (int j = 0; j < n.nb_points_v(); j++)
     {
         _f << "(";
@@ -166,12 +167,12 @@ void StepWriter::write(const NurbsSurface& n)
         if (j + 1 != n.nb_points_v())
             _f << ",";
     }
-    _f << ",.UNSPECIFIED.,.T.,.T.,.F.";
+    _f << "),.UNSPECIFIED.,.T.,.T.,.F.";
     _f << ")" << endl;
 
 	//write knots
 	_f << "B_SPLINE_SURFACE_WITH_KNOTS(";
-
+    //write multiplicity
 	_f << "(" << n.degree_u() + 1 <<",";
 	for (int i = 0; i < n.nb_points_u(); i++)
 		_f << "1," ;
@@ -185,32 +186,30 @@ void StepWriter::write(const NurbsSurface& n)
 
 	//write knots u
 	const auto & ku = n.knots_u();
-	for (int i = 0; i < ku.size(); i++)
+	for (int i = n.degree_u()+1; i < ku.size()-n.degree_u() - 1; i++)
 	{
 		_f << ku[i];
-		if (i != ku.size() - 1)
+		if (i != ku.size() - 1 - n.degree_u() - 1)
 			_f << ",";
 	}
-	_f << ")";
-
-	_f << ",";
+	_f << "),(";
 
 	//write knots v
 	const auto & kv = n.knots_v();
-	for (int i = 0; i < kv.size(); i++)
+	for (int i = n.degree_v() + 1; i < kv.size() - n.degree_v() - 1; i++)
 	{
 		_f << kv[i];
-		if (i != kv.size() - 1)
+		if (i != kv.size() - 1 - n.degree_v() - 1)
 			_f << ",";
 	}
 	_f << ")";
 
 	_f << ",.UNSPECIFIED.)";
 
-	_f << " GEOMETRIC_REPRESENTATION_ITEM() ";
+	_f << endl << "GEOMETRIC_REPRESENTATION_ITEM()";
 
 	//write weights
-	_f << " RATIONAL_B_SPLINE_SURFACE(" ;
+	_f << endl << "RATIONAL_B_SPLINE_SURFACE((" ;
 	for (int j = 0; j < n.nb_points_v(); j++)
 	{
 		_f << "(";
@@ -224,11 +223,12 @@ void StepWriter::write(const NurbsSurface& n)
 		if (j + 1 != n.nb_points_v())
 			_f << ",";
 	}
+    _f << "))";
 
-	_f << endl << "REPRESENTATION_ITEM('') ";
-	_f << endl << "SURFACE()" << endl << ");" << endl << endl;
+	_f << endl << "REPRESENTATION_ITEM('')"<< endl;
+	_f << "SURFACE()" << endl << ");" << endl << endl;
 
-    _f << "#" << _iItemIndex+1 << "=ADVANCED_FACE('', '', #" << _iItemIndex << ", .T.)"<< endl;
+    _f << "#" << _iItemIndex+1 << "=ADVANCED_FACE('', '', #" << itemFace << ", .T.)"<< endl;
     _iItemIndex++;
     _f << "#" << _iItemIndex+1 << "=CLOSED_SHELL('',(#" << _iItemIndex << "));" << endl;
     _iItemIndex++;
