@@ -32,7 +32,7 @@ public:
 private:
 	void write_header();
 	void write_footer();
-	int write_cartesian_point(const Point3& p);
+	void write_cartesian_point(const Point3& p);
 
 	ofstream _f;
 	string _sNameFile;

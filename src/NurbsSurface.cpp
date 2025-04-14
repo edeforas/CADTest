@@ -96,6 +96,15 @@ void NurbsSurface::set_uniform_v()
 	set_knots_v(knots);
 }
 
+const vector<double>& NurbsSurface::knots_u() const
+{
+	return _knotsU;
+}
+const vector<double>& NurbsSurface::knots_v() const
+{
+	return _knotsV;
+}
+
 void NurbsSurface::scale_knots(vector<double>& knots)
 {
 	//compute min and max
