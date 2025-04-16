@@ -131,9 +131,9 @@ void StepWriter::write(const NurbsSurface& n)
 		if (i != kv.size() - 1 - n.degree_v() - 1)
 			_f << ",";
 	}
-	_f << ")" << endl;
+	_f << ")," << endl;
 
-	_f << ",.UNSPECIFIED.)";
+	_f << ".UNSPECIFIED.)";
 
 	_f << endl << "GEOMETRIC_REPRESENTATION_ITEM()";
 
