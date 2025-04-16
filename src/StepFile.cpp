@@ -13,7 +13,7 @@ namespace StepFile
 }
 
 StepWriter::StepWriter():
-    _iItemIndex(0)
+    _iItemIndex(10)
 {
 }
 
@@ -41,7 +41,7 @@ StepWriter::~StepWriter()
 
 void StepWriter::open(const string& filename)
 {
-    _iItemIndex = 0;
+    _iItemIndex = 10;
     _sNameFile = filename;
     _f.open(filename);
     write_header();
@@ -161,7 +161,7 @@ void StepWriter::write(const NurbsSurface& n)
     _iItemIndex++;
     _f << "#" << _iItemIndex+1 << "=CLOSED_SHELL('',(#" << _iItemIndex << "));" << endl;
     _iItemIndex++;
-	_f << "#" << _iItemIndex + 1 << "=MANIFOLD_SOLID_BREP('',(#" << _iItemIndex << "));" << endl;
+	_f << "#" << _iItemIndex + 1 << "=MANIFOLD_SOLID_BREP('',#" << _iItemIndex << ");" << endl;
 	_iItemIndex++;
 	_f << "#" << _iItemIndex + 1 << "=ADVANCED_BREP_SHAPE_REPRESENTATION('',(#" << _iItemIndex << "),'');" << endl;
 	_iItemIndex++;
