@@ -152,7 +152,7 @@ void StepWriter::write(const NurbsSurface& n)
 	_f << endl << "#" << _iItemIndex << "=(" << endl << "BOUNDED_SURFACE()" << endl;
 
 	//write control points
-	_f << "B_SPLINE_SURFACE(" << n.degree_u() << "," << n.degree_v()<<",(";
+	_f << "B_SPLINE_SURFACE(" << n.degree_u() << "," << n.degree_v()<<",(" << endl;
     for (int j = 0; j < n.nb_points_v(); j++)
     {
         _f << "(";
@@ -161,27 +161,30 @@ void StepWriter::write(const NurbsSurface& n)
             _f << "#" << iPointIndex;
             iPointIndex++;
             if (i + 1 != n.nb_points_u())
-                _f << ",";
+                _f << "," ;
         }
-        _f << ")";
+        _f << ")" ;
         if (j + 1 != n.nb_points_v())
-            _f << ",";
+            _f << "," << endl;
     }
-    _f << "),.UNSPECIFIED.,.T.,.T.,.F.";
-    _f << ")" << endl;
 
+	string sClosedU = n.is_closed_u() ? ".T." : ".F.";
+	string sClosedV = n.is_closed_v() ? ".T." : ".F.";
+	_f << endl << "),.UNSPECIFIED.," << sClosedU << "," << sClosedV << ",.F.";
+    _f << ")" << endl;
+	
 	//write knots
-	_f << "B_SPLINE_SURFACE_WITH_KNOTS(";
+	_f << "B_SPLINE_SURFACE_WITH_KNOTS(" << endl;
     //write multiplicity
 	_f << "(" << n.degree_u() + 1 <<",";
 	for (int i = 0; i < n.nb_points_u(); i++)
 		_f << "1," ;
-	_f << n.degree_u() + 1 << "),";
+	_f << n.degree_u() + 1 << ")," << endl;
 
 	_f << "(" << n.degree_v() + 1 << ",";
 	for (int i = 0; i < n.nb_points_v(); i++)
 		_f << "1,";
-	_f << n.degree_v() + 1 << "),";
+	_f << n.degree_v() + 1 << ")," << endl;
 	_f << "(";
 
 	//write knots u
@@ -192,7 +195,7 @@ void StepWriter::write(const NurbsSurface& n)
 		if (i != ku.size() - 1 - n.degree_u() - 1)
 			_f << ",";
 	}
-	_f << "),(";
+	_f << ")," << endl << "(";
 
 	//write knots v
 	const auto & kv = n.knots_v();
@@ -202,14 +205,14 @@ void StepWriter::write(const NurbsSurface& n)
 		if (i != kv.size() - 1 - n.degree_v() - 1)
 			_f << ",";
 	}
-	_f << ")";
+	_f << ")" << endl;
 
 	_f << ",.UNSPECIFIED.)";
 
 	_f << endl << "GEOMETRIC_REPRESENTATION_ITEM()";
 
 	//write weights
-	_f << endl << "RATIONAL_B_SPLINE_SURFACE((" ;
+	_f << endl << "RATIONAL_B_SPLINE_SURFACE((" << endl;
 	for (int j = 0; j < n.nb_points_v(); j++)
 	{
 		_f << "(";
@@ -221,26 +224,30 @@ void StepWriter::write(const NurbsSurface& n)
 		}
 		_f << ")";
 		if (j + 1 != n.nb_points_v())
-			_f << ",";
+			_f << "," << endl;
 	}
-    _f << "))";
+    _f << endl << "))";
 
 	_f << endl << "REPRESENTATION_ITEM('')"<< endl;
 	_f << "SURFACE()" << endl << ");" << endl << endl;
 
-    _f << "#" << _iItemIndex+1 << "=ADVANCED_FACE('', '', #" << itemFace << ", .T.)"<< endl;
+    _f << "#" << _iItemIndex+1 << "=ADVANCED_FACE('', '', #" << itemFace << ", .T.);"<< endl;
     _iItemIndex++;
     _f << "#" << _iItemIndex+1 << "=CLOSED_SHELL('',(#" << _iItemIndex << "));" << endl;
     _iItemIndex++;
+	_f << "#" << _iItemIndex + 1 << "=MANIFOLD_SOLID_BREP('',(#" << _iItemIndex << "));" << endl;
+	_iItemIndex++;
+	_f << "#" << _iItemIndex + 1 << "=ADVANCED_BREP_SHAPE_REPRESENTATION('',(#" << _iItemIndex << "),'');" << endl;
+	_iItemIndex++;
+	_f << "#" << _iItemIndex + 1 << "=SHAPE_REPRESENTATION_RELATIONSHIP('','None',#100002,#" << _iItemIndex << ");" << endl << endl;
+	_iItemIndex++;
 
-    _f << "#302 = (GEOMETRIC_REPRESENTATION_CONTEXT(3), GLOBAL_UNCERTAINTY_ASSIGNED_CONTEXT((#300)), GLOBAL_UNIT_ASSIGNED_CONTEXT((#304, #306, #307)), REPRESENTATION_CONTEXT('', '3D'));" << endl;
-    _f << "#304 = (LENGTH_UNIT(), NAMED_UNIT(*), SI_UNIT(.MILLI., .METRE.));" << endl;
-    _f << "#308 = SHAPE_DEFINITION_REPRESENTATION(#309, #310);" << endl;
-    _f << "#309 = PRODUCT_DEFINITION_SHAPE('', $, #312);" << endl;
-    _f << "#310 = SHAPE_REPRESENTATION('', (#41), #302);" << endl;
-    _f << "#311 = PRODUCT_DEFINITION_CONTEXT('part definition', #316, 'design');" << endl;
-    _f << "#312 = PRODUCT_DEFINITION('(Unsaved)', '(Unsaved)', #313, #311);" << endl;
-    _f << "#313 = PRODUCT_DEFINITION_FORMATION('', $, #318);" << endl << endl;
+
+	_f << "#10000 = SHAPE_DEFINITION_REPRESENTATION(#10001, #10002);" << endl;
+	_f << "#10001 = PRODUCT_DEFINITION_SHAPE('', $, #10004);" << endl;
+	_f << "#10002 = SHAPE_REPRESENTATION('', '', '');" << endl;
+	_f << "#10003 = PRODUCT_DEFINITION_CONTEXT('part definition', '', 'design');" << endl;
+	_f << "#10004 = PRODUCT_DEFINITION('(Unsaved)', '(Unsaved)', '', #10003);" << endl << endl;
 }
 
 void StepWriter::write(const NurbsSolid& n)
