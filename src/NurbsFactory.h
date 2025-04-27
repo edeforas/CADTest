@@ -18,6 +18,7 @@ namespace NurbsFactory
 	void create_circle(double dRadius, NurbsCurve& nc);
 	
 	// surfaces
+	void create_triangle(const Point3& p1, const Point3& p2, const Point3& p3, NurbsSurface& ns);
 	void create_quad(const Point3& p1, const Point3& p2, const Point3& p3, const Point3& p4, NurbsSurface& ns);
 	void create_disk(double dRadius, NurbsSurface& ns);
 	void create_sphere(double dRadius, NurbsSurface& ns);

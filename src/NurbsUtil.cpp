@@ -3,6 +3,7 @@
 #include "NurbsCurve.h"
 #include "NurbsSurface.h"
 #include "NurbsSolid.h"
+#include "NurbsFactory.h"
 #include "Mesh.h"
 
 #include <cassert>
@@ -37,7 +38,21 @@ void NurbsUtil::create_from_z(const vector<double>& z, int iSizeX, int iSizeY, i
 	n.set_equals_weights();
 }
 ///////////////////////////////////////////////////////////////////////////
+void NurbsUtil::create_from_mesh(const Mesh& m, NurbsSolid& n)
+{
+	n.clear();
+	for (int i = 0; i < m.nb_triangles(); i++)
+	{
+		Triangle3 t;
+		m.get_triangle(i, t);
 
+		NurbsSurface nsurf;
+		NurbsFactory::create_triangle(t.p1(), t.p2(), t.p3(), nsurf);
+
+		n.add_surface(nsurf);
+	}
+}
+///////////////////////////////////////////////////////////////////////////
 void NurbsUtil::to_controlpoints_mesh(const NurbsSurface& n, Mesh& m) //show the ctrl points mesh lattice
 {
 	const vector<Point3>& points = n.points();

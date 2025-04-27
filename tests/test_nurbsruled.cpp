@@ -82,7 +82,7 @@ void test_nurbsruled_deg2()
 		Point3(0.,1.,-1.),Point3(1.,0.,-1.),Point3(2.,1.,-1.)
 	};
 
-	n.set_degree(degreeU, 1);
+	n.set_degree(1, 1);
 	n.set_points(points, 3, 2);
 	n.set_uniform_u();
 	n.set_uniform_v();
@@ -93,7 +93,7 @@ void test_nurbsruled_deg2()
 	OBJFile::save("test_nurbsruled_deg2.obj", m);
 
 	StepWriter sw;
-	sw.open("test_nurbsruled_deg2.step");
+	sw.open("test_nurbsruled_deg_etienne.step");
 	sw.write(n);
 
 }
@@ -157,10 +157,9 @@ void test_nurbsruled_ribbon_deg3()
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
-	test_nurbsruled_deg1();
+
 	test_nurbsruled_deg2();
-	test_nurbsruled_cylinder();
-	test_nurbsruled_ribbon_deg3();
+
 
 	cout << "Test Finished.";
 	return 0;

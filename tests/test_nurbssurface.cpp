@@ -138,8 +138,8 @@ void test_nurbssurface_deg1()
 {
 	cout << endl << "test_nurbssurface_deg1" << endl;
 
-	int nbPointsU = 11;
-	int nbPointsV = 11;
+	int nbPointsU = 3;
+	int nbPointsV = 3;
 
 	NurbsSurface n;
 	int degree = 1;

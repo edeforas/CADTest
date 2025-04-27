@@ -177,6 +177,11 @@ void NurbsFactory::create_sphere(double dRadius, NurbsSolid& n)
 	n.add_surface(ns);
 }
 ///////////////////////////////////////////////////////////////////////////
+void NurbsFactory::create_triangle(const Point3& p1, const Point3& p2, const Point3& p3, NurbsSurface& ns)
+{
+	create_quad(p1, p2, p3, p3, ns);
+}
+///////////////////////////////////////////////////////////////////////////
 void NurbsFactory::create_quad(const Point3& p1, const Point3& p2, const Point3& p3, const Point3& p4, NurbsSurface& ns)
 {
 	NurbsCurve n1,n2;
