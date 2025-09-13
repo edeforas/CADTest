@@ -1,12 +1,8 @@
 set(CADTEST_FILES
-	Face.cpp Face.h
-	
-	#FaceMesh.cpp FaceMesh.h
-	#FaceNurbs.cpp FaceNurbs.h
-	#FaceBezierPatches.cpp FaceBezierPatches.h
-	#FaceBezierTriangles.cpp FaceBezierTriangles.h
+		
 	Geometry.cpp Geometry.h
 	Transform.cpp Transform.h
+	Face.cpp Face.h
 	
 	Mesh.cpp Mesh.h
 	MeshFactory.cpp MeshFactory.h
@@ -16,6 +12,12 @@ set(CADTEST_FILES
 	MeshKernelLinkedTriangles.cpp MeshKernelLinkedTriangles.h
 	MeshMeasurements.cpp MeshMeasurements.h
 	MeshUtil.cpp MeshUtil.h
+	
+	BezierUtil.cpp BezierUtil.h
+	CubicBezierTriangles.cpp CubicBezierTriangles.h
+	SmoothTriangle.cpp SmoothTriangle.h
+	SmoothMesh.cpp SmoothMesh.h
+	SmoothMeshFactory.cpp SmoothMeshFactory.h
 	
 	MeshTessellate.cpp MeshTessellate.h
 	MeshBoolean.cpp MeshBoolean.h
@@ -39,9 +41,7 @@ set(CADTEST_FILES
 	ImageGenerator.cpp ImageGenerator.h
 	ImageIoBmp.cpp ImageIoBmp.h
 	ImageUtil.cpp ImageUtil.h
-	Color.h
-	
-	BezierUtil.cpp BezierUtil.h
+	Color.h	
 )
 
 include_directories(.)

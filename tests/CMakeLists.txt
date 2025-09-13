@@ -36,6 +36,9 @@ target_link_libraries(test_mesh_mandelbrot libCADTest)
 add_executable(test_stepfile test_stepfile.cpp  )
 target_link_libraries(test_stepfile libCADTest)
 
+add_executable(test_smoothtriangle test_smoothtriangle.cpp  )
+target_link_libraries(test_smoothtriangle libCADTest)
+
 add_executable(test_nurbscurve test_nurbscurve.cpp  )
 target_link_libraries(test_nurbscurve libCADTest)
 

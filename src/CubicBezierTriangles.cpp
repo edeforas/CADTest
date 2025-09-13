@@ -1,21 +1,21 @@
-#include "GeometryBezierTriangles.h"
+#include "CubicBezierTriangles.h"
 
 ///////////////////////////////////////////////////////////////////////////
-GeometryBezierTriangles::GeometryBezierTriangles()
+CubicBezierTriangles::CubicBezierTriangles()
 { }
 
-GeometryBezierTriangles::~GeometryBezierTriangles()
+CubicBezierTriangles::~CubicBezierTriangles()
 { }
 
 ///////////////////////////////////////////////////////////////////////////
-void GeometryBezierTriangles::set_points(const Point3& P1, const Point3& P2, const Point3& P3)
+void CubicBezierTriangles::set_points(const Point3& P1, const Point3& P2, const Point3& P3)
 {
 	_P1 = P1;
 	_P2 = P2;
 	_P3 = P3;
 }
 
-void GeometryBezierTriangles::set_control_P(const Point3& controlP1P2, const Point3& controlP2P1, const Point3& controlP1P3, const Point3& controlP3P1, const Point3& controlP2P3, const Point3& controlP3P2)
+void CubicBezierTriangles::set_control_points(const Point3& controlP1P2, const Point3& controlP2P1, const Point3& controlP1P3, const Point3& controlP3P1, const Point3& controlP2P3, const Point3& controlP3P2)
 {
 	_controlP1P2 = controlP1P2;
 	_controlP2P1 = controlP2P1;
@@ -27,12 +27,12 @@ void GeometryBezierTriangles::set_control_P(const Point3& controlP1P2, const Poi
 	_controlP3P2 = controlP3P2;
 }
 
-void GeometryBezierTriangles::set_control_center(const Point3& controlCenter)
+void CubicBezierTriangles::set_control_center(const Point3& controlCenter)
 {
 	_controlCenter = controlCenter;
 }
 
-void GeometryBezierTriangles::set_normals(const Point3& normalP1, const Point3& normalP2, const Point3& normalP3)
+void CubicBezierTriangles::set_normals(const Point3& normalP1, const Point3& normalP2, const Point3& normalP3)
 {
 	// compute control points from normals
 	// from  https://en.wikipedia.org/wiki/Point-normal_triangle
