@@ -42,6 +42,8 @@ public:
 	int nb_points_u() const;
 	int nb_points_v() const;
 
+	void apply_transform(const Transform& t);
+
 	bool is_closed_u() const;
 	bool is_closed_v() const;
 

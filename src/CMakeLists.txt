@@ -5,6 +5,7 @@ set(CADTEST_FILES
 	#FaceNurbs.cpp FaceNurbs.h
 	#FaceBezierPatches.cpp FaceBezierPatches.h
 	#FaceBezierTriangles.cpp FaceBezierTriangles.h
+	CubicBezierTriangles.cpp CubicBezierTriangles.h
 	Geometry.cpp Geometry.h
 	Transform.cpp Transform.h
 	

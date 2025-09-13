@@ -1,5 +1,6 @@
 #include "NurbsSurface.h"
 #include "Mesh.h"
+#include "Transform.h"
 
 #include <cassert>
 #include <algorithm>
@@ -158,6 +159,20 @@ int NurbsSurface::nb_points_v() const
 {
 	return _iNbPointsV;
 }
+
+void NurbsSurface::apply_transform(const Transform& t)
+{
+	for (int i = 0; i < _points.size(); i++)
+	{
+		// todo optimize
+		Point3 pv;
+		t.apply(_points[i]);
+	}
+}
+
+
+
+
 
 void NurbsSurface::set_closed_u(bool bClosedU)
 {

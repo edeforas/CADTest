@@ -28,12 +28,12 @@ int main()
 	vector<double> vd;
 	imBW.to_double(vd);
 	NurbsUtil::create_from_z(vd, 64, 64, 3, n);
+	n.apply_transform(Scale(1., 1., 20. / 255.));
 
 	cout << "Saving NurbsSurface to Obj and step file" << endl;
 
 	Mesh m;
 	NurbsUtil::to_mesh(n, m);
-	m.apply_transform(Scale(1, 1, 20./255.));
 	OBJFile::save("test_nurbs_mandelbrot.obj", m);
 
 	StepWriter sw;
