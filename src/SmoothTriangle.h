@@ -13,7 +13,7 @@ public:
     void set_points(const Point3& P1, const Point3& P2, const Point3& P3);
     void set_control_P(const Point3& controlP1P2, const Point3& controlP1P3, const Point3& controlP2P3);
 
-    Point3 eval(double s, double, u, double v = -1.) const;
+    Point3 eval(double s, double u, double v = -1.) const;
 
     virtual void to_mesh(Mesh& m, int iNbSegments) const;
 
