@@ -34,9 +34,9 @@ Point3 SmoothTriangle::eval(double s, double u, double v ) const
 		_P1 * s * s +
 		_P2 * u * u +
 		_P3 * v * v +
-		_controlP1P2 * 3. * s * u +
-		_controlP1P3 * 3. * s * v +
-		_controlP2P3 * 3. * u * v;
+		_controlP1P2 * 2. * s * u +
+		_controlP1P3 * 2. * s * v +
+		_controlP2P3 * 2. * u * v;
 
 	return p;
 }
@@ -45,19 +45,23 @@ void SmoothTriangle::to_mesh(Mesh& m, int iNbSegments) const
 {
 	m.clear();
 
-	// add all the vertices
-	for (int is=0; is < iNbSegments; is++)
-		for (int iu = 0; iu < iNbSegments; iu++)
+	// create vertices
+	for (int is = 0; is <= iNbSegments; is++)
+	{
+		double s = is / (double)iNbSegments;
+		for (int iu = 0; iu <= iNbSegments - is; iu++)
 		{
 			// compute vertices
-			
-			double s = is / (double)iNbSegments;
+
 			double u = iu / (double)iNbSegments;
 
 			Point3 p = eval(s, u);
 			m.add_vertex(p);
 		}
+	}
 
-	//link all the vertices to triangles
-
+	//link vertices to triangles
+	for (int is = 0; is <= iNbSegments; is++)
+		for (int iu = 0; iu <= iNbSegments - is; iu++)
+			m.add_triangle(is,iu, iNbSegments-iu); //todo
 }

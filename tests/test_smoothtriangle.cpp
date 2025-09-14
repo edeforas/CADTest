@@ -34,7 +34,7 @@ void test_simple_shell()
 
 	Mesh m;
 	st.to_mesh(m,32);
-	OBJFile::save("test_simple_shell.obj", m);
+	OBJFile::save("test_smooth_triangle_simple_shell.obj", m);
 }
 
 ///////////////////////////////////////////////////////////////////////////
