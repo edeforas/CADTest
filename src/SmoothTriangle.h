@@ -7,7 +7,7 @@
 class SmoothTriangle
 {
 public:
-    class SmoothTriangle();
+    SmoothTriangle();
     virtual ~SmoothTriangle();
 
     void set_points(const Point3& P1, const Point3& P2, const Point3& P3);
