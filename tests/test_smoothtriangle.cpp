@@ -28,13 +28,44 @@ void test_near(double a, double ref, double epsilon=1.e-10,const string& sMessag
 ///////////////////////////////////////////////////////////////////////////
 void test_simple_shell()
 {
-	SmoothTriangle st;
-	st.set_points(Point3(1, 0, 0), Point3(0, 1, 0), Point3(0, 0, 1));
-	st.set_control_P(Point3(1, 1, 0), Point3(1, 0, 1), Point3(0, 1, 1));
+	Mesh m,mout;
 
-	Mesh m;
-	st.to_mesh(m,32);
-	OBJFile::save("test_smooth_triangle_simple_shell.obj", m);
+	{
+		SmoothTriangle st;
+		st.set_points(Point3(1, 0, 0), Point3(0, 1, 0), Point3(0, 0, 1));
+		st.set_control_P(Point3(1, 1, 0), Point3(1, 0, 1), Point3(0, 1, 1));
+		st.to_mesh(m, 31);
+		mout.add_mesh(m);
+	}
+
+	{
+		SmoothTriangle st;
+		st.set_points(Point3(-1, 0, 0), Point3(0, 1, 0), Point3(0, 0, 1));
+		st.set_control_P(Point3(-1, 1, 0), Point3(-1, 0, 1), Point3(0, 1, 1));
+		st.to_mesh(m, 31);
+		mout.add_mesh(m);
+	}
+
+	{
+		SmoothTriangle st;
+		st.set_points(Point3(1, 0, 0), Point3(0, -1, 0), Point3(0, 0, 1));
+		st.set_control_P(Point3(1, -1, 0), Point3(1, 0, 1), Point3(0, -1, 1));
+		st.to_mesh(m, 31);
+		mout.add_mesh(m);
+	}
+
+	{
+		SmoothTriangle st;
+		st.set_points(Point3(1, 0, 0), Point3(0, 1, 0), Point3(0, 0, -1));
+		st.set_control_P(Point3(1, 1, 0), Point3(1, 0, -1), Point3(0, 1, -1));
+		st.to_mesh(m, 31);
+		mout.add_mesh(m);
+	}
+
+
+
+
+	OBJFile::save("test_smooth_triangle_simple_shell.obj", mout);
 }
 
 ///////////////////////////////////////////////////////////////////////////

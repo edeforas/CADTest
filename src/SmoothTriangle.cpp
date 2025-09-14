@@ -61,7 +61,19 @@ void SmoothTriangle::to_mesh(Mesh& m, int iNbSegments) const
 	}
 
 	//link vertices to triangles
-	for (int is = 0; is <= iNbSegments; is++)
-		for (int iu = 0; iu <= iNbSegments - is; iu++)
-			m.add_triangle(is,iu, iNbSegments-iu); //todo
+	int pos = 0;
+	for (int is = 0; is <= iNbSegments - 1; is++)
+	{
+		int lineSize = iNbSegments - is+1;
+
+		// add 1st triangle
+		m.add_triangle(pos, pos + 1, pos + lineSize);
+		pos += lineSize;
+		
+		for (int iu = 1; iu <= lineSize-4 ; iu++)
+		{
+			m.add_triangle(pos + iu , pos + iu + lineSize , pos + iu + lineSize-1);
+			m.add_triangle(pos + iu, pos + iu + 1, pos + iu + lineSize );
+		}
+	} 
 }
