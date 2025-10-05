@@ -4,17 +4,10 @@
 
 #include "Transform.h"
 
-//#define swap(a,b) { auto tmp=a; a=b; b=tmp; }  
-//#define rotate(a,b,c) { auto tmp=a; a=b; b=c; c=a; }  
-
 ///////////////////////////////////////////////////////////////////////////
+
 SmoothMesh::SmoothMesh()
-{ 
-	//_pKernel=new MeshKernelTIN;
-	//_pKernel =new MeshKernelHalfEdge;
-	//_pKernel = new MeshKernelLinkedTriangles;
-	//_iColor = -1;
-}
+{ }
 
 SmoothMesh::SmoothMesh(const SmoothMesh& m)
 {
@@ -22,9 +15,7 @@ SmoothMesh::SmoothMesh(const SmoothMesh& m)
 }
 
 SmoothMesh::~SmoothMesh()
-{ 
-	//delete _pKernel;
-}
+{ }
 
 // void Mesh::set_color(int iColor)
 // {
@@ -78,6 +69,41 @@ void SmoothMesh::clear()
 {
 	_vst.clear();
 }
+
+void SmoothMesh::apply_transform(const Transform& t)
+{
+	for (int i = 0; i < nb_triangles(); i++)
+	{
+		SmoothTriangle& st = _vst[i];
+		st.apply_transform(t);
+	}
+}
+
+void SmoothMesh::add_flat_triangle(const Point3& p1, const  Point3& p2, const Point3& p3)
+{ 
+	SmoothTriangle st;
+	st.set_points(p1,p2,p3);
+	add_triangle(st);
+}
+
+void SmoothMesh::add_flat_quad(const Point3& p1, const  Point3& p2, const Point3& p3, const Point3& p4)
+{
+	SmoothTriangle st;
+	st.set_points(p1, p2, p3);
+	add_triangle(st);
+
+	st.set_points(p2, p3, p4);
+	add_triangle(st);
+}
+
+
+void SmoothMesh::add_flat_pentagon(const Point3& p1, const  Point3& p2, const Point3& p3, const Point3& p4, const Point3& p5)
+{
+	add_flat_triangle(p1, p2, p3);
+	add_flat_triangle(p3, p4, p5);
+	add_flat_triangle(p1, p3, p5);
+}
+
 
 /*
 bool Mesh::is_triangle_unlinked(int iTriangle) const
@@ -142,9 +168,6 @@ void Mesh::unlink_triangle(int iTriangle)
 	_pKernel->unlink_triangle(iTriangle);
 }
 
-
-
-
 int Mesh::add_triangle(int iVertex1, int iVertex2, int iVertex3)
 {
 	assert(iVertex1 >= 0);
@@ -156,31 +179,6 @@ int Mesh::add_triangle(int iVertex1, int iVertex2, int iVertex3)
 	assert(iVertex3 < _pKernel->nb_vertices());
 
 	return _pKernel->add_triangle(iVertex1,iVertex2,iVertex3);
-}
-
-int Mesh::add_triangle(const Point3& p1,const  Point3& p2,const Point3& p3)
-{
-	int t1 = _pKernel->add_vertex(p1);
-	int t2 = _pKernel->add_vertex(p2);
-	int t3 = _pKernel->add_vertex(p3);
-
-	return add_triangle(t1, t2, t3);
-}
-
-void Mesh::add_quad(int iVertex1, int iVertex2, int iVertex3, int iVertex4)
-{
-	assert(iVertex1 >= 0);
-	assert(iVertex2 >= 0);
-	assert(iVertex3 >= 0);
-	assert(iVertex4 >= 0);
-
-	assert(iVertex1 < _pKernel->nb_vertices());
-	assert(iVertex2 < _pKernel->nb_vertices());
-	assert(iVertex3 < _pKernel->nb_vertices());
-	assert(iVertex4 < _pKernel->nb_vertices());
-
-	_pKernel->add_triangle(iVertex1, iVertex2, iVertex3);
-	_pKernel->add_triangle(iVertex3, iVertex4, iVertex1);
 }
 
 void Mesh::add_quad(const Point3& p1, const  Point3& p2, const Point3& p3, const Point3& p4,bool bOptimSurface)
@@ -208,25 +206,6 @@ void Mesh::add_quad(const Point3& p1, const  Point3& p2, const Point3& p3, const
 		else
 			add_quad(i2, i3, i4, i1);
 	}
-}
-
-void Mesh::add_pentagon(int iVertex1, int iVertex2, int iVertex3, int iVertex4, int iVertex5)
-{
-	assert(iVertex1 >= 0);
-	assert(iVertex2 >= 0);
-	assert(iVertex3 >= 0);
-	assert(iVertex4 >= 0);
-	assert(iVertex5 >= 0);
-
-	assert(iVertex1 < _pKernel->nb_vertices());
-	assert(iVertex2 < _pKernel->nb_vertices());
-	assert(iVertex3 < _pKernel->nb_vertices());
-	assert(iVertex4 < _pKernel->nb_vertices());
-	assert(iVertex5 < _pKernel->nb_vertices());
-
-	_pKernel->add_triangle(iVertex1, iVertex2, iVertex3);
-	_pKernel->add_triangle(iVertex3, iVertex4, iVertex5);
-	_pKernel->add_triangle(iVertex1, iVertex3, iVertex5);
 }
 
 void Mesh::split_triangle_with_vertex(int iTriangle, const Point3& p)
@@ -299,10 +278,6 @@ void Mesh::flip_triangle(int iTriangle)
 	_pKernel->add_triangle(iV1, iV3, iV2);
 }
 //////////////////////////////////////////////////////////////////////////////////
-void Mesh::clear()
-{
-	_pKernel->clear();
-}
 
 bool Mesh::empty() const
 {
@@ -340,17 +315,6 @@ int Mesh::nb_vertices() const
 	return _pKernel->nb_vertices();
 }
 
-void Mesh::apply_transform(const Transform& t)
-{
-	for (int i = 0; i < nb_vertices(); i++)
-	{
-		// todo optimize
-		Point3 pv;
-		get_vertex(i, pv);
-		t.apply(pv);
-		set_vertex(i, pv);
-	}
-}
 //////////////////////////////////////////////////////////////////////////////////
 void Mesh::split_triangle(int iTriangle, const Triangle3 & tSplitter)
 {

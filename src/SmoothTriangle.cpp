@@ -1,5 +1,7 @@
 #include "SmoothTriangle.h"
 
+#include "Transform.h" // todo remove ?
+
 ///////////////////////////////////////////////////////////////////////////
 SmoothTriangle::SmoothTriangle()
 {
@@ -79,4 +81,16 @@ void SmoothTriangle::add_to_mesh(Mesh& m, int iNbSegments) const
 			m.add_triangle(pos + iu, pos + iu + 1, pos + iu + lineSize );
 		}
 	} 
+}
+
+
+void SmoothTriangle::apply_transform(const Transform& t)
+{ 
+	t.apply(_P1);
+	t.apply(_P2);
+	t.apply(_P3);
+
+	t.apply(_controlP1P2);
+	t.apply(_controlP1P3);
+	t.apply(_controlP2P3);
 }

@@ -16,6 +16,8 @@ public:
     Point3 eval(double s, double u, double v = -1.) const;
 
     virtual void add_to_mesh(Mesh& m, int iNbSegments) const;
+    
+    void apply_transform(const Transform& t);
 
 protected:
     Point3 _P1, _P2, _P3;

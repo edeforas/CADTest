@@ -19,67 +19,59 @@ namespace SmoothMeshFactory
 		Point3 p2(dSize, -dSize, -dSize);
 		Point3 p3(-dSize, dSize, -dSize);
 
-		SmoothTriangle st;
-
-		st.set_points(p0, p1, p2);
-		m.add_triangle(st);
-
-		st.set_points(p1, p3, p2);
-		m.add_triangle(st);
-
-		st.set_points(p0, p3, p1);
-		m.add_triangle(st);
-
-		st.set_points(p0, p2, p3);
-		m.add_triangle(st);
+		m.add_flat_triangle(p0, p1, p2);
+		m.add_flat_triangle(p1, p3, p2);
+		m.add_flat_triangle(p0, p3, p1);
+		m.add_flat_triangle(p0, p2, p3);
 	}
-	/*
+	
 	void create_box(double xSize, double ySize, double zSize, SmoothMesh& m)
 	{
+		m.clear();
+
 		double x = xSize / 2.;
 		double y = ySize / 2.;
 		double z = zSize / 2.;
 
-		m.clear();
+		Point3 p0(x, y, z);
+		Point3 p1(-x, y, z);
+		Point3 p2(-x, -y, z);
+		Point3 p3(x, -y, z);
+		Point3 p4(x, y, -z);
+		Point3 p5(-x, y, -z);
+		Point3 p6(-x, -y, -z);
+		Point3 p7(x, -y, -z);
 
-		m.add_vertex(x, y, z);
-		m.add_vertex(-x, y, z);
-		m.add_vertex(-x, -y, z);
-		m.add_vertex(x, -y, z);
-		m.add_vertex(x, y, -z);
-		m.add_vertex(-x, y, -z);
-		m.add_vertex(-x, -y, -z);
-		m.add_vertex(x, -y, -z);
-
-		m.add_quad(0, 1, 2, 3);
-		m.add_quad(7, 6, 5, 4);
-		m.add_quad(4, 5, 1, 0);
-		m.add_quad(3, 2, 6, 7);
-		m.add_quad(5, 6, 2, 1);
-		m.add_quad(0, 3, 7, 4);
+		m.add_flat_quad(p0, p1, p2, p3);
+		m.add_flat_quad(p7, p6, p5, p4);
+		m.add_flat_quad(p4, p5, p1, p0);
+		m.add_flat_quad(p3, p2, p6, p7);
+		m.add_flat_quad(p5, p6, p2, p1);
+		m.add_flat_quad(p0, p3, p7, p4);
 	}
 	///////////////////////////////////////////////////////////////////////////
+	
 	void create_octahedron(double dSize, SmoothMesh& m)
 	{
 		m.clear();
 
-		m.add_vertex(dSize, 0, 0);
-		m.add_vertex(0., dSize, 0);
-		m.add_vertex(0., 0., dSize);
-		m.add_vertex(-dSize, 0, 0);
-		m.add_vertex(0, -dSize, 0.);
-		m.add_vertex(0., 0, -dSize);
+		Point3 p0(dSize, 0, 0);
+		Point3 p1(0., dSize, 0);
+		Point3 p2(0., 0., dSize);
+		Point3 p3(-dSize, 0, 0);
+		Point3 p4(0, -dSize, 0.);
+		Point3 p5(0., 0, -dSize);
 
-		m.add_triangle(0, 1, 2);
-		m.add_triangle(1, 0, 5);
-		m.add_triangle(2, 1, 3);
-		m.add_triangle(0, 2, 4);
-		m.add_triangle(4, 3, 5);
-		m.add_triangle(3, 4, 2);
-		m.add_triangle(5, 3, 1);
-		m.add_triangle(4, 5, 0);
+		m.add_flat_triangle(p0, p1, p2);
+		m.add_flat_triangle(p1, p0, p5);
+		m.add_flat_triangle(p2, p1, p3);
+		m.add_flat_triangle(p0, p2, p4);
+		m.add_flat_triangle(p4, p3, p5);
+		m.add_flat_triangle(p3, p4, p2);
+		m.add_flat_triangle(p5, p3, p1);
+		m.add_flat_triangle(p4, p5, p0);
 	}
-
+	
 	void create_dodecahedron(double dSize, SmoothMesh& m)
 	{
 		m.clear();
@@ -91,49 +83,50 @@ namespace SmoothMeshFactory
 		t1 *= dSize;
 		t2 *= dSize;
 
-		m.add_vertex(u, u, u);
-		m.add_vertex(u, u, -u);
-		m.add_vertex(u, -u, u);
-		m.add_vertex(u, -u, -u);
-		m.add_vertex(-u, u, u);
-		m.add_vertex(-u, u, -u);
-		m.add_vertex(-u, -u, u);
-		m.add_vertex(-u, -u, -u);
+		Point3 p0(u, u, u);
+		Point3 p1(u, u, -u);
+		Point3 p2(u, -u, u);
+		Point3 p3(u, -u, -u);
+		Point3 p4(-u, u, u);
+		Point3 p5(-u, u, -u);
+		Point3 p6(-u, -u, u);
+		Point3 p7(-u, -u, -u);
 
-		m.add_vertex(0, t1, t2);
-		m.add_vertex(0, t1, -t2);
-		m.add_vertex(0, -t1, t2);
-		m.add_vertex(0, -t1, -t2);
+		Point3 p8(0, t1, t2);
+		Point3 p9(0, t1, -t2);
+		Point3 p10(0, -t1, t2);
+		Point3 p11(0, -t1, -t2);
 
-		m.add_vertex(t2, 0, t1);
-		m.add_vertex(t2, 0, -t1);
-		m.add_vertex(-t2, 0, t1);
-		m.add_vertex(-t2, 0, -t1);
+		Point3 p12(t2, 0, t1);
+		Point3 p13(t2, 0, -t1);
+		Point3 p14(-t2, 0, t1);
+		Point3 p15(-t2, 0, -t1);
 
-		m.add_vertex(t1, t2, 0);
-		m.add_vertex(t1, -t2, 0);
-		m.add_vertex(-t1, t2, 0);
-		m.add_vertex(-t1, -t2, 0);
+		Point3 p16(t1, t2, 0);
+		Point3 p17(t1, -t2, 0);
+		Point3 p18(-t1, t2, 0);
+		Point3 p19(-t1, -t2, 0);
 
-		m.add_pentagon(0, 12, 2, 17, 16);
-		m.add_pentagon(19, 18, 5, 15, 7);
+		m.add_flat_pentagon(p0, p12, p2, p17, p16);
+		m.add_flat_pentagon(p19, p18, p5, p15, p7);
 
-		m.add_pentagon(12, 0, 8, 4, 14);
-		m.add_pentagon(13, 3, 11, 7, 15);
+		m.add_flat_pentagon(p12, p0, p8, p4, p14);
+		m.add_flat_pentagon(p13, p3, p11, p7, p15);
 
-		m.add_pentagon(2, 12, 14, 6, 10);
-		m.add_pentagon(9, 1, 13, 15, 5);
+		m.add_flat_pentagon(p2, p12, p14, p6, p10);
+		m.add_flat_pentagon(p9, p1, p13, p15, p5);
 
-		m.add_pentagon(18, 19, 6, 14, 4);
-		m.add_pentagon(3, 13, 1, 16, 17);
+		m.add_flat_pentagon(p18, p19, p6, p14, p4);
+		m.add_flat_pentagon(p3, p13, p1, p16, p17);
 
-		m.add_pentagon(1, 9, 8, 0, 16);
-		m.add_pentagon(19, 7, 11, 10, 6);
+		m.add_flat_pentagon(p1, p9, p8, p0, p16);
+		m.add_flat_pentagon(p19, p7, p11, p10, p6);
 
-		m.add_pentagon(18, 4, 8, 9, 5);
-		m.add_pentagon(2, 10, 11, 3, 17);
+		m.add_flat_pentagon(p18, p4, p8, p9, p5);
+		m.add_flat_pentagon(p2, p10, p11, p3, p17);
 	}
 
+	
 	void create_icosahedron(double dSize, SmoothMesh& m)
 	{
 		m.clear();
@@ -142,49 +135,49 @@ namespace SmoothMeshFactory
 		double u = dSize;
 		double t = (std::sqrt(5.) - 1.) / 2. * dSize;
 
-		m.add_vertex(u, 0., t); //0
-		m.add_vertex(u, 0., -t);
-		m.add_vertex(-u, 0., t);
-		m.add_vertex(-u, 0., -t);
+		Point3 p0(u, 0., t); //0
+		Point3 p1(u, 0., -t);
+		Point3 p2(-u, 0., t);
+		Point3 p3(-u, 0., -t);
 
-		m.add_vertex(0., t, u); //4
-		m.add_vertex(0., -t, u);
-		m.add_vertex(0., t, -u);
-		m.add_vertex(0., -t, -u);
+		Point3 p4(0., t, u); //4
+		Point3 p5(0., -t, u);
+		Point3 p6(0., t, -u);
+		Point3 p7(0., -t, -u);
 
-		m.add_vertex(t, u, 0.); //8
-		m.add_vertex(-t, u, 0.);
-		m.add_vertex(t, -u, 0.);
-		m.add_vertex(-t, -u, 0.);
+		Point3 p8(t, u, 0.); //8
+		Point3 p9(-t, u, 0.);
+		Point3 p10(t, -u, 0.);
+		Point3 p11(-t, -u, 0.);
 
-		m.add_triangle(0, 1, 8);
-		m.add_triangle(0, 10, 1);
-		m.add_triangle(2, 3, 11);
-		m.add_triangle(2, 9, 3);
+		m.add_flat_triangle(p0, p1, p8);
+		m.add_flat_triangle(p0, p10, p1);
+		m.add_flat_triangle(p2, p3, p11);
+		m.add_flat_triangle(p2, p9, p3);
 
-		m.add_triangle(4, 5, 0);
-		m.add_triangle(4, 2, 5);
-		m.add_triangle(6, 7, 3);
-		m.add_triangle(6, 1, 7);
+		m.add_flat_triangle(p4, p5, p0);
+		m.add_flat_triangle(p4, p2, p5);
+		m.add_flat_triangle(p6, p7, p3);
+		m.add_flat_triangle(p6, p1, p7);
 
-		m.add_triangle(8, 9, 4);
-		m.add_triangle(8, 6, 9);
-		m.add_triangle(10, 11, 7);
-		m.add_triangle(10, 5, 11);
+		m.add_flat_triangle(p8, p9, p4);
+		m.add_flat_triangle(p8, p6, p9);
+		m.add_flat_triangle(p10, p11, p7);
+		m.add_flat_triangle(p10, p5, p11);
 
-		m.add_triangle(0, 8, 4);
-		m.add_triangle(3, 7, 11);
+		m.add_flat_triangle(p0, p8, p4);
+		m.add_flat_triangle(p3, p7, p11);
 
-		m.add_triangle(10, 0, 5);
-		m.add_triangle(9, 6, 3);
+		m.add_flat_triangle(p10, p0, p5);
+		m.add_flat_triangle(p9, p6, p3);
 
-		m.add_triangle(1, 6, 8);
-		m.add_triangle(2, 11, 5);
+		m.add_flat_triangle(p1, p6, p8);
+		m.add_flat_triangle(p2, p11, p5);
 
-		m.add_triangle(2, 4, 9);
-		m.add_triangle(1, 10, 7);
+		m.add_flat_triangle(p2, p4, p9);
+		m.add_flat_triangle(p1, p10, p7);
 	}
-
+	/*
 	void create_cylinder(double dHeight, double dRadius, int iNbSegments, SmoothMesh& m)
 	{
 		m.clear();
