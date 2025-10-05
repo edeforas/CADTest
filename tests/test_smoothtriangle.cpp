@@ -30,6 +30,8 @@ void test_near(double a, double ref, double epsilon=1.e-10,const string& sMessag
 ///////////////////////////////////////////////////////////////////////////
 void test_smoothmesh_shell()
 {
+	// octants of a sphere
+
 	SmoothMesh sm;
 	Mesh m;
 
@@ -66,14 +68,15 @@ void test_smoothmesh_shell()
 }
 
 ///////////////////////////////////////////////////////////////////////////
-void test_smoothmeshfatory()
+void test_smoothmeshfactory()
 {
 	SmoothMesh sm;
 	Mesh m;
 
+	//todo
 
 	sm.add_to_mesh(m, 11);
-	OBJFile::save("test_smoothmeshfatory.obj", m);
+	OBJFile::save("test_smoothmeshfactory.obj", m);
 }
 ///////////////////////////////////////////////////////////////////////////
 void test_quarter_circle_deg2()
@@ -106,10 +109,8 @@ cout << endl << "test_quarter_circle_deg2" << endl;
 int main()
 {
 	test_smoothmesh_shell();
-	test_smoothmeshfatory();
+	test_smoothmeshfactory();
 	test_quarter_circle_deg2();
-
-
 
 	cout << "Test Finished.";
 	return 0;

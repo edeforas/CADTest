@@ -7,25 +7,34 @@ using namespace std;
 
 #include "Transform.h"
 
-namespace MeshFactory
+namespace SmoothMeshFactory
 {
-	/*
-	void create_tetrahedron(double dSize, Mesh& m)
+	
+	void create_tetrahedron(double dSize, SmoothMesh& m)
 	{
 		m.clear();
 
-		m.add_vertex(dSize, dSize, dSize);
-		m.add_vertex(-dSize, -dSize, dSize);
-		m.add_vertex(dSize, -dSize, -dSize);
-		m.add_vertex(-dSize, dSize, -dSize);
+		Point3 p0(dSize, dSize, dSize);
+		Point3 p1(-dSize, -dSize, dSize);
+		Point3 p2(dSize, -dSize, -dSize);
+		Point3 p3(-dSize, dSize, -dSize);
 
-		m.add_triangle(0, 1, 2);
-		m.add_triangle(1, 3, 2);
-		m.add_triangle(0, 3, 1);
-		m.add_triangle(0, 2, 3);
+		SmoothTriangle st;
+
+		st.set_points(p0, p1, p2);
+		m.add_triangle(st);
+
+		st.set_points(p1, p3, p2);
+		m.add_triangle(st);
+
+		st.set_points(p0, p3, p1);
+		m.add_triangle(st);
+
+		st.set_points(p0, p2, p3);
+		m.add_triangle(st);
 	}
-
-	void create_box(double xSize, double ySize, double zSize, Mesh& m)
+	/*
+	void create_box(double xSize, double ySize, double zSize, SmoothMesh& m)
 	{
 		double x = xSize / 2.;
 		double y = ySize / 2.;
@@ -50,7 +59,7 @@ namespace MeshFactory
 		m.add_quad(0, 3, 7, 4);
 	}
 	///////////////////////////////////////////////////////////////////////////
-	void create_octahedron(double dSize, Mesh& m)
+	void create_octahedron(double dSize, SmoothMesh& m)
 	{
 		m.clear();
 
@@ -71,7 +80,7 @@ namespace MeshFactory
 		m.add_triangle(4, 5, 0);
 	}
 
-	void create_dodecahedron(double dSize, Mesh& m)
+	void create_dodecahedron(double dSize, SmoothMesh& m)
 	{
 		m.clear();
 		// coordinate from: https://en.wikipedia.org/wiki/Regular_dodecahedron
@@ -125,7 +134,7 @@ namespace MeshFactory
 		m.add_pentagon(2, 10, 11, 3, 17);
 	}
 
-	void create_icosahedron(double dSize, Mesh& m)
+	void create_icosahedron(double dSize, SmoothMesh& m)
 	{
 		m.clear();
 
@@ -176,7 +185,7 @@ namespace MeshFactory
 		m.add_triangle(1, 10, 7);
 	}
 
-	void create_cylinder(double dHeight, double dRadius, int iNbSegments, Mesh& m)
+	void create_cylinder(double dHeight, double dRadius, int iNbSegments, SmoothMesh& m)
 	{
 		m.clear();
 
@@ -218,7 +227,7 @@ namespace MeshFactory
 		m.add_triangle(iNbSegmentLongitude * 2 + 1, 1, 2 * iNbSegmentLongitude - 1);
 	}
 
-	void create_sphere_geodesic(double dRadius, int iNbSegments, Mesh& m)
+	void create_sphere_geodesic(double dRadius, int iNbSegments, SmoothMesh& m)
 	{
 		m.clear();
 
@@ -240,7 +249,7 @@ namespace MeshFactory
 		MeshUtil::merge_vertices(m,dEdgesize / iNbSegments / 20.); //todo better formula
 	}
 
-	void create_sphere_uv(double dRadius, int iNbSegments, Mesh& m)
+	void create_sphere_uv(double dRadius, int iNbSegments, SmoothMesh& m)
 	{
 		m.clear();
 
@@ -300,7 +309,7 @@ namespace MeshFactory
 		}
 	}
 
-	void create_torus(double dMajorRadius, double dMinorRadius, int iNbSegments, Mesh& m)
+	void create_torus(double dMajorRadius, double dMinorRadius, int iNbSegments, SmoothMesh& m)
 	{
 		m.clear();
 

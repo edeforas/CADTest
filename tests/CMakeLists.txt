@@ -6,6 +6,9 @@ target_link_libraries(test_geometry libCADTest)
 add_executable(test_meshfactory "test_meshfactory.cpp"  )
 target_link_libraries(test_meshfactory libCADTest)
 
+add_executable(test_smoothmeshfactory "test_smoothmeshfactory.cpp"  )
+target_link_libraries(test_smoothmeshfactory libCADTest)
+
 add_executable(test_fileformat test_fileformat.cpp  )
 target_link_libraries(test_fileformat libCADTest)
 
@@ -72,6 +75,9 @@ add_test(test_mesh_level_of_details test_mesh_level_of_details)
 add_test(test_mesh_geosphere test_mesh_geosphere)
 add_test(test_fractal_tetrahedron test_fractal_tetrahedron)
 add_test(test_mesh_mandelbrot test_mesh_mandelbrot)
+
+add_test(test_smoothmeshfactory test_smoothmeshfactory)
+add_test(test_smoothtriangle test_smoothtriangle)
 
 add_test(test_nurbscurve test_nurbscurve)
 add_test(test_nurbsutil test_nurbsutil)
