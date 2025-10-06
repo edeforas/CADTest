@@ -31,12 +31,15 @@ int main()
 	sm.apply_transform(Translation(Point3(200, 100, 0.)));
 	sm.add_to_mesh(mesh, 11);
 
+	SmoothMeshFactory::create_sphere(30., sm);
+	sm.apply_transform(Translation(Point3(0., 200., 0)));
+	sm.add_to_mesh(mesh, 11);
+
+
 	/*
 	SmoothMeshFactory::create_cylinder(60., 30.,10, m);
 	m.apply_transform(Translation(Point3(200., 0., 0.)));
 
-	SmoothMeshFactory::create_sphere_uv(30.,8,m);
-	m.apply_transform(Translation(Point3(0., 200., 0)));
 
 	SmoothMeshFactory::create_sphere_geodesic(30.,10,m);
 	m.apply_transform(Translation(Point3(100., 200., 0)));

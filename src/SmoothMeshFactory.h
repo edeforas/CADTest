@@ -11,10 +11,10 @@ namespace SmoothMeshFactory
     void create_octahedron(double dSize, SmoothMesh& m);
     void create_dodecahedron(double dSize, SmoothMesh& m);
     void create_icosahedron(double dSize, SmoothMesh& m);
+    void create_sphere(double dRadius, SmoothMesh& m);
+
     /*
     void create_cylinder(double dHeight, double dRadius,int iNbSegments, SmoothMesh& m);
-    void create_sphere_geodesic(double dRadius, int iNbSegments, SmoothMesh& m);
-    void create_sphere_uv(double dRadius, int iNbSegments, SmoothMesh& m);
     void create_torus(double dMajorRadius, double dMinorRadius, int iNbSegments, SmoothMesh& m);
 	*/
 }

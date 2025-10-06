@@ -177,6 +177,70 @@ namespace SmoothMeshFactory
 		m.add_flat_triangle(p2, p4, p9);
 		m.add_flat_triangle(p1, p10, p7);
 	}
+
+	void create_sphere(double dRadius, SmoothMesh& m)
+	{
+		m.clear();
+		double d = dRadius;
+
+		{
+			SmoothTriangle st;
+			st.set_points(Point3(d, 0, 0), Point3(0, d, 0), Point3(0, 0, d));
+			st.set_control_points(Point3(d, d, 0), Point3(d, 0, d), Point3(0, d, d));
+			m.add_triangle(st);
+		}
+
+		{
+			SmoothTriangle st;
+			st.set_points(Point3(-d, 0, 0), Point3(0, d, 0), Point3(0, 0, d));
+			st.set_control_points(Point3(-d, d, 0), Point3(-d, 0, d), Point3(0, d, d));
+			m.add_triangle(st);
+		}
+
+		{
+			SmoothTriangle st;
+			st.set_points(Point3(d, 0, 0), Point3(0, -d, 0), Point3(0, 0, d));
+			st.set_control_points(Point3(d, -d, 0), Point3(d, 0, d), Point3(0, -d, d));
+			m.add_triangle(st);
+		}
+
+		{
+			SmoothTriangle st;
+			st.set_points(Point3(d, 0, 0), Point3(0, d, 0), Point3(0, 0, -d));
+			st.set_control_points(Point3(d, d, 0), Point3(d, 0, -d), Point3(0, d, -d));
+			m.add_triangle(st);
+		}
+
+		{
+			SmoothTriangle st;
+			st.set_points(Point3(-d, 0, 0), Point3(0, -d, 0), Point3(0, 0, d));
+			st.set_control_points(Point3(-d, -d, 0), Point3(-d, 0, d), Point3(0, -d, d));
+			m.add_triangle(st);
+		}
+
+		{
+			SmoothTriangle st;
+			st.set_points(Point3(-d, 0, 0), Point3(0, -d, 0), Point3(0, 0, -d));
+			st.set_control_points(Point3(-d, -d, 0), Point3(-d, 0, -d), Point3(0, -d, -d));
+			m.add_triangle(st);
+		}
+
+		{
+			SmoothTriangle st;
+			st.set_points(Point3(-d, 0, 0), Point3(0, d, 0), Point3(0, 0, -d));
+			st.set_control_points(Point3(-d, d, 0), Point3(-d, 0, -d), Point3(0, d, -d));
+			m.add_triangle(st);
+		}
+
+		{
+			SmoothTriangle st;
+			st.set_points(Point3(d, 0, 0), Point3(0, -d, 0), Point3(0, 0, -d));
+			st.set_control_points(Point3(d, -d, 0), Point3(d, 0, -d), Point3(0, -d, -d));
+			m.add_triangle(st);
+		}
+	}
+
+
 	/*
 	void create_cylinder(double dHeight, double dRadius, int iNbSegments, SmoothMesh& m)
 	{
@@ -220,87 +284,6 @@ namespace SmoothMeshFactory
 		m.add_triangle(iNbSegmentLongitude * 2 + 1, 1, 2 * iNbSegmentLongitude - 1);
 	}
 
-	void create_sphere_geodesic(double dRadius, int iNbSegments, SmoothMesh& m)
-	{
-		m.clear();
-
-		Mesh mi;
-		create_icosahedron(1., mi);
-
-		MeshTessellate mt;
-		mt.compute(mi, iNbSegments, m);
-
-		for (int i = 0; i < m.nb_vertices(); i++)
-		{
-			Point3 v;
-			m.get_vertex(i, v);
-			m.set_vertex(i, v.normalized() * dRadius);
-		}
-
-		double dEdgesize = dRadius / 0.951; // as in https://en.wikipedia.org/wiki/Regular_icosahedron
-
-		MeshUtil::merge_vertices(m,dEdgesize / iNbSegments / 20.); //todo better formula
-	}
-
-	void create_sphere_uv(double dRadius, int iNbSegments, SmoothMesh& m)
-	{
-		m.clear();
-
-		double PI = 3.14159265358979323846264338; // TODO
-
-		int iNbSegmentLongitude = 2 + 4 * iNbSegments; //at least an octahedron
-		int iNbSegmentLatitude = 2 + 4 * iNbSegments / 2; //at least an octahedron
-
-		// create vertices
-		for (int longitude = 0; longitude < iNbSegmentLongitude; longitude++)
-		{
-			double upi = (double)longitude / iNbSegmentLongitude * 2. * PI;
-
-			for (int latitude = 1; latitude < iNbSegmentLatitude; latitude++)
-			{
-				double vpi = (double)latitude / iNbSegmentLatitude * PI;
-
-				// compute parametric point from: https://en.wikipedia.org/wiki/Sphere
-				Point3 p;
-				p._x = dRadius * std::sin(vpi) * std::cos(upi);
-				p._y = dRadius * std::sin(vpi) * std::sin(upi);
-				p._z = dRadius * std::cos(vpi);
-
-				m.add_vertex(p);
-			}
-		}
-		m.add_vertex(0, 0, dRadius); // pole north
-		m.add_vertex(0, 0, -dRadius); //pole south
-
-		// associates quads to vertices
-		int iNbVertexLatitude = iNbSegmentLatitude - 1; //poles removed
-		//int iNbVertex = m.nb_vertices()-2; // poles removed
-		int iPoleNorth = m.nb_vertices() - 2;
-		int iPoleSouth = m.nb_vertices() - 1;
-
-		for (int longitude = 0; longitude < iNbSegmentLongitude; longitude++)
-		{
-			// add first trig
-			int iLongitude1 = longitude;
-			int iLongitude2 = (longitude + 1) % iNbSegmentLongitude;
-
-			// make north pole
-			m.add_triangle(iPoleNorth, iLongitude1 * iNbVertexLatitude, iLongitude2 * iNbVertexLatitude);
-
-			for (int latitude = 1; latitude < iNbVertexLatitude; latitude++)
-			{
-				m.add_quad(
-					iLongitude1 * iNbVertexLatitude + latitude - 1,
-					iLongitude1 * iNbVertexLatitude + latitude,
-					iLongitude2 * iNbVertexLatitude + latitude,
-					iLongitude2 * iNbVertexLatitude + latitude - 1
-				);
-			}
-
-			// make south pole
-			m.add_triangle(iLongitude1 * iNbVertexLatitude + iNbVertexLatitude - 1, iPoleSouth, iLongitude2 * iNbVertexLatitude + iNbVertexLatitude - 1);
-		}
-	}
 
 	void create_torus(double dMajorRadius, double dMinorRadius, int iNbSegments, SmoothMesh& m)
 	{
