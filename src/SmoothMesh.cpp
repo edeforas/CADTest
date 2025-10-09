@@ -92,7 +92,7 @@ void SmoothMesh::add_flat_quad(const Point3& p1, const  Point3& p2, const Point3
 	st.set_points(p1, p2, p3);
 	add_triangle(st);
 
-	st.set_points(p2, p3, p4);
+	st.set_points(p1, p3, p4);
 	add_triangle(st);
 }
 
