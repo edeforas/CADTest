@@ -5,6 +5,8 @@
 ///////////////////////////////////////////////////////////////////////////
 SmoothTriangle::SmoothTriangle()
 {
+	_wP1=1., _wP2=1., _wP3=1.;
+	_wP1P2=1., _wP1P3=1., _wP2P3=1.;
 }
 
 SmoothTriangle::~SmoothTriangle()
@@ -30,6 +32,17 @@ void SmoothTriangle::set_control_points(const Point3& controlP1P2, const Point3&
 	_controlP2P3 = controlP2P3;
 }
 
+void SmoothTriangle::set_weights(double wP1, double wP2, double wP3, double wP1P2, double wP1P3, double wP2P3)
+{
+	_wP1 = wP1;
+	_wP2 = wP2;
+	_wP3 = wP3;
+
+	_wP1P2 = wP1P2;
+	_wP1P3 = wP1P3;
+	_wP2P3 = wP2P3;
+}
+
 Point3 SmoothTriangle::eval(double s, double u, double v ) const
 {
 	// autocompute v by default
@@ -37,14 +50,22 @@ Point3 SmoothTriangle::eval(double s, double u, double v ) const
 		v = 1. - s - u;
 
 	Point3 p =
-		_P1 * s * s +
-		_P2 * u * u +
-		_P3 * v * v +
-		_controlP1P2 * 2. * s * u +
-		_controlP1P3 * 2. * s * v +
-		_controlP2P3 * 2. * u * v;
+		_P1 * _wP1 * s * s +
+		_P2 * _wP2 * u * u +
+		_P3 * _wP3 * v * v +
+		_controlP1P2 * _wP1P2 * 2. * s * u +
+		_controlP1P3 * _wP1P3 * 2. * s * v +
+		_controlP2P3 * _wP2P3 * 2. * u * v;
 
-	return p;
+	double w =
+		_wP1 * s * s +
+		_wP2 * u * u +
+		_wP3 * v * v +
+		_wP1P2 * 2. * s * u +
+		_wP1P3 * 2. * s * v +
+		_wP2P3 * 2. * u * v;
+
+	return p/w;
 }
 
 void SmoothTriangle::add_to_mesh(Mesh& m, int iNbSegments) const
