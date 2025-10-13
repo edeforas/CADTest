@@ -66,6 +66,32 @@ void test_smoothmesh_shell()
 	sm.add_to_mesh(m, 11);
 	OBJFile::save("test_smoothmesh_shell.obj", m);
 }
+///////////////////////////////////////////////////////////////////////////
+void test_sphere_octant()
+{
+	// octants of a sphere, test rational mode
+
+	SmoothMesh sm;
+	Mesh m;
+	
+	SmoothTriangle st;
+	st.set_points(Point3(1, 0, 0), Point3(0, 1, 0), Point3(0, 0, 1));
+	st.set_control_points(Point3(1, 1, 0), Point3(1, 0, 1), Point3(0, 1, 1));
+	double winvsqrt2 = 1. / sqrt(2.);
+	st.set_weights( 1.,1.,1.,winvsqrt2 ,winvsqrt2 ,winvsqrt2 );
+	sm.add_triangle(st);
+	
+	for(double s=0.;s<1.;s+=0.1)
+		for (double t = 0.; t < 1.; t += 0.1)
+		{
+			Point3 p = st.eval(s, t);
+			double n = p.norm();
+			cout << s << " " <<  t << " " << n << endl;
+			//test_near(n, 1., 1.e-10, "Norm should be 1.");
+		}
+	sm.add_to_mesh(m, 21);
+	OBJFile::save("test_sphere_octant.obj", m);
+}
 
 ///////////////////////////////////////////////////////////////////////////
 void test_quarter_circle_deg2()
@@ -99,6 +125,7 @@ int main()
 {
 	test_smoothmesh_shell();
 	test_quarter_circle_deg2();
+	test_sphere_octant();
 
 	cout << "Test Finished.";
 	return 0;

@@ -45,6 +45,8 @@ void SmoothTriangle::set_weights(double wP1, double wP2, double wP3, double wP1P
 
 Point3 SmoothTriangle::eval(double s, double u, double v ) const
 {
+	// todod optimize by pre computing P*w
+
 	// autocompute v by default
 	if (v == -1.)
 		v = 1. - s - u;
